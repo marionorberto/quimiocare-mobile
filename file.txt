@@ -1,0 +1,184 @@
+
+## **📌 Sugestão para o Button Tabs**
+O **Button Tabs** pode ficar na parte inferior do app (**bottom navigation**) ou na parte superior (**top tabs**), dependendo da experiência que quer proporcionar.  
+
+🔹 **Opção 1: Bottom Tabs Navigation (Mais recomendado para mobile apps)**  
+Essa abordagem mantém a navegação **sempre visível**, permitindo que o usuário acesse rapidamente as áreas mais importantes do app.  
+
+- **🏠 Início** (Home) → Página inicial com informações principais e atalhos rápidos.  
+- **💊 Medicações** → Lista de medicações com lembretes configurados.  
+- **📅 Consultas** → Agenda de consultas médicas e exames.  
+- **📖 Biblioteca** → Informações confiáveis sobre o câncer e dicas para o tratamento.  
+- **⚙️ Perfil** → Configurações, preferências e informações do usuário.  
+
+🔹 **Opção 2: Top Tabs (Para um fluxo mais direcionado, dentro de uma seção específica)**  
+Se quiser usar tabs em uma **única página**, por exemplo, na seção de **monitoramento de saúde**, pode ter abas como:  
+- **📌 Sintomas** (Para registrar sintomas e efeitos colaterais)  
+- **📊 Relatórios** (Histórico dos sintomas registrados)  
+- **📅 Consultas** (Para ver as próximas consultas)  
+
+---
+
+## **📌 Sugestão de Conteúdo para a Página Inicial**
+A **página inicial** deve oferecer um **resumo rápido** das informações mais importantes para o usuário. Aqui estão algumas ideias:
+
+1. **👋 Saudação personalizada**  
+   - "Bom dia, [Nome]! Aqui está o resumo do seu dia."  
+
+2. **📌 Últimos Registros de Saúde**  
+   - Últimos sintomas relatados.  
+   - Última consulta médica realizada.  
+   - Medicação pendente para tomar.  
+
+3. **⏰ Lembretes Importantes**  
+   - Medicações que devem ser tomadas hoje.  
+   - Próximas consultas agendadas.  
+   - Notificações sobre exames ou relatórios médicos.  
+
+4. **📊 Gráficos Simples (Se possível)**  
+   - Histórico de sintomas registrados nos últimos 7 dias.  
+   - Nível de dor ou efeitos colaterais ao longo do tempo.  
+
+5. **📖 Acesso Rápido à Biblioteca**  
+   - Um banner com dicas úteis, ex: "Como lidar com a fadiga na quimioterapia".  
+   - Notícias relevantes sobre tratamentos ou novos medicamentos.  
+
+6. **⭐ Feedback do Usuário**  
+   - Pergunta rápida: "Como você se sente hoje?" com emojis para responder.  
+   - Botão para registrar novos sintomas.  
+
+---
+
+Essas sugestões ajudam a criar um **fluxo intuitivo e informativo** para os usuários. O que achas dessa abordagem? 🚀
+
+
+
+
+------------------------------------------------------------------
+
+
+A **página inicial** do **Quimio App** deve ser intuitiva e fornecer ao usuário uma visão clara do seu estado atual, próximos compromissos e informações úteis para o tratamento.  
+
+---
+
+## **📌 Estrutura da Página Inicial (Home)**  
+
+### **🔹 1. Cabeçalho**  
+- 📛 **Nome do Usuário** ("Olá, [Nome] 👋")  
+- ⚙️ **Botão de Configurações**  
+- 📅 **Data Atual**  
+
+### **🔹 2. Status Atual do Paciente**  
+- **Resumo do Dia:**  
+  - 🏥 Estado Geral: "Bom | Regular | Ruim"  
+  - 🩺 Última Consulta: "Dr. [Nome] - [Data]"  
+  - 💊 Próximo Medicamento: "Paracetamol - 500mg às 14:00"  
+
+### **🔹 3. Acompanhamento Diário**  
+- 📌 **Registrar Sintomas Hoje** [Botão ➕]  
+- 📊 **Evolução da Saúde** (Gráfico ou lista com últimos registros)  
+
+### **🔹 4. Próximas Consultas & Medicações**  
+- 📅 **Consulta:** "Dr. João Silva - 15/02/2024 às 10:00"  
+- 💊 **Medicação:** "Tomar [Medicamento] às [Hora]"  
+
+### **🔹 5. Biblioteca & Recursos**  
+- 📖 **Artigos Recomendados:** "Como lidar com os efeitos colaterais?"  
+- 🎥 **Vídeos Educativos:** "Alimentação saudável durante a quimioterapia"  
+
+### **🔹 6. Comunidade & Suporte**  
+- 🆘 **Falar com um Profissional** [Botão]  
+- 🤝 **Grupos de Apoio**  
+
+---
+
+## **✏️ Wireframe da Página Inicial (Texto)**  
+
+```
+-------------------------------------
+|  👋 Olá, [Nome]       ⚙️ Config  |
+|  📅 [Data Atual]                     |
+-------------------------------------
+| 🏥 Estado: [Bom | Regular | Ruim]   |
+| 🩺 Última Consulta: [Dr. Nome] [📅] |
+| 💊 Medicação: [Nome] às [Hora]     |
+-------------------------------------
+| 📌 Registrar Sintomas [➕]          |
+| 📊 Evolução da Saúde [📈]           |
+-------------------------------------
+| 📅 Próxima Consulta: [Médico] [Hora]|
+| 💊 Medicação Próxima: [Nome] [Hora]|
+-------------------------------------
+| 📖 Artigos Recomendados [➡️]       |
+| 🎥 Vídeos Educativos [➡️]           |
+-------------------------------------
+| 🆘 Falar com Profissional [📞]      |
+| 🤝 Grupos de Apoio [💬]             |
+-------------------------------------
+```
+
+---
+
+### **🔹 O que essa tela entrega?**  
+✅ Informações essenciais **de forma clara e objetiva**  
+✅ Fácil acesso a **tarefas diárias** como registro de sintomas e lembretes  
+✅ Recursos úteis para ajudar no tratamento  
+
+O que acha desse layout? Quer adicionar algo mais? 🚀
+
+
+
+----------------------------------------------------------------------------
+
+
+
+
+
+
+Quando o usuário clicar em **Histórico de Saúde**, ele pode ser direcionado para uma tela onde poderá visualizar e gerenciar suas informações médicas registradas no aplicativo. A estrutura pode seguir o seguinte layout:  
+
+---
+
+### **📊 Histórico de Saúde**  
+
+#### 🔹 **1. Histórico de Sintomas**  
+- 📅 **Data:** [Última atualização]  
+- 📌 **Sintomas Registrados:**  
+  - 🤢 Náusea  
+  - 🤕 Dor de cabeça  
+  - 😴 Cansaço extremo  
+- 🔍 **[Ver mais detalhes ➡️]**  
+
+#### 🔹 **2. Histórico de Relatórios Médicos**  
+- 📄 **[Baixar último relatório médico 📥]**  
+- 📆 **Relatórios anteriores:**  
+  - 🗂️ **[Relatório - 01/02/2024] ➡️**  
+  - 🗂️ **[Relatório - 15/01/2024] ➡️**  
+
+#### 🔹 **3. Histórico de Consultas**  
+- 🏥 **Última consulta:**  
+  - 📅 Data: 10/02/2024  
+  - 👨‍⚕️ Médico: Dr. João Silva  
+  - 🏢 Local: Hospital São Paulo  
+- 📋 **[Ver todas as consultas ➡️]**  
+
+#### 🔹 **4. Medicamentos Utilizados**  
+- 💊 **Remédio Atual:**  
+  - Nome: Paracetamol  
+  - Dose: 500mg  
+  - Frequência: 2x ao dia  
+- 🔍 **[Ver medicações anteriores ➡️]**  
+
+#### 🔹 **5. Exportar Dados**  
+📤 **[Exportar meu histórico de saúde]**  
+
+---
+
+### **Funcionalidades Extras que podem ser úteis:**
+✅ Filtros para visualizar sintomas específicos por período  
+✅ Gráficos sobre evolução da saúde  
+✅ Opção para adicionar novos sintomas manualmente  
+
+---
+
+Isso daria ao usuário um resumo bem organizado e útil sobre sua saúde. Gostou dessa abordagem? 🚀
