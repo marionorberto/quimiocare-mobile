@@ -71,6 +71,7 @@ const VerificationPasswordScreen = ({ route, navigation }: props) => {
             </Text>
           </TouchableOpacity>
         </View>
+        {/*
         <View
           className="grid grid-cols-3 grid-rows-4 place-items-center gap-y-4 mt-3"
           style={{
@@ -102,7 +103,7 @@ const VerificationPasswordScreen = ({ route, navigation }: props) => {
             </TouchableOpacity>
           </View>
 
-          <View className="flex-row justify-center items-center gap-3">
+           <View className="flex-row justify-center items-center gap-3">
             <TouchableOpacity className=" rounded-lg w-20 h-20 bg-zinc-300/50 flex-1 justify-center items-center">
               <Text className="font-semibold text-zinc-500 text-2xl">7</Text>
             </TouchableOpacity>
@@ -127,7 +128,7 @@ const VerificationPasswordScreen = ({ route, navigation }: props) => {
               </Text>
             </TouchableOpacity>
           </View>
-        </View>
+        </View> */}
       </ScrollView>
     </View>
   );

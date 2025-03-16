@@ -30,10 +30,12 @@ const HomeScreen = ({ route, navigation }: props) => {
         Lorem, ipsum dolor sit amet consectetur adipisicing elit. Mollitia,
         nesciunt!
       </Text>
-      <View className="bg-zinc-50/85 p-4 flex flex-row justify-center items-center rounded-lg mt-14 mb-5">
+      <View className="bg-zinc-200/60 p-4 flex flex-row justify-center items-center rounded-lg mt-14 mb-5">
         <TouchableOpacity
           onPress={() =>
-            navigation.navigate(ScreenNames.Register, { title: "Register" })
+            navigation.navigate(ScreenNames.ChooseUserScreen, {
+              title: "Register",
+            })
           }
           className="text-white bg-blue-500 px-7 py-5 rounded-lg"
         >
@@ -43,7 +45,7 @@ const HomeScreen = ({ route, navigation }: props) => {
           onPress={() => {
             navigation.navigate(ScreenNames.Login, { title: "Login" });
           }}
-          className="text-blue-400 bg-white  px-7 py-5 rounded-lg"
+          className="text-blue-400 bg-white  px-7 py-5 rounded-r-lg"
         >
           <Text className="text-blue-400 font-semibold text-lg">Login</Text>
         </Pressable>

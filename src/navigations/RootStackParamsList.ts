@@ -4,7 +4,6 @@ type  HomeScreenParams = {
 
 type  SettingScreenParams = {
   title: string;
-  description: string;
 }
 
 type  WelcomeScreenParams = {
@@ -18,6 +17,7 @@ type  LoginScreenParams = {
 
 type  RegisterScreenParams = {
   title: string;
+  userType: string;
 }
 
 type  LandingScreenParams = {
@@ -52,12 +52,64 @@ type  VerificationPasswordScreenParams = {
   title: string;
 }
 
+type  TermsScreenParams = {
+  title: string;
+}
+
+type  PolicyScreenParams = {
+  title: string;
+}
+
+type  AboutScreenParams = {
+  title: string;
+}
+
+type  FaqScreenParams = {
+  title: string;
+}
+
+type  LibraryScreenParams = {
+  title: string;
+}
+
+type  ReportScreenParams = {
+  title: string;
+}
+
+type  HistoryScreenParams = {
+  title: string;
+}
+
+type  BookingScreenParams = {
+  title: string;
+}
+
+type  SymptomsScreenParams = {
+  title: string;
+}
+
+type  MedicationscreenParams = {
+  title: string;
+}
+
+type  ChooseUserScreen = {
+  title: string;
+}
+
+type  GatherProfileFirstScreen = {
+  title: string;
+}
+
+type  GatherProfileSecondScreen = {
+  title: string;
+}
+
 export type RootStackParamsList = {
   Home: HomeScreenParams;
   Setting: SettingScreenParams;
   Welcome: WelcomeScreenParams;
   Login: LoginScreenParams;
-  Register: HomeScreenParams;
+  Register: RegisterScreenParams;
   Landing: LandingScreenParams;
   Forgot: ForgotScreenParams;
   Main: MainScreenParams;
@@ -66,4 +118,17 @@ export type RootStackParamsList = {
   Community: CommunityScreenParams;
   Medical: MedicalScreenParams;
   VerificationPassword: VerificationPasswordScreenParams;
+  Policy: PolicyScreenParams;
+  Terms: TermsScreenParams;
+  About: AboutScreenParams;
+  Faq: FaqScreenParams;
+  Library: LibraryScreenParams;
+  History: HistoryScreenParams;
+  Report: ReportScreenParams;
+  Booking: BookingScreenParams;
+  Medication: MedicationscreenParams;
+  Symptom: SymptomsScreenParams;
+  ChooseUserScreen: ChooseUserScreen,
+  GatherProfileFirstScreen: GatherProfileFirstScreen,
+  GatherProfileSecondScreen: GatherProfileSecondScreen,
 }

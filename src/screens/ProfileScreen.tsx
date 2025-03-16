@@ -3,22 +3,129 @@ import {
   Text,
   Pressable,
   ScrollView,
-  Modal,
   TextInput,
+  SafeAreaView,
+  Switch,
+  Alert,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Contants from "expo-constants";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { BottomTabParamList } from "../constants/types";
 import { Image } from "expo-image";
 import Icon from "react-native-vector-icons/Ionicons";
-import ScreenNames from "../constants/ScreenName";
-import { RootStackParamsList } from "../navigations/RootStackParamsList";
+import EditPersonalInformationModal from "../components/EditPersonalInformationModal";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import EditUserMedicalInformationModal from "../components/EditUserMedicalInfoModa";
+import api from "../services/api";
+import { handleLogout } from "../services/authService";
+import { API_URL } from "../constants/data";
 
 type props = NativeStackScreenProps<BottomTabParamList>;
 
 const ProfileScreen = ({ route, navigation }: props) => {
+  let isEnabledLayoutMode: boolean = false;
+  const [isEnabledMedicationReminder, setIsEnabledMedicationReminder] =
+    useState(false);
   let isModalEditVisible: boolean = false;
+  const [editUserInfoModalVisible, setEditUserInfoModalVisible] =
+    useState(false);
+  const [editUserMedicalInfoModalVisible, setEditUserMedicalInfoModalVisible] =
+    useState(false);
+  setEditUserMedicalInfoModalVisible;
+  const [userData, setUserData] = useState({
+    id: "",
+    username: "",
+    email: "",
+    typeUser: "",
+    createdAt: "",
+    updatedAt: "",
+    notifications: [],
+    tags: [],
+  });
+  const [profileData, setProfileData] = useState({
+    birthday: "",
+    bio: "",
+    address: "",
+    country_name: "",
+    phone: "",
+    created_at: "",
+    updated_at: "",
+    url_img: "",
+    sex: "",
+    userId: "",
+    job: "",
+    user_profile_id: "",
+    tags: [],
+  });
+  const [medicalData, setMedicalData] = useState({
+    bloodGroup: "",
+    codHospital: "",
+    created_at: "",
+    height: "",
+    hospital: "",
+    stage: "",
+    target_support: "",
+    updated_at: "",
+    userId: "",
+    user_id: "",
+    weight: "",
+  });
+
+  const handleSave = (updatedData: any) => {
+    setUserData(updatedData);
+  };
+
+  useEffect(() => {
+    fetchUserData();
+    fetchProfileData();
+    fetchMedicalData();
+  }, []);
+
+  const fetchUserData = () => {
+    try {
+      api
+        .get(`${API_URL}/users/user`)
+        .then(({ data: response }) => {
+          setUserData(response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } catch (error: any) {
+      Alert.alert("Erro", "erro tentando pegar os dados de usuários");
+    }
+  };
+
+  const fetchProfileData = () => {
+    try {
+      api
+        .get(`${API_URL}/profiles/single`)
+        .then(({ data: response }) => {
+          setProfileData(response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } catch (error: any) {
+      Alert.alert("Erro", "erro tentando pegar os dados de perfil");
+    }
+  };
+
+  const fetchMedicalData = () => {
+    try {
+      api
+        .get(`${API_URL}/medical-informations/information`)
+        .then(({ data: response }) => {
+          setMedicalData(response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } catch (error: any) {
+      Alert.alert("Erro", "erro tentando pegar os dados médicos");
+    }
+  };
 
   return (
     <View
@@ -28,11 +135,7 @@ const ProfileScreen = ({ route, navigation }: props) => {
       <View className="flex-row justify-start items-center gap-10 px-4">
         <View className="border-[1px] border-zinc-200 p-[3px] rounded-md bg-white">
           <Pressable onPress={() => navigation.goBack()}>
-            <Icon
-              name="chevron-back-outline"
-              size={20}
-              color={"#505050"}
-            ></Icon>
+            <Icon name="chevron-back-outline" size={20} color={"#505050"} />
           </Pressable>
         </View>
         <Text className="text-xl self-center text-center text-black font-bold">
@@ -54,50 +157,55 @@ const ProfileScreen = ({ route, navigation }: props) => {
                   backgroundColor: "#ccc",
                 }}
                 source={require("../../assets/user.png")}
-              ></Image>
+              />
               <View className="bg-white w-6 h-6 rounded-md absolute bottom-0 right-2 flex-1 justify-center items-center">
-                <Icon name="pencil-outline" color={"black"} size={19}></Icon>
+                <Icon name="pencil-outline" color={"black"} size={19} />
               </View>
             </View>
-            <Text className="text-black font-semibold text-center text-lg mt-4">
-              Mário Norberto
-            </Text>
-            <Text className="text-zinc-400 text-base">
-              Lorem ipsum dolor sit amet.
-            </Text>
-            <Text className="text-zinc-400 text-base text-center">
-              Lorem ipsum dolor
-            </Text>
-            <Text className="text-zinc-300 text-sm text-center">
-              Lorem ipsum
-            </Text>
+            {userData ? (
+              <Text className="text-black font-semibold text-center text-lg mt-4">
+                {userData.username}
+              </Text>
+            ) : (
+              <Text>--</Text>
+            )}
+            {profileData ? (
+              <Text className="text-zinc-500 text-base">{profileData.job}</Text>
+            ) : (
+              <Text>--</Text>
+            )}
+            {profileData ? (
+              <Text className="text-zinc-400 text-base">{profileData.bio}</Text>
+            ) : (
+              <Text>--</Text>
+            )}
+
             <View className=" w-full border-y-2 border-zinc-300 flex-row justify-around items-center py-4 mt-5">
               <View>
-                <Text className="font-bold text-lg text-center">20</Text>
+                <Text className="font-bold text-lg text-center">0</Text>
                 <Text className="text-zinc-300 text-center text-sm">
-                  Lorem, ipsum.
+                  Consultas
                 </Text>
               </View>
               <View>
-                <Text className="font-bold text-lg text-center">20</Text>
+                <Text className="font-bold text-lg text-center">0</Text>
                 <Text className="text-zinc-300 text-center text-sm">
-                  Lorem, ipsum.
+                  Remédios
                 </Text>
               </View>
             </View>
-
             <View className=" w-full border-b-2 border-zinc-300 flex-row justify-around gap-4 items-center py-4 px-6">
               <View className=" bg-blue-400/15 rounded-lg px-3 py-3 flex-1 justify-center items-center">
-                <Pressable>
+                <Pressable onPress={() => navigation.navigate("History")}>
                   <Text className="text-blue-500 text-center font-bold">
-                    Documentos
+                    Histórico de saúde
                   </Text>
                 </Pressable>
               </View>
               <View className=" bg-blue-400/15 rounded-lg px-3 py-3 flex-1 justify-center items-center">
-                <Pressable>
+                <Pressable onPress={() => navigation.navigate("Report")}>
                   <Text className="text-blue-500 text-center font-bold">
-                    Medicações
+                    Relatórios
                   </Text>
                 </Pressable>
               </View>
@@ -109,7 +217,7 @@ const ProfileScreen = ({ route, navigation }: props) => {
                       name="chatbox-ellipses-sharp"
                       color={"#3b82f6"}
                       size={22}
-                    ></Icon>
+                    />
                   </Text>
                 </Pressable>
               </View>
@@ -121,46 +229,67 @@ const ProfileScreen = ({ route, navigation }: props) => {
             <Text className="text-xl font-bold text-black">
               Informações Pessoais
             </Text>
-            <Pressable onPress={() => (isModalEditVisible = true)}>
+            <Pressable onPress={() => setEditUserInfoModalVisible(true)}>
               <Text className="text-lg font-semibold text-black">Editar</Text>
             </Pressable>
-            <Modal visible={isModalEditVisible} animationType="slide">
-              <Text>Hello Modal</Text>
-            </Modal>
+            <EditPersonalInformationModal
+              isVisible={editUserInfoModalVisible}
+              onClose={() => setEditUserInfoModalVisible(false)}
+              data={userData}
+              onSave={handleSave}
+            />
           </View>
           <View>
             <View className="flex-row justify-start items-center gap-2 mt-3">
               <Icon name="person-outline" color={"black"} size={20}></Icon>
               <View>
-                <Text className="text-base text-zinc-400">Name</Text>
-                <Text className="text-base text-zinc-800">Mário Norberto</Text>
+                <Text className="text-base text-zinc-400">Username</Text>
+                {userData ? (
+                  <Text className="text-base text-zinc-800">
+                    {userData.username}
+                  </Text>
+                ) : (
+                  <Text>--</Text>
+                )}
               </View>
             </View>
             <View className="flex-row justify-start items-center gap-2 mt-3">
-              <Icon name="mail-outline" color={"black"} size={20}></Icon>
+              <Icon name="mail-outline" color={"black"} size={20} />
               <View>
                 <Text className="text-base text-zinc-400">Email</Text>
-                <Text className="text-base text-zinc-800">
-                  marionorberto2018@gmail.com
-                </Text>
+                {userData ? (
+                  <Text className="text-base text-zinc-800">
+                    {userData.email}
+                  </Text>
+                ) : (
+                  <Text>--</Text>
+                )}
               </View>
             </View>
             <View className="flex-row justify-start items-center gap-2 mt-3">
-              <Icon name="call-outline" color={"black"} size={20}></Icon>
+              <Icon name="call-outline" color={"black"} size={20} />
               <View>
                 <Text className="text-base text-zinc-400">Telefone</Text>
-                <Text className="text-base text-zinc-800">
-                  + 244 935 327 990
-                </Text>
+                {profileData ? (
+                  <Text className="text-base text-zinc-800">
+                    {profileData.phone}
+                  </Text>
+                ) : (
+                  <Text>--</Text>
+                )}
               </View>
             </View>
             <View className="flex-row justify-start items-center gap-2 mt-3">
               <Icon name="location-outline" color={"black"} size={20}></Icon>
               <View>
                 <Text className="text-base text-zinc-400">Endereço</Text>
-                <Text className="text-base text-zinc-800">
-                  Angola, Luanda, Rangel - 34 Avenida
-                </Text>
+                {userData ? (
+                  <Text className="text-base text-zinc-800">
+                    {profileData.address}
+                  </Text>
+                ) : (
+                  <Text>--</Text>
+                )}
               </View>
             </View>
           </View>
@@ -170,7 +299,15 @@ const ProfileScreen = ({ route, navigation }: props) => {
             <Text className="text-xl font-bold text-black">
               Informações Médicas
             </Text>
-            <Text className="text-lg font-semibold text-black">Editar</Text>
+            <Pressable onPress={() => setEditUserMedicalInfoModalVisible(true)}>
+              <Text className="text-lg font-semibold text-black">Editar</Text>
+            </Pressable>
+            <EditUserMedicalInformationModal
+              isVisible={editUserMedicalInfoModalVisible}
+              onClose={() => setEditUserMedicalInfoModalVisible(false)}
+              data={userData}
+              onSave={handleSave}
+            />
           </View>
           <View>
             <View className="flex-row justify-start items-center gap-2 mt-3">
@@ -178,7 +315,13 @@ const ProfileScreen = ({ route, navigation }: props) => {
               <View>
                 <Text className="text-base text-zinc-400">Id Paciente</Text>
                 <Text className="text-base text-zinc-800 font-semibold">
-                  #1223llsd
+                  {medicalData ? (
+                    <Text className="text-base text-zinc-800">
+                      {medicalData.codHospital}
+                    </Text>
+                  ) : (
+                    <Text>--</Text>
+                  )}
                 </Text>
               </View>
             </View>
@@ -189,15 +332,55 @@ const ProfileScreen = ({ route, navigation }: props) => {
                 size={20}
               ></Icon>
               <View>
-                <Text className="text-base text-zinc-400">Idade</Text>
-                <Text className="text-base text-zinc-800">34</Text>
+                <Text className="text-base text-zinc-400">Nascimento</Text>
+                {profileData ? (
+                  <Text className="text-base text-zinc-800">
+                    {profileData.birthday}
+                  </Text>
+                ) : (
+                  <Text>--</Text>
+                )}
+              </View>
+            </View>
+            <View className="flex-row justify-start items-center gap-2 mt-3">
+              <Icon
+                name="calendar-clear-outline"
+                color={"black"}
+                size={20}
+              ></Icon>
+              <View>
+                <Text className="text-base text-zinc-400">Sexo</Text>
+                {profileData ? (
+                  <Text className="text-base text-zinc-800">
+                    {profileData.sex.toUpperCase()}
+                  </Text>
+                ) : (
+                  <Text>--</Text>
+                )}
               </View>
             </View>
             <View className="flex-row justify-start items-center gap-2 mt-3">
               <Icon name="barbell-outline" color={"black"} size={20}></Icon>
               <View>
                 <Text className="text-base text-zinc-400">Peso | Altura</Text>
-                <Text className="text-base text-zinc-800">45 KG | 1.67</Text>
+                <View className="flex-row justify-start items-center">
+                  {medicalData ? (
+                    <Text className="text-base text-zinc-800">
+                      {medicalData.height}
+                    </Text>
+                  ) : (
+                    <Text>--</Text>
+                  )}
+
+                  <Text className="text-base text-zinc-800 mx-3">|</Text>
+                  {medicalData ? (
+                    <Text className="text-base text-zinc-800">
+                      {medicalData.weight}
+                    </Text>
+                  ) : (
+                    <Text>--</Text>
+                  )}
+                </View>
               </View>
             </View>
 
@@ -205,7 +388,13 @@ const ProfileScreen = ({ route, navigation }: props) => {
               <Icon name="bandage-outline" color={"black"} size={20}></Icon>
               <View>
                 <Text className="text-base text-zinc-400">Tipo Sanguíneo</Text>
-                <Text className="text-base text-zinc-800">+A</Text>
+                {medicalData ? (
+                  <Text className="text-base text-zinc-800">
+                    {medicalData.bloodGroup}
+                  </Text>
+                ) : (
+                  <Text>--</Text>
+                )}
               </View>
             </View>
             <View className="flex-row justify-start items-center gap-2 mt-3">
@@ -213,37 +402,45 @@ const ProfileScreen = ({ route, navigation }: props) => {
               <View>
                 <Text className="text-base text-zinc-400">Cancer</Text>
                 <Text className="text-base font-semibold py-2 px-3 rounded-lg bg-blue-300/20 text-blue-400">
-                  Cancer da Mama
+                  ---
                 </Text>
               </View>
             </View>
-            <View className="flex-row justify-start items-center gap-2 mt-3">
-              <Icon name="fitness-outline" color={"black"} size={20}></Icon>
+            {/* <View className="flex-row justify-start items-center gap-2 mt-3">
+              <Icon name="fitness-outline" color={"black"} size={20} />
               <View>
                 <Text className="text-base text-zinc-400">Tipo de Cancer</Text>
                 <Text className="text-base font-semibold py-2 px-3 rounded-lg bg-blue-300/20 text-blue-400">
                   Carcinoma Ductal Invasivo
                 </Text>
               </View>
-            </View>
+            </View> */}
             <View className="flex-row justify-start items-center gap-2 mt-3">
-              <Icon name="fitness-outline" color={"black"} size={20}></Icon>
+              <Icon name="fitness-outline" color={"black"} size={20} />
               <View>
                 <Text className="text-base text-zinc-400">Estadiamento</Text>
-                <Text className="text-base font-semibold py-2 px-3 rounded-lg bg-blue-300/20 text-blue-400">
-                  Estágio IIIB
-                </Text>
+                {medicalData ? (
+                  <Text className="text-base font-semibold py-2 px-3 rounded-lg bg-blue-300/20 text-blue-400">
+                    {medicalData.stage}
+                  </Text>
+                ) : (
+                  <Text>--</Text>
+                )}
               </View>
             </View>
             <View className="flex-row justify-start items-center gap-2 mt-3">
-              <Icon name="fitness-outline" color={"black"} size={20}></Icon>
+              <Icon name="fitness-outline" color={"black"} size={20} />
               <View>
                 <Text className="text-base text-zinc-400">
                   Unidade Hospitar
                 </Text>
-                <Text className="text-base font-semibold py-2 px-3 rounded-lg bg-blue-300/20 text-blue-400">
-                  Hospital Cajueiro
-                </Text>
+                {medicalData ? (
+                  <Text className="text-base font-semibold py-2 px-3 rounded-lg bg-blue-300/20 text-blue-400">
+                    {medicalData.hospital}
+                  </Text>
+                ) : (
+                  <Text>--</Text>
+                )}
               </View>
             </View>
           </View>
@@ -264,8 +461,21 @@ const ProfileScreen = ({ route, navigation }: props) => {
                   Ativar Notificações
                 </Text>
                 <Text className="text-base text-zinc-800">
-                  Ativar/Desativar lembretes de medicação
+                  On/Off lembretes de medicação
                 </Text>
+              </View>
+              <View className="ms-auto">
+                <SafeAreaProvider>
+                  <SafeAreaView>
+                    <Switch
+                      trackColor={{ false: "#52525b", true: "#2563eb" }}
+                      thumbColor={isEnabledMedicationReminder ? "#000" : "#fff"}
+                      ios_backgroundColor="#fff"
+                      onValueChange={() => setIsEnabledMedicationReminder(true)}
+                      value={isEnabledLayoutMode}
+                    />
+                  </SafeAreaView>
+                </SafeAreaProvider>
               </View>
             </View>
             <View className="flex-row justify-start items-center gap-2 mt-3">
@@ -275,6 +485,21 @@ const ProfileScreen = ({ route, navigation }: props) => {
                 <Text className="text-base text-zinc-800">
                   Modo Claro/Escuro
                 </Text>
+              </View>
+              <View className="ms-auto">
+                <SafeAreaProvider>
+                  <SafeAreaView>
+                    <Switch
+                      trackColor={{ false: "#52525b", true: "#2563eb" }}
+                      thumbColor={isEnabledLayoutMode ? "#000" : "#fff"}
+                      ios_backgroundColor="#fff"
+                      onValueChange={() =>
+                        alert("Apenas o modo claro está disponível!")
+                      }
+                      value={isEnabledLayoutMode}
+                    />
+                  </SafeAreaView>
+                </SafeAreaProvider>
               </View>
             </View>
           </View>
@@ -306,6 +531,7 @@ const ProfileScreen = ({ route, navigation }: props) => {
               <View className="mt-4">
                 <Pressable
                   onPress={() => {
+                    handleLogout();
                     navigation.navigate("Login");
                   }}
                 >

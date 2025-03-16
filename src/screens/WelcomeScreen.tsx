@@ -6,7 +6,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamsList } from "../navigations/RootStackParamsList";
 import ScreenNames from "../constants/ScreenName";
 import { useNavigation } from "@react-navigation/native";
-import HomeScreen from "./HomeScreen";
+import { LinearGradient } from "expo-linear-gradient";
 
 type props = NativeStackScreenProps<RootStackParamsList, ScreenNames>;
 
@@ -14,31 +14,30 @@ const WelcomeScreen = ({ route, navigation }: props) => {
   const navigationScreen = useNavigation();
 
   return (
-    <View style={styles.container}>
+    <View
+      style={styles.container}
+      className="bg-blue-500 h-full w-full relative"
+    >
+      {/* <LinearGradient colors={["#48c6ef", "#6f86d6"]} /> */}
       <Image
         contentFit="cover"
         transition={1000}
         source={require("../../assets/welcome.svg")}
         style={{ width: 350, height: 280 }}
       />
-      <Text style={{ marginTop: 30, fontSize: 25, color: "#999" }}>
-        Bem-Vindo ao{" "}
-        <Text
-          className="opacity-70"
-          style={{ color: "black", fontSize: 29, fontWeight: "bold" }}
+
+      <View className="rounded-t-[2rem] p-3 absolute bottom-0 right-0 left-0 h-40 bg-white">
+        <TouchableOpacity
+          className="px-9 py-6 mt-10 rounded-xl flex gap-1 items-center bg-blue-500"
+          onPress={() =>
+            navigation.navigate(ScreenNames.Home, { title: "Home" })
+          }
         >
-          QuimioCare
-        </Text>
-      </Text>
-      <Text style={{ fontSize: 16, color: "#ddd", marginTop: 3 }}>
-        Junte-se à nossa comunidade
-      </Text>
-      <TouchableOpacity
-        className="px-12 py-6 mt-10 bg-[#3b82f6] rounded-lg flex gap-1 items-center"
-        onPress={() => navigation.navigate(ScreenNames.Home, { title: "Home" })}
-      >
-        <Text className="text-white font-semibold text-lg">Vamos Começar </Text>
-      </TouchableOpacity>
+          <Text className="text-white font-semibold text-lg">
+            Vamos Começar{" "}
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -47,7 +46,6 @@ export default WelcomeScreen;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#fff",
     color: "ccc",
     flex: 1,
     justifyContent: "center",

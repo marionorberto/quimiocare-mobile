@@ -3,28 +3,71 @@ import {
   Text,
   Pressable,
   ScrollView,
-  Button,
-  Touchable,
+  TextInput,
   TouchableOpacity,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Contants from "expo-constants";
-import { Image } from "expo-image";
 import Icon from "react-native-vector-icons/Ionicons";
-import { useNavigation } from "@react-navigation/native";
-import ScreenNames from "../constants/ScreenName";
-import { RootStackParamsList } from "../navigations/RootStackParamsList";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { BottomTabParamList } from "../constants/types";
-import { ActivityIndicator, MD2Colors } from "react-native-paper";
 import { List } from "react-native-paper";
+import { LineChart } from "react-native-chart-kit";
+import { moodDayFeeling } from "../constants/data";
+import { RootStackParamsList } from "../navigations/RootStackParamsList";
+import ScreenNames from "../constants/ScreenName";
+import Modal from "../components/Modal";
+import DateTimePicker, {
+  DateTimePickerEvent,
+} from "@react-native-community/datetimepicker";
+import api from "../services/api";
 
-type props = NativeStackScreenProps<BottomTabParamList>;
+type props = NativeStackScreenProps<RootStackParamsList, ScreenNames>;
 
 const MedicalScreen = ({ route, navigation }: props) => {
   const [expanded, setExpanded] = React.useState(true);
-
   const handlePress = () => setExpanded(!expanded);
+  const [openModalAddMedication, setOpenModalAddMedication] = useState(false);
+  const [openModalAddSymptom, setOpenModalAddSymptom] = useState(false);
+  const [symptom, setSymptom] = useState("");
+  const [severity, setSeverity] = useState(0);
+  const [description, setDescription] = useState("");
+  const [medicationName, setMedicationName] = useState("");
+  const [dosage, setDosage] = useState("");
+  const [notes, setNotes] = useState("");
+  const [reminderTime, setReminderTime] = useState(new Date());
+  const [showTimePicker, setShowTimePicker] = useState(false);
+  const data = {
+    labels: ["Out", "Dez", "Jan", "Fev", "Mar"],
+    datasets: [
+      {
+        data: [20, 45, 28, 80, 90],
+        color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`,
+        strokeWidth: 3,
+      },
+    ],
+    legend: false,
+  };
+  const [filter, setFilter] = useState("normal");
+  const chartConfig = {
+    backgroundGradientFrom: "#3b82f6",
+    backgroundGradientFromOpacity: 0,
+    backgroundGradientTo: "#3b82f6",
+    backgroundGradientToOpacity: 0.5,
+    color: (opacity = 1) => `rgb(147 197 253 / ${opacity})`,
+    strokeWidth: 2,
+    barPercentage: 0.5,
+    useShadowColorFromDataset: false,
+  };
+
+  const moodFeeling = moodDayFeeling;
+
+  const setDate = (event: DateTimePickerEvent, date: Date) => {
+    const {
+      type,
+      nativeEvent: { timestamp, utcOffset },
+    } = event;
+  };
+
   return (
     <View
       style={{ marginTop: Contants.statusBarHeight }}
@@ -45,146 +88,415 @@ const MedicalScreen = ({ route, navigation }: props) => {
             Controle Médico
           </Text>
         </View>
-        <View className="mt-6 bg-white rounded-xl p-4 pb-1">
-          <Text className="text-3xl fonb-semibold  text-zinc-900 mx-4">
-            Olá Joaquina, Como está se sentindo hoje?
-          </Text>
-          <View className=" flex-row justify-center items-center gap-2 mt-4">
-            <View className="flex-col justify-center items-center gap-0">
-              <Text className="text-[3rem]">☺️</Text>
-              <View className="w-20 h-11 rounded-lg flex-col justify-stretch items-center">
-                <Text className="text-zinc-700 font-semibold">Bem</Text>
-              </View>
-            </View>
-            <View className="flex-col justify-center items-center gap-0">
-              <Text className="text-[3rem]">😑</Text>
 
-              <View className="w-20 h-11 rounded-lg flex-col justify-stretch items-center">
-                <Text className="text-zinc-700 font-semibold">Normal</Text>
-              </View>
-            </View>
-            <View className="flex-col justify-center items-center gap-0">
-              <Text className="text-[3rem]">😣</Text>
-
-              <View className="w-20 h-11 rounded-lg flex-col justify-stretch items-center">
-                <Text className="text-zinc-700 font-semibold">Mal</Text>
-              </View>
+        <View className="flex-col justify-center items-center pt-6 relative rounded-2xl bg-blue-500 p-4 px-6 my-4 mt-8 overflow-x-hidden">
+          <View className="self-start">
+            <View className="flex-row">
+              <Text className="font-semibold text-white my-3 text-xl">
+                Adesão a Medicação
+              </Text>
             </View>
           </View>
-        </View>
 
-        {/* <View>
-          <View className="mt-5 h-72 w-96">
-            <View className="border-2 border-zinc-200 rounded-2xl p-3 pb-2">
-              <View className="flex-row justify-between items-center">
-                <Text className="font-bold text-black text-xl">
-                  Joaquina, Como você se sente hoje comparado à ontem?
+          <View className="self-start mt-1 mb-2">
+            <View className="flex-row justify-start items-center gap-4">
+              <View className="flex-col justify-center items-start gap-1 inline">
+                <Text className="font-bold text-4xl text-white">23%</Text>
+                <Text className="text-white opacity-50 text-[12px]">
+                  Progresso
                 </Text>
               </View>
-              <View className="flex-row justify-start items-center gap-3 mt-3 border-y-2 border-zinc-300 py-3">
-                <ScrollView horizontal={true}>
-                  <Text className="text rounded-lg px-2 py-2 bg-blue-400/20 text-blue-500 font-bold text-nowrap me-2">
-                    Muito Bem
-                  </Text>
-                  <Text className="text rounded-lg px-2 py-2 bg-blue-400/15 text-blue-500 font-bold me-2">
-                    Bem
-                  </Text>
-                  <Text className="text rounded-lg px-2 py-2 bg-zinc-400/20 text-zinc-500 font-bold me-2">
-                    Normal
-                  </Text>
-                  <Text className="text rounded-lg px-2 py-2 bg-red-400/15 text-red-500 font-bold me-2">
-                    Mal
-                  </Text>
-                  <Text className="text rounded-lg px-2 py-2 bg-red-400/20 text-red-500 font-bold text-nowrap me-2">
-                    Muito Mal
-                  </Text>
-                </ScrollView>
-              </View>
-              <View className="flex-col justify-center items-start py-3 gap-2">
-                <Text className="text-black font-semibold">Resposta:</Text>
-                <TouchableOpacity className=" bg-blue-600 rounded-lg px-3 py-2 flex-row gap-1">
-                  <Icon name="send-outline" size={20} color={"white"}></Icon>
-                </TouchableOpacity>
-              </View>
             </View>
           </View>
-        </View> */}
-
-        <View className="flex-row justify-start items-center">
-          <Text className="mt-6 font-bold text-lg">Lembretes</Text>
-        </View>
-        <View className="flex-row justify-start items-center  mt-2 p-4 rounded-lg gap-3 bg-zinc-50">
-          <View className="flex-1 justify-center items-center bg-blue-300/20 max-w-20 h-[5rem] rounded-xl">
-            <Icon
-              name="calendar-outline"
-              color={"#3b82f6"}
-              size={30}
-              style={{ fontWeight: "bold" }}
-            ></Icon>
+          <View className="pe-3">
+            <LineChart
+              data={{
+                labels: ["Out", "Nov", "Dez", "Jan", "Fev", "Mar"],
+                datasets: [
+                  {
+                    data: [20, 35, 45, 28, 80, 90],
+                    color: () => "rgba(255 255 255 / 0.6)",
+                    strokeWidth: 2,
+                  },
+                ],
+              }}
+              width={380}
+              height={170}
+              withVerticalLines={false}
+              withOuterLines={false}
+              withHorizontalLabels={false}
+              getDotColor={() => "rgba(255 255 255 / 0.6)"}
+              chartConfig={{
+                backgroundGradientFrom: "#3b82f6",
+                backgroundGradientFromOpacity: 0,
+                backgroundGradientTo: "#3b82f6",
+                labelColor: () => "rgba(255 255 255 / 0.6)",
+                backgroundColor: "#3b82f6",
+                backgroundGradientToOpacity: 0.5,
+                color: () => "#fff",
+                strokeWidth: 4,
+                barPercentage: 0.6,
+                useShadowColorFromDataset: false,
+                propsForDots: {
+                  color: "black",
+                },
+              }}
+              bezier
+            />
           </View>
+        </View>
+        <View className="mt-6">
+          <Text className="text-black text-lg font-semibold">Sumário</Text>
           <View>
-            <Text className="font-bold text-xl">Última Consulta Marcada</Text>
-            <Text className="font-semibold  text-zinc-500 text-lg">
-              Radiologia
+            <View className="border-b-2 border-zinc-400/35 py-3 flex-row justify-between items-center">
+              <Text className="text-black text-lg font-semibold opacity-50">
+                Próximo Remédio
+              </Text>
+              <View className="flex-row justify-center items-center gap-2 bg-blue-300/40 rounded-xl py-[3px] px-2">
+                <Text className="text-[#64748b] text-sm font-semibold">
+                  08:30
+                </Text>
+                <Icon name="eye-outline" color={"#64748b"} size={20}></Icon>
+              </View>
+            </View>
+            <View className="border-b-2 border-zinc-400/35 py-3 flex-row justify-between items-center">
+              <Text className="text-black text-lg font-semibold opacity-50">
+                Próxima Consulta
+              </Text>
+              <View className="flex-row justify-center items-center gap-2 bg-blue-300/40 rounded-xl py-[3px] px-2">
+                <Text className="text-slate-500 text-sm font-semibold">
+                  7 Mar, 2025
+                </Text>
+                <Icon name="eye-outline" color={"#64748b"} size={20}></Icon>
+              </View>
+            </View>
+          </View>
+          <View className="mt-5 p-4 bg-blue-500 rounded-xl flex-row gap-2">
+            <Text>
+              <Icon name="document-outline" color={"white"} size={22}></Icon>
             </Text>
-            <Text className="text-zinc-400">08h:00</Text>
-          </View>
-        </View>
-
-        <View className="flex-row justify-start items-center  mt-2 p-4 rounded-lg gap-3 bg-zinc-50">
-          <View className="flex-1 justify-center items-center bg-blue-200/20 max-w-20 h-[5rem] rounded-xl">
-            <Icon
-              name="bandage-outline"
-              color={"#3b82f6"}
-              size={30}
-              style={{ fontWeight: "bold" }}
-            ></Icon>
-          </View>
-          <View>
-            <Text className="font-bold text-xl">Próximo Remédio</Text>
-            <Text className="font-semibold  text-zinc-500 text-lg">
-              Paracetamol - 500mg
+            <Text className="text-white font-semibold overflow-hidden">
+              Deixe-nos entender como está se sentido hoje, para podermos
+              ajudá-lo melhor
             </Text>
-            <Text className="text-zinc-400">Às 10h:30</Text>
+          </View>
+          <View className="mt-5">
+            <Text className="text-black text-lg font-semibold">
+              Como está se sentindo hoje, Joaquina?
+            </Text>
+            <ScrollView
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              className=" mt-3"
+            >
+              {moodFeeling.map((val) => (
+                <Pressable
+                  key={val.description}
+                  onPress={() => {
+                    setFilter(val.description.toLowerCase());
+                  }}
+                >
+                  <View
+                    key={val.description}
+                    className={`flex-col justify-center items-center gap-0 p-4 rounded-xl border-2 border-zinc-400/30 w-24 h-24 me-4 ${filter == val.description.toLowerCase() ? "bg-blue-500/60" : ""} `}
+                  >
+                    <View key={val.description}>
+                      <Text className="text-[2rem] text-center">
+                        {val.emoji}
+                      </Text>
+                      <View className="w-20 h-11 rounded-2xl flex-col justify-stretch items-center">
+                        <Text className="text-slate-700 font-semibold">
+                          {val.description}
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+                </Pressable>
+              ))}
+            </ScrollView>
+          </View>
+          <View className="mt-4">
+            <View className="flex-row justify-start items-center gap-2 mb-2">
+              <Text className="text-zinc-600 text-base font-semibold">
+                Adicionar notas(opcional)
+              </Text>
+              <Icon name="create-outline" color={"black"} size={18}></Icon>
+            </View>
+            <View className="flex-row justify-start items-end">
+              <TextInput
+                className="p-4 rounded-xl border-2 border-zinc-400/30 w-[80%] h-16 me-2"
+                placeholder="*Adicione Aqui alguma nota!"
+              />
+              <View className=" rounded-xl h-10 flex-1 justify-center items-start">
+                <Icon name="send-outline" color={"#64748b"} size={22}></Icon>
+              </View>
+            </View>
+          </View>
+          <View className="mt-5">
+            <Pressable
+              onPress={() => {
+                setOpenModalAddSymptom(true);
+              }}
+            >
+              <View className="rounded-lg border-2 border-zinc-300 p-4 mx-2">
+                <View className="flex-row justify-between items-center">
+                  <View className="flex-row justify-start items-center gap-2">
+                    <Text>
+                      <Icon name="menu-outline" color={"black"} size={24} />
+                    </Text>
+                    <Text className="text-black font-semibold">
+                      Adicionar novo sintoma
+                    </Text>
+                  </View>
+                  <Text className="border-zinc-100 border-2 rounded-lg">
+                    <Icon name="add-outline" color={"black"} size={23} />
+                  </Text>
+                </View>
+                <Modal isOpen={openModalAddSymptom} withInput={false}>
+                  <View className="p-6 bg-white rounded-2xl w-full max-w-md shadow-lg">
+                    <View className="flex-row justify-between items-center mb-4">
+                      <Text className="text-lg font-semibold text-zinc-900">
+                        Adicionar Sintoma
+                      </Text>
+                      <TouchableOpacity
+                        onPress={() => {
+                          setOpenModalAddSymptom(false);
+                        }}
+                      >
+                        <Icon name="close" size={24} color="#4A4A4A" />
+                      </TouchableOpacity>
+                    </View>
+                    <Text className="text-zinc-700 mb-1">Nome do sintoma</Text>
+                    <TextInput
+                      className="border border-zinc-300 rounded-lg px-4 py-2 mb-3"
+                      placeholder="Ex: Náusea, Fadiga..."
+                      value={symptom}
+                      onChangeText={setSymptom}
+                    />
+                    <Text className="text-zinc-700 mb-1">Descrição</Text>
+                    <TextInput
+                      className="border border-zinc-300 rounded-lg px-4 py-2 mb-3 h-20"
+                      placeholder="Detalhe os sintomas, duração, intensidade..."
+                      multiline
+                      value={description}
+                      onChangeText={setDescription}
+                    />
+                    <Text className="text-zinc-700 mb-1">Intensidade</Text>
+                    <View className="flex-row gap-1 mb-4">
+                      {[1, 2, 3, 4, 5].map((level) => (
+                        <TouchableOpacity
+                          key={level}
+                          onPress={() => setSeverity(level)}
+                        >
+                          <Icon
+                            name={level <= severity ? "star" : "star-outline"}
+                            size={24}
+                            color={level <= severity ? "#3B82F6" : "#D1D5DB"}
+                          />
+                        </TouchableOpacity>
+                      ))}
+                    </View>
+                    <TouchableOpacity
+                      className="bg-blue-500 rounded-lg py-3 mt-2 flex-row items-center justify-center"
+                      onPress={() => {
+                        onSaveSymptoms({ symptom, severity, description });
+                        setOpenModalAddSymptom(false);
+                      }}
+                    >
+                      <Icon
+                        name="save"
+                        size={20}
+                        color="white"
+                        className="mr-2"
+                      />
+                      <Text className="text-white text-center font-semibold">
+                        Salvar Sintoma
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                </Modal>
+              </View>
+            </Pressable>
+            <Pressable
+              onPress={() => {
+                setOpenModalAddMedication(true);
+              }}
+            >
+              <View className="rounded-lg border-2 border-zinc-300 p-4 mx-2 mt-3">
+                <View className="flex-row justify-between items-center">
+                  <View className="flex-row justify-start items-center gap-2">
+                    <Text>
+                      <Icon name="menu-outline" color={"black"} size={24} />
+                    </Text>
+                    <Text className="text-black font-semibold">
+                      Adicionar novo Medicamento
+                    </Text>
+                  </View>
+                  <Text className="border-zinc-100 border-2 rounded-lg">
+                    <Icon name="add-outline" color={"black"} size={23} />
+                  </Text>
+                </View>
+                <Modal isOpen={openModalAddMedication} withInput={false}>
+                  <View className="p-6 bg-white rounded-2xl w-full max-w-md shadow-lg">
+                    <View className="flex-row justify-between items-center mb-4">
+                      <Text className="text-lg font-semibold text-zinc-900">
+                        Adicionar Medicamento
+                      </Text>
+                      <TouchableOpacity
+                        onPress={() => {
+                          setOpenModalAddMedication(false);
+                        }}
+                      >
+                        <Icon name="close" size={24} color="#4A4A4A" />
+                      </TouchableOpacity>
+                    </View>
+                    <Text className="text-zinc-700 mb-1">
+                      Nome do Medicamento
+                    </Text>
+                    <TextInput
+                      className="border border-zinc-300 rounded-lg px-4 py-2 mb-3"
+                      placeholder="Ex: Paracetamol, Ibuprofeno..."
+                      value={medicationName}
+                      onChangeText={setMedicationName}
+                    />
+                    <Text className="text-zinc-700 mb-1">Dosagem</Text>
+                    <TextInput
+                      className="border border-zinc-300 rounded-lg px-4 py-2 mb-3"
+                      placeholder="Ex: 500mg, 1 comprimido..."
+                      value={dosage}
+                      onChangeText={setDosage}
+                    />
+                    <Text className="text-zinc-700 mb-1">Notas (Opcional)</Text>
+                    <TextInput
+                      className="border border-zinc-300 rounded-lg px-4 py-2 mb-3 h-20"
+                      placeholder="Observações sobre o uso..."
+                      multiline
+                      value={notes}
+                      onChangeText={setNotes}
+                    />
+                    <Text className="text-zinc-700 mb-1">
+                      Horário do Lembrete
+                    </Text>
+                    <TouchableOpacity
+                      className="border border-zinc-300 rounded-lg px-4 py-3 flex-row items-center justify-between mb-3"
+                      onPress={() => setShowTimePicker(true)}
+                    >
+                      <Text className="text-zinc-700">
+                        {reminderTime.toLocaleTimeString([], {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </Text>
+                      <Icon name="time-outline" size={20} color="#3B82F6" />
+                    </TouchableOpacity>
+
+                    {showTimePicker && (
+                      <DateTimePicker
+                        value={reminderTime}
+                        mode="time"
+                        display="default"
+                        onChange={(event, selectedTime) => {
+                          setShowTimePicker(false);
+                          if (selectedTime) setReminderTime(selectedTime);
+                        }}
+                      />
+                    )}
+                    <TouchableOpacity
+                      className="bg-blue-500 rounded-lg py-3 mt-2 flex-row items-center justify-center"
+                      onPress={() => {
+                        onSaveMedication({
+                          medicationName,
+                          dosage,
+                          notes,
+                          reminderTime,
+                        });
+
+                        setOpenModalAddMedication(false);
+                      }}
+                    >
+                      <Icon
+                        name="save"
+                        size={20}
+                        color="white"
+                        className="mr-2"
+                      />
+                      <Text className="text-white text-center font-semibold">
+                        Salvar Medicamento
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                </Modal>
+              </View>
+            </Pressable>
           </View>
         </View>
 
-        <View className="flex-row justify-between items-strect bg-zinc-50 mt-2 p-4 rounded-lg">
-          <View className="flex-row justify-between items-center gap-4 ">
-            <View className="rounded-lg bg-zinc-300/50 w-12 h-12 flex-1 justify-center items-center">
-              <Icon name="add-outline" color={"black"} size={25}></Icon>
+        <View className="mt-4">
+          <Pressable
+            onPress={() =>
+              navigation.navigate("Booking", { title: "Consultas" })
+            }
+          >
+            <View className="flex-row justify-between items-center bg-white mt-2 p-4 rounded-lg">
+              <View className="flex-row justify-between items-center gap-4">
+                <Icon name="pulse-outline" color={"black"} size={24}></Icon>
+                <Text className="text-lg font-semibold text-black">
+                  Ver Consultas
+                </Text>
+              </View>
+              <Icon
+                style={{ alignSelf: "flex-end" }}
+                name="chevron-forward-outline"
+                color={"#999"}
+                size={30}
+              ></Icon>
             </View>
-            <View>
-              <Text className="text-lg font-semibold text-black">
-                Adicionar Sintoma
-              </Text>
-              <Text className="text-sm font-semibold text-zinc-300">
-                Regista um novo sintoma
-              </Text>
-            </View>
-          </View>
-          <Text className="text-[12px] text-blue-500">Ver Todos</Text>
-        </View>
+          </Pressable>
 
-        <View className="flex-row justify-between items-strect bg-zinc-50 mt-2 p-4 rounded-lg">
-          <View className="flex-row justify-between items-center gap-4 ">
-            <View className="rounded-lg bg-zinc-300/50 w-12 h-12 flex-1 justify-center items-center">
-              <Icon name="add-outline" color={"#515151"} size={30}></Icon>
+          <Pressable
+            onPress={() =>
+              navigation.navigate("Medication", { title: "Medicações" })
+            }
+          >
+            <View className="flex-row justify-between items-center bg-white mt-2 p-4 rounded-lg">
+              <View className="flex-row justify-between items-center gap-4">
+                <Icon name="pulse-outline" color={"black"} size={24}></Icon>
+                <Text className="text-lg font-semibold text-black">
+                  Ver Remédios
+                </Text>
+              </View>
+              <Icon
+                style={{ alignSelf: "flex-end" }}
+                name="chevron-forward-outline"
+                color={"#999"}
+                size={30}
+              ></Icon>
             </View>
-            <View>
-              <Text className="text-lg font-semibold text-black">
-                Adicionar Remédio
-              </Text>
-              <Text className="text-sm font-semibold text-zinc-300">
-                Regista um novo remédio
-              </Text>
+          </Pressable>
+          <Pressable
+            onPress={() =>
+              navigation.navigate("Symptom", { title: "Sintomas" })
+            }
+          >
+            <View className="flex-row justify-between items-center bg-white mt-2 p-4 rounded-lg">
+              <View className="flex-row justify-between items-center gap-4">
+                <Icon name="pulse-outline" color={"black"} size={24}></Icon>
+                <Text className="text-lg font-semibold text-black">
+                  Ver Sintomas
+                </Text>
+              </View>
+              <Icon
+                style={{ alignSelf: "flex-end" }}
+                name="chevron-forward-outline"
+                color={"#999"}
+                size={30}
+              ></Icon>
             </View>
-          </View>
-          <Text className="text-[12px] text-blue-500">Ver Todos</Text>
+          </Pressable>
         </View>
 
         <View className="mt-8">
-          <Text className="font-semibold text-lg">Histórico De Saúde</Text>
+          <Text className="font-semibold text-2xl">Histórico De Saúde</Text>
 
           <List.Section title="">
             <List.Accordion
@@ -192,14 +504,51 @@ const MedicalScreen = ({ route, navigation }: props) => {
               left={(props) => <List.Icon {...props} icon="folder" />}
             >
               <List.Item title="Histórico De Consultas" />
-              <List.Item title="Consultar Sintomas" />
-              <List.Item title="elatórios Médicos" />
+              <List.Item title="Histórico de  Sintomas" />
+              <List.Item title="Históricos Médicos" />
             </List.Accordion>
           </List.Section>
         </View>
       </ScrollView>
     </View>
   );
+};
+
+const onSaveSymptoms = ({
+  symptom,
+  severity,
+  description,
+}: {
+  symptom: string;
+  severity: number;
+  description: string;
+}) => {
+  console.log({ symptom, severity, description });
+};
+
+const onSaveMedication = ({
+  medicationName,
+  dosage,
+  notes,
+  reminderTime,
+}: {
+  medicationName: string;
+  dosage: string;
+  notes: string;
+  reminderTime: Date;
+}) => {
+  api
+    .post("/medications/create/medication", {
+      name: medicationName,
+      dosage,
+      note: notes,
+      reminder_time: reminderTime.toString(),
+    })
+    .then((res) => {
+      console.log(res.data);
+      alert("Sintoma cadastrado com sucesso!");
+    })
+    .catch((error) => alert(error.message));
 };
 
 export default MedicalScreen;

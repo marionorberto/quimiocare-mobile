@@ -182,3 +182,591 @@ Quando o usuário clicar em **Histórico de Saúde**, ele pode ser direcionado p
 ---
 
 Isso daria ao usuário um resumo bem organizado e útil sobre sua saúde. Gostou dessa abordagem? 🚀
+
+ <View className="flex-row justify-start items-center  mt-2 p-4 rounded-lg gap-3">
+          <View className="flex-1 justify-center items-center bg-blue-200/20  h-[5rem] rounded-xl">
+            <Icon
+              name="calendar-outline"
+              color={"#3b82f6"}
+              size={30}
+              style={{ fontWeight: "bold" }}
+            ></Icon>
+          </View>
+          <View>
+            <Text className="font-bold text-xl">Última Consulta Marcada</Text>
+            <Text className="font-semibold  text-zinc-500 text-lg">
+              Radiologia
+            </Text>
+            <Text className="text-zinc-400">08h:00</Text>
+          </View>
+        </View>
+
+
+  <View className="rounded-lg p-4 mt-2 mx-auto">
+          <Text className="text-xl font-bold text-black">Novos Artigos</Text>
+          <ScrollView horizontal={true}>
+            <View className="flex-row justify-center items-center bg-green-400/15 mt-4 p-5 rounded-3xl  h-[16rem] w-80 me-3 relative">
+              <Text className="text-3xl  text-zinc-600 font-light text-wrap text-center">
+                Como lidar com os efeitos colaterais durate a quimioterapia?
+              </Text>
+
+              <Text className="text-black font-light bg-white rounded-2xl px-4 py-2 absolute bottom-3 right-3">
+                Ler
+              </Text>
+            </View>
+            <View className="flex-row justify-center items-center bg-green-400/15 mt-4 p-5 rounded-3xl  h-[16rem] w-80 me-3 relative">
+              <Text className="text-3xl  text-zinc-600 font-light text-wrap text-center">
+                Como lidar com os efeitos colaterais durate a quimioterapia?
+              </Text>
+
+              <Text className="text-black font-light bg-white rounded-2xl px-4 py-2 absolute bottom-3 right-3">
+                Ler
+              </Text>
+            </View>
+            <View className="flex-row justify-center items-center bg-green-400/15 mt-4 p-5 rounded-3xl  h-[16rem] w-80 me-3 relative">
+              <Text className="text-3xl  text-zinc-600 font-light text-wrap text-center">
+                Como lidar com os efeitos colaterais durate a quimioterapia?
+              </Text>
+
+              <Text className="text-black font-light bg-white rounded-2xl px-4 py-2 absolute bottom-3 right-3">
+                Ler
+              </Text>
+            </View>
+            <View className="flex-row justify-center items-center bg-green-400/15 mt-4 p-5 rounded-3xl  h-[16rem] w-80 me-3 relative">
+              <Text className="text-3xl  text-zinc-600 font-light text-wrap text-center">
+                Como lidar com os efeitos colaterais durate a quimioterapia?
+              </Text>
+
+              <Text className="text-black font-light bg-white rounded-2xl px-4 py-2 absolute bottom-3 right-3">
+                Ler
+              </Text>
+            </View>
+          </ScrollView>
+        </View>
+        <View className="rounded-lg p-4 mt-2 mx-auto">
+          <Text className="text-xl font-bold text-black">Novas Dicas</Text>
+          <ScrollView horizontal={true}>
+            <View className="flex-row justify-center items-center bg-zinc-400/15 mt-4 p-5 rounded-3xl  h-[16rem] w-80 me-3 relative">
+              <Text className="text-3xl  text-zinc-600 font-light text-wrap text-center">
+                VIDEO
+              </Text>
+              <View className="text-black font-light bg-zinc-300/35 rounded-2xl px-4 py-2 absolute top-2 right-3">
+                <Icon name="expand-outline" color={"black"} size={25}></Icon>
+              </View>
+            </View>
+            <View className="flex-row justify-center items-center bg-zinc-400/15 mt-4 p-5 rounded-3xl  h-[16rem] w-80 me-3 relative">
+              <Text className="text-3xl  text-zinc-600 font-light text-wrap text-center">
+                VIDEO
+              </Text>
+              <View className="text-black font-light bg-zinc-300/35 rounded-2xl px-4 py-2 absolute top-2 right-3">
+                <Icon name="expand-outline" color={"black"} size={25}></Icon>
+              </View>
+            </View>
+            <View className="flex-row justify-center items-center bg-zinc-400/15 mt-4 p-5 rounded-3xl  h-[16rem] w-80 me-3 relative">
+              <Text className="text-3xl  text-zinc-600 font-light text-wrap text-center">
+                VIDEO
+              </Text>
+              <View className="text-black font-light bg-zinc-300/35 rounded-2xl px-4 py-2 absolute top-2 right-3">
+                <Icon name="expand-outline" color={"black"} size={25}></Icon>
+              </View>
+            </View>
+            <View className="flex-row justify-center items-center bg-zinc-400/15 mt-4 p-5 rounded-3xl  h-[16rem] w-80 me-3 relative">
+              <Text className="text-3xl  text-zinc-600 font-light text-wrap text-center">
+                VIDEO
+              </Text>
+
+              <View className="text-black font-light bg-zinc-300/35 rounded-2xl px-4 py-2 absolute top-2 right-3">
+                <Icon name="expand-outline" color={"black"} size={25}></Icon>
+              </View>
+            </View>
+          </ScrollView>
+        </View>
+        <View className="rounded-lg p-4 mt-2 mx-auto">
+          <Text className="text-xl font-bold text-black">Grupo de Apoio</Text>
+          <ScrollView horizontal={true} className="gap-2 pt-3">
+            <View className="flex-col justify-strecth items-center gap-1 relative bg-zinc-200/25 rounded-xl w-20 h-24 me-4">
+              <View className="bg-green-500 absolute top-0 right-0 rounded-xl h-2 w-2"></View>
+              <Image
+                style={{
+                  width: 50,
+                  height: 50,
+                  borderRadius: 50,
+                  alignContent: "center",
+                  // borderWidth: 2,
+                  // borderColor: "#fff",
+                  marginTop: 10,
+                  backgroundColor: "#ccc",
+                }}
+                source={require("../../assets/user.png")}
+              />
+              <Text className="text-black font-semibold text-lg mt-1">
+                Mário
+              </Text>
+            </View>
+            <View className="flex-col justify-strecth items-center gap-1 relative bg-zinc-200/25 rounded-xl w-20 h-24 me-4">
+              <View className="bg-green-500 absolute top-0 right-0 rounded-xl h-2 w-2"></View>
+              <Image
+                style={{
+                  width: 50,
+                  height: 50,
+                  borderRadius: 50,
+                  alignContent: "center",
+                  // borderWidth: 2,
+                  // borderColor: "#fff",
+                  marginTop: 10,
+                  backgroundColor: "#ccc",
+                }}
+                source={require("../../assets/user.png")}
+              />
+              <Text className="text-black font-semibold text-lg mt-1">
+                Joaquina
+              </Text>
+            </View>
+            <View className="flex-col justify-strecth items-center gap-1 relative bg-zinc-200/25 rounded-xl w-20 h-24 me-4">
+              <View className="bg-green-500 absolute top-0 right-0 rounded-xl h-2 w-2"></View>
+              <Image
+                style={{
+                  width: 50,
+                  height: 50,
+                  borderRadius: 50,
+                  alignContent: "center",
+                  // borderWidth: 2,
+                  // borderColor: "#fff",
+                  marginTop: 10,
+                  backgroundColor: "#ccc",
+                }}
+                source={require("../../assets/user.png")}
+              />
+              <Text className="text-black font-semibold text-lg mt-1">
+                Estefânia
+              </Text>
+            </View>
+
+            <View className="flex-1 justify-center items-center gap-1 relative bg-zinc-200/25 rounded-xl w-20 h-24 me-4">
+              <Text className="text-black font-semibold text-lg mt-1">5+</Text>
+            </View>
+          </ScrollView>
+
+          <View className="flex-row justify-between items-center my-4">
+            <Text className="text-xl font-semibold text-zinc-400">
+              Posts recentes
+            </Text>
+            <Text className="text-sm font-bold text-blue-400">Ver Todos</Text>
+          </View>
+          <ScrollView horizontal={true}>
+            <View className="h-72 w-96 me-3">
+              <View className="border-2 border-zinc-200 rounded-2xl p-4">
+                <View className="flex-row justify-between items-center">
+                  <Text className="font-bold text-black text-base">
+                    Mário Norberto
+                  </Text>
+                  <Text className="font-semibold text-zinc-300 text-sm">
+                    1d Atrás
+                  </Text>
+                </View>
+                <Text className="text-xl font-semibold text-black mt-4 text-justify">
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                  Voluptate, distinctio? Voluptate, distinctio? Voluptate,
+                  Voluptate, distinctio? Voluptate, distinctio? Voluptate,
+                  Voluptate, distinctio? Voluptate
+                </Text>
+              </View>
+            </View>
+            <View className="h-72 w-96 me-3">
+              <View className="border-2 border-zinc-200 rounded-2xl p-4">
+                <View className="flex-row justify-between items-center">
+                  <Text className="font-bold text-black text-base">
+                    Mário Norberto
+                  </Text>
+                  <Text className="font-semibold text-zinc-300 text-sm">
+                    1d Atrás
+                  </Text>
+                </View>
+                <Text className="text-xl font-semibold text-black mt-4 text-justify">
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                  Voluptate, distinctio? Voluptate, distinctio? Voluptate,
+                  Voluptate, distinctio? Voluptate, distinctio? Voluptate,
+                  Voluptate, distinctio? Voluptate
+                </Text>
+              </View>
+            </View>
+            <View className="h-72 w-96 me-3">
+              <View className="border-2 border-zinc-200 rounded-2xl p-4">
+                <View className="flex-row justify-between items-center">
+                  <Text className="font-bold text-black text-base">
+                    Mário Norberto
+                  </Text>
+                  <Text className="font-semibold text-zinc-300 text-sm">
+                    1d Atrás
+                  </Text>
+                </View>
+                <Text className="text-xl font-semibold text-black mt-4 text-justify">
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                  Voluptate, distinctio? Voluptate, distinctio? Voluptate,
+                  Voluptate, distinctio? Voluptate, distinctio? Voluptate,
+                  Voluptate, distinctio? Voluptate
+                </Text>
+              </View>
+            </View>
+          </ScrollView>
+
+          <View className="flex-row justify-between items-center bg-green-400/15  p-4 rounded-lg">
+            <View className="flex-row justify-between items-center gap-4">
+              <Image
+                style={{
+                  width: 30,
+                  height: 30,
+                  borderRadius: 50,
+                  alignContent: "center",
+                  borderWidth: 2,
+                  borderColor: "#fff",
+                  backgroundColor: "#ccc",
+                }}
+                source={require("../../assets/whatsapp-icon.png")}
+              ></Image>
+              <Text className="text-lg font-semibold text-black">
+                Ir Comunidade Do whatsapp
+              </Text>
+            </View>
+            <Icon
+              style={{ alignSelf: "flex-end" }}
+              name="chevron-forward-outline"
+              color={"#999"}
+              size={30}
+            ></Icon>
+          </View>
+        </View>
+ <View className="flex-row justify-between items-strect bg-zinc-200/20 mt-2 p-4 rounded-lg">
+          <View className="flex-row justify-between items-center gap-4 ">
+            <View className="rounded-lg bg-zinc-300/50 w-12 h-12 flex-1 justify-center items-center">
+              <Text>
+                <Icon name="add-outline" color={"black"} size={30}></Icon>
+              </Text>
+            </View>
+            <View>
+              <Text className="text-lg font-semibold text-black">
+                Adicionar Sintoma
+              </Text>
+              <Text className="text-sm font-semibold text-zinc-300">
+                Regista um novo sintoma
+              </Text>
+            </View>
+          </View>
+          <Text className="text-[12px] text-blue-500">Ver Todos</Text>
+        </View>
+        <View className="flex-row justify-between items-strect bg-zinc-200/20 mt-2 p-4 rounded-lg">
+          <View className="flex-row justify-between items-center gap-4 ">
+            <View className="rounded-lg bg-zinc-300/50 w-12 h-12 flex-1 justify-center items-center">
+              <Icon name="add-outline" color={"#515151"} size={30}></Icon>
+            </View>
+            <View>
+              <Text className="text-lg font-semibold text-black">
+                Adicionar Remédio
+              </Text>
+              <Text className="text-sm font-semibold text-zinc-300">
+                Regista um novo remédio
+              </Text>
+            </View>
+          </View>
+          <Text className="text-[12px] text-blue-500">Ver Todos</Text>
+        </View>
+
+ <View className="flex-row justify-start items-center  mt-2 p-4 rounded-lg gap-3">
+          <View className="flex-1 justify-center items-center bg-blue-200/20 max-w-20 h-[5rem] rounded-xl">
+            <Icon
+              name="bandage-outline"
+              color={"#3b82f6"}
+              size={30}
+              style={{ fontWeight: "bold" }}
+            ></Icon>
+          </View>
+          <View>
+            <Text className="font-bold text-xl">Próximo Remédio</Text>
+            <Text className="font-semibold  text-zinc-500 text-lg">
+              Paracetamol - 500mg
+            </Text>
+            <Text className="text-zinc-400">Às 10h:30</Text>
+          </View>
+        </View>
+
+
+
+
+
+
+
+
+
+
+        import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const API_URL = 'http://localhost:3000/api/v1/quimiocare';
+
+interface LoginResponse {
+  token: string;
+  user: {
+    id: string;
+    name: string;
+    email: string;
+  };
+}
+
+export const login = async (email: string, password: string): Promise<LoginResponse> => {
+  try {
+    const response = await axios.post<LoginResponse>(`${API_URL}/users/login`, { email, password });
+
+    if (response.data.token) {
+      await AsyncStorage.setItem('token', response.data.token);
+    }
+
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || 'Erro ao fazer login';
+  }
+};
+
+export const logout = async (): Promise<void> => {
+  await AsyncStorage.removeItem('token');
+};
+
+export const isUserLoggedIn = async (): Promise<boolean> => {
+  const token = await AsyncStorage.getItem('token');
+  return token !== null;
+};
+
+
+
+
+
+
+/*********************
+
+
+
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, Alert, ActivityIndicator, StyleSheet } from 'react-native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { login } from '../services/authService';
+
+type RootStackParamList = {
+  Login: undefined;
+  Home: undefined;
+};
+
+type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
+
+const LoginScreen: React.FC<Props> = ({ navigation }) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const handleLogin = async () => {
+    if (!email || !password) {
+      Alert.alert('Erro', 'Preencha todos os campos');
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      await login(email, password);
+      Alert.alert('Sucesso', 'Login realizado com sucesso!');
+      navigation.replace('Home'); // Redireciona para outra tela após login
+    } catch (error: any) {
+      Alert.alert('Erro', error.message || 'Falha no login');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Login</Text>
+
+      <TextInput
+        placeholder="Email"
+        value={email}
+        onChangeText={setEmail}
+        keyboardType="email-address"
+        autoCapitalize="none"
+        style={styles.input}
+      />
+
+      <TextInput
+        placeholder="Senha"
+        value={password}
+        onChangeText={setPassword}
+        secureTextEntry
+        style={styles.input}
+      />
+
+      <TouchableOpacity onPress={handleLogin} style={styles.button}>
+        {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.buttonText}>Entrar</Text>}
+      </TouchableOpacity>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: { flex: 1, justifyContent: 'center', padding: 20 },
+  title: { fontSize: 24, fontWeight: 'bold', marginBottom: 20 },
+  input: { borderWidth: 1, padding: 10, marginBottom: 10, borderRadius: 5 },
+  button: { backgroundColor: 'blue', padding: 15, borderRadius: 5 },
+  buttonText: { color: '#fff', textAlign: 'center' },
+});
+
+export default LoginScreen;
+
+
+
+
+
+//// verificando se usuário está logado
+
+
+import React, { useEffect, useState } from 'react';
+import { View, ActivityIndicator } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import LoginScreen from './screens/LoginScreen';
+import HomeScreen from './screens/HomeScreen';
+import { isUserLoggedIn } from './services/authService';
+
+type RootStackParamList = {
+  Login: undefined;
+  Home: undefined;
+};
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
+
+const App: React.FC = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    const checkLoginStatus = async () => {
+      const loggedIn = await isUserLoggedIn();
+      setIsLoggedIn(loggedIn);
+    };
+
+    checkLoginStatus();
+  }, []);
+
+  if (isLoggedIn === null) {
+    return <ActivityIndicator size="large" style={{ flex: 1, justifyContent: 'center' }} />;
+  }
+
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName={isLoggedIn ? 'Home' : 'Login'}>
+        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Home" component={HomeScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
+
+export default App;
+
+
+// criando o logout
+
+
+
+import React from 'react';
+import { View, Text, TouchableOpacity, Alert, StyleSheet } from 'react-native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { logout } from '../services/authService';
+
+type RootStackParamList = {
+  Login: undefined;
+  Home: undefined;
+};
+
+type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
+
+const HomeScreen: React.FC<Props> = ({ navigation }) => {
+  const handleLogout = async () => {
+    await logout();
+    Alert.alert('Sucesso', 'Você saiu da conta!');
+    navigation.replace('Login');
+  };
+
+  return (
+    <View style={styles.container}>
+      <Text>Bem-vindo à Home</Text>
+      <TouchableOpacity onPress={handleLogout} style={styles.button}>
+        <Text style={styles.buttonText}>Sair</Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  button: { marginTop: 20, backgroundColor: 'red', padding: 10, borderRadius: 5 },
+  buttonText: { color: 'white' },
+});
+
+export default HomeScreen;
+
+
+
+
+
+Para uma aplicação de **ajuda para pacientes com câncer**, os perfis de **Usuário** e **Paciente** devem conter informações essenciais para personalizar o suporte e facilitar a comunicação entre os envolvidos.  
+
+### **📌 Perfil do Usuário (Apoiadores, Familiares, Profissionais de Saúde)**
+Este perfil pode incluir **familiares, cuidadores, médicos, psicólogos ou voluntários** que oferecem suporte ao paciente.  
+
+#### **1️⃣ Informações Básicas:**  
+- **Nome completo**  
+- **E-mail**  
+- **Telefone**  
+- **Foto de perfil**  
+- **Localização** *(cidade/país, para recomendações personalizadas)*  
+
+#### **2️⃣ Papel e Nível de Envolvimento:**  
+- **Tipo de usuário** (Familiar, Médico, Psicólogo, Voluntário, Outro)  
+- **Especialidade (se profissional de saúde)**  
+- **Vínculo com o paciente** (Parente, Amigo, Profissional, Outro)  
+
+#### **3️⃣ Preferências e Configurações:**  
+- **Preferência de notificação** (Lembretes, dicas, alertas de consultas)  
+- **Comunidades e grupos** (Telegram, WhatsApp, Facebook)  
+- **Interesses em conteúdos específicos** (Nutrição, Saúde Mental, Tratamento, Pesquisa, etc.)  
+
+---
+
+### **🎗️ Perfil do Paciente**  
+Os pacientes precisam de um perfil mais detalhado para um acompanhamento adequado.  
+
+#### **1️⃣ Informações Básicas:**  
+- **Nome completo**  
+- **Foto de perfil** *(opcional)*  
+- **Data de nascimento** *(para calcular idade e fase do tratamento)*  
+- **Sexo**  
+- **Contato de emergência** (Nome, telefone)  
+
+#### **2️⃣ Informações Médicas Importantes:**  
+- **Diagnóstico** *(Tipo de câncer, estadiamento - opcional se desejar compartilhar)*  
+- **Histórico de tratamento** *(Quimioterapia, Radioterapia, Cirurgias anteriores, Outros tratamentos)*  
+- **Alergias e restrições alimentares** *(se aplicável)*  
+- **Lista de medicamentos atuais** *(para lembrar horários e evitar interações perigosas)*  
+- **Efeitos colaterais conhecidos** *(ex.: náuseas, fadiga, dor, etc.)*  
+- **Relatórios médicos e exames (upload de PDFs ou imagens)**  
+
+#### **3️⃣ Estilo de Vida e Preferências:**  
+- **Hábitos de vida** *(exercícios, alimentação, tabagismo, consumo de álcool)*  
+- **Nível de suporte desejado** *(Emocional, Médico, Espiritual, etc.)*  
+- **Comunidade e Grupos** *(deseja participar de fóruns de apoio?)*  
+
+---
+
+### **📝 Considerações Finais**  
+Essa separação garante que **cada tipo de usuário** tenha um perfil adaptado às suas necessidades.  
+- **O usuário pode acompanhar pacientes** (caso seja familiar ou profissional de saúde).  
+- **O paciente recebe recomendações e lembretes personalizados.**  
+- **A plataforma pode conectar perfis de usuários e pacientes para suporte mútuo.**  
+
+Caso queira ajustes ou queira adicionar mais funcionalidades, me avise! 🚀

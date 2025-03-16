@@ -1,28 +1,31 @@
 import React from "react";
-
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { RootStackParamsList } from "./RootStackParamsList";
 import ScreenNames from "../constants/ScreenName";
-
 import HomeScreen from "../screens/HomeScreen";
-import settingsScreen from "../screens/settingsScreen";
 import WelcomeScreen from "../screens/WelcomeScreen";
 import LoginScreen from "../screens/LoginScreen";
 import registerScreen from "../screens/registerScreen";
 import LandingScreen from "../screens/LandingScreen";
 import ForgotPasswordScreen from "../screens/ForgotPasswordScreen";
-import MainScreen from "../screens/MainScreen";
 import TabRoutes from "./tabs.routes";
-import ProfileScreen from "../screens/ProfileScreen";
-import SettingsScreen from "../screens/settingsScreen";
-import MedicalScreen from "../screens/MedicalScreen";
 import VerificationPasswordScreen from "../screens/VerificationPasswordScreen";
 import NotificatioScreen from "../screens/NotificatioScreen";
-import CommunityScreen from "../screens/CommunityScreen";
+import PolicyScreen from "../screens/PolicyScreen";
+import TermsScreen from "../screens/TermsScreen";
+import AboutScreen from "../screens/AboutScreen";
+import FaqScreen from "../screens/FaqScreen";
+import HistoryScreen from "../screens/HistoryScreen";
+import ReportScreen from "../screens/ReportScreen";
+import BookingScreen from "../screens/BookingScreen";
+import SymptomScreen from "../screens/SymptomScreen";
+import MedicationScreen from "../screens/MedicationScreen";
+import ChooseUserScreen from "../screens/ChooseUserScreen";
+import GatherProfileFirstScreen from "../screens/GatherProfileFirstScreen";
+import GatherProfileSecondScreen from "../screens/GatherProfileSecondScreen";
 
 const StackRoutes = () => {
   const Stack = createNativeStackNavigator<RootStackParamsList>();
-
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -40,7 +43,6 @@ const StackRoutes = () => {
         component={HomeScreen}
         options={{ headerShown: false }}
       />
-
       <Stack.Screen
         name={ScreenNames.Login}
         component={LoginScreen}
@@ -64,6 +66,66 @@ const StackRoutes = () => {
       <Stack.Screen
         name={ScreenNames.VerificationPassword}
         component={VerificationPasswordScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name={ScreenNames.Policy}
+        component={PolicyScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name={ScreenNames.Terms}
+        component={TermsScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name={ScreenNames.About}
+        component={AboutScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name={ScreenNames.Faq}
+        component={FaqScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name={ScreenNames.History}
+        component={HistoryScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name={ScreenNames.Report}
+        component={ReportScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name={ScreenNames.Booking}
+        component={BookingScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name={ScreenNames.Symptom}
+        component={SymptomScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name={ScreenNames.Medication}
+        component={MedicationScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name={ScreenNames.ChooseUserScreen}
+        component={ChooseUserScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name={ScreenNames.GatherProfileFirstScreen}
+        component={GatherProfileFirstScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name={ScreenNames.GatherProfileSecondScreen}
+        component={GatherProfileSecondScreen}
         options={{ headerShown: false }}
       />
       <Stack.Screen

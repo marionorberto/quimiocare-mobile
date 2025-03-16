@@ -1,5 +1,5 @@
-import { Text, View } from "react-native";
-import React from "react";
+import { TouchableOpacity, View } from "react-native";
+import React, { ReactElement, ReactNode } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import ScreenNames from "../constants/ScreenName";
 import { BottomTabParamList } from "../constants/types";
@@ -10,12 +10,30 @@ import MedicalScreen from "../screens/MedicalScreen";
 import MainScreen from "../screens/MainScreen";
 import SettingsScreen from "../screens/settingsScreen";
 import { Image } from "expo-image";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RootStackParamsList } from "./RootStackParamsList";
+import LibraryScreen from "../screens/LibraryScreen";
 
 const Tab = createBottomTabNavigator<BottomTabParamList>();
 
-// type props = NativeStackScreenProps<RootStackParamsList, ScreenNames>;
+const ButtonSearchCostumized = ({ children }: { children: ReactElement }) => {
+  <TouchableOpacity
+    style={{
+      top: -30,
+      justifyContent: "center",
+      alignItems: "center",
+    }}
+  >
+    <View
+      style={{
+        width: 70,
+        height: 70,
+        borderRadius: 35,
+        backgroundColor: "red",
+      }}
+    >
+      {children}
+    </View>
+  </TouchableOpacity>;
+};
 
 const TabRoutes = () => {
   return (
@@ -51,6 +69,44 @@ const TabRoutes = () => {
           },
         }}
       />
+
+      {/* <Tab.Screen
+        name={ScreenNames.Main}
+        component={MainScreen}
+        options={{
+          tabBarLabel: "Search",
+          tabBarButton: (props) => <ButtonSearchCostumized {...props} />,
+
+          tabBarIcon: ({ color, size, focused }) => {
+            return focused ? (
+              <Icons name="search-sharp" color={color} size={size}></Icons>
+            ) : (
+              <Icons name="search-outline" color={color} size={size}></Icons>
+            );
+          },
+        }}
+      /> */}
+
+      <Tab.Screen
+        name={ScreenNames.Medical}
+        component={MedicalScreen}
+        options={{
+          tabBarLabel: ({ color, focused }) => {
+            return focused ? (
+              <View className="h-1 w-4 rounded-xl mt-1  bg-black"></View>
+            ) : (
+              ""
+            );
+          },
+          tabBarIcon: ({ color, size, focused }) => {
+            return focused ? (
+              <Icons name="medkit-sharp" color={color} size={size}></Icons>
+            ) : (
+              <Icons name="medkit-outline" color={color} size={size}></Icons>
+            );
+          },
+        }}
+      />
       <Tab.Screen
         name={ScreenNames.Community}
         component={CommunityScreen}
@@ -80,8 +136,8 @@ const TabRoutes = () => {
         }}
       />
       <Tab.Screen
-        name={ScreenNames.Medical}
-        component={MedicalScreen}
+        name={ScreenNames.Library}
+        component={LibraryScreen}
         options={{
           tabBarLabel: ({ color, focused }) => {
             return focused ? (
@@ -92,9 +148,9 @@ const TabRoutes = () => {
           },
           tabBarIcon: ({ color, size, focused }) => {
             return focused ? (
-              <Icons name="medkit-sharp" color={color} size={size}></Icons>
+              <Icons name="book-sharp" color={color} size={size}></Icons>
             ) : (
-              <Icons name="medkit-outline" color={color} size={size}></Icons>
+              <Icons name="book-outline" color={color} size={size}></Icons>
             );
           },
         }}
@@ -119,6 +175,7 @@ const TabRoutes = () => {
           },
         }}
       />
+
       <Tab.Screen
         name={ScreenNames.Profile}
         component={ProfileScreen}

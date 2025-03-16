@@ -4,47 +4,71 @@ import {
   TextInput,
   TouchableOpacity,
   Pressable,
+  Alert,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { RootStackParamsList } from "../navigations/RootStackParamsList";
 import ScreenNames from "../constants/ScreenName";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import Icon from "react-native-vector-icons/Ionicons";
 import Contants from "expo-constants";
 import { Image } from "expo-image";
+import { handleLogin } from "../services/authService";
 
 type props = NativeStackScreenProps<RootStackParamsList, ScreenNames>;
 
 const LoginScreen = ({ route, navigation }: props) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const Login = async () => {
+    if (!email || !password) return alert("Email e a Senha são obrigatórias!");
+
+    try {
+      await handleLogin(email, password);
+      navigation.navigate("Main", { title: "Main" });
+    } catch (error: any) {
+      if (error.data) {
+        alert(`${error.message.map((error: string) => error)}`);
+      }
+      alert(`${error.message}`);
+    }
+  };
+
   return (
     <View
       style={{ marginTop: Contants.statusBarHeight }}
       className="flex-1 justify-center items-stretch px-10 pt-6 pb-8"
     >
-      <View className="border-[1px] border-zinc-200 p-[3px] rounded-md bg-white w-10 text-center">
+      <View className="border-[1px] border-zinc-200 p-[3px] rounded-md bg-white w-8 text-center">
         <Pressable onPress={() => navigation.goBack()}>
-          <Icon name="chevron-back-outline" size={28} color={"#505050"}></Icon>
+          <Icon name="chevron-back-outline" size={22} color={"#505050"}></Icon>
         </Pressable>
       </View>
-      <Text className="text-5xl text-zinc-400 py-5">
+      <Text className="text-5xl text-zinc-900 py-5">
         Olá, Bem-vindo de volta!
       </Text>
       <View className="flex flex-col gap-2">
         <View>
-          <Text className="text-zinc-400 text-lg pb-2">Email</Text>
+          <Text className="text-zinc-700 mb-1">Email</Text>
           <TextInput
+            className="border border-zinc-300 rounded-lg px-4 py-3 mb-3"
             placeholder="Teu Email"
-            className="py-4 px-4 bg-zinc-200/50 rounded-lg placeholder:text-zinc-400"
-          ></TextInput>
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+          />
         </View>
         <View className="mt-2">
-          <Text className="text-zinc-400 pb-2">Password</Text>
+          <Text className="text-zinc-700 mb-1">Password</Text>
           <TextInput
+            className="border border-zinc-300 rounded-lg px-4 py-3"
             placeholder="Password"
-            className="py-4 px-4 bg-zinc-200/50 rounded-lg placeholder:text-zinc-400"
-          ></TextInput>
+            value={password}
+            onChangeText={setPassword}
+            keyboardType="visible-password"
+          />
         </View>
-        <View></View>
         <View>
           <Pressable
             className="flex-row justify-end items-center my-3"
@@ -57,7 +81,8 @@ const LoginScreen = ({ route, navigation }: props) => {
         </View>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate(ScreenNames.Main, { title: "MainScreen" });
+            Login();
+            // navigation.navigate("Main", { title: "ad" });
           }}
           className="text-white bg-blue-500 px-5 py-5 rounded-lg ring-1 ring-blue-400/25"
         >
@@ -67,13 +92,13 @@ const LoginScreen = ({ route, navigation }: props) => {
         </TouchableOpacity>
       </View>
       <View className="flex-1 justify-center items-stretch">
-        <Text className="text-center text-zinc-300 pb-3">Ou Entrar Com</Text>
+        <Text className="text-center text-zinc-400 pb-3">Ou Entrar Com</Text>
 
         <View className="flex-row gap-4 justify-center items-stretch mb-4 mt-1">
           <View>
             <Pressable
               onPress={() => alert("redirecionar para google provider")}
-              className="py-4 px-5 bg-zinc-200/50 rounded-lg flex-row justify-center items-center gap-2"
+              className="py-4 px-5 bg-zinc-300/50 rounded-lg flex-row justify-center items-center gap-2"
             >
               <Image
                 source={require("../../assets/icon-google.svg")}
@@ -85,7 +110,7 @@ const LoginScreen = ({ route, navigation }: props) => {
           <View>
             <Pressable
               onPress={() => alert("redirecionar para Facebook provider")}
-              className="py-4 px-5 bg-zinc-200/50 rounded-lg flex-row justify-center items-center gap-2"
+              className="py-4 px-5 bg-zinc-300/50 rounded-lg flex-row justify-center items-center gap-2"
             >
               <Icon name="logo-facebook"></Icon>
               <Text className="text-zinc-400">Facebook</Text>
@@ -93,13 +118,15 @@ const LoginScreen = ({ route, navigation }: props) => {
           </View>
         </View>
         <View className="flex-row justify-center items-center">
-          <Text className=" text-zinc-300 text-center flex-row justify-center items-center">
+          <Text className=" text-zinc-400 text-center flex-row justify-center items-center">
             Não tem uma conta?
           </Text>
           <Pressable
             className="flex-row justify-center items-center"
             onPress={() =>
-              navigation.navigate(ScreenNames.Register, { title: "Register" })
+              navigation.navigate(ScreenNames.ChooseUserScreen, {
+                title: "Choose user profile",
+              })
             }
           >
             <Text className="text-blue-400 ps-2">Registar</Text>
