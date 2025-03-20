@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -6,51 +6,52 @@ import {
   TouchableOpacity,
   TextInput,
   Pressable,
-  // Picker,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import Constants from "expo-constants";
 import { RootStackParamsList } from "../navigations/RootStackParamsList";
 import ScreenNames from "../constants/ScreenName";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import api from "../services/api";
 
 type props = NativeStackScreenProps<RootStackParamsList, ScreenNames>;
 
 const MedicationsScreen = ({ route, navigation }: props) => {
   const [medications, setMedications] = useState([
     {
-      id: 1,
-      medication: "Cisplatina",
-      sideEffect: "Náusea",
-      date: "2023-03-10",
-    },
-    {
-      id: 2,
-      medication: "Dexametasona",
-      sideEffect: "Fadiga",
-      date: "2023-03-12",
+      id: "",
+      name: "",
+      dosage: "",
+      note: "",
+      timeReminder: "",
+      createdAt: "",
     },
   ]);
 
+  const [medicationCounter, setMedicationCounter] = useState({
+    count: 0,
+  });
   const [selectedFilter, setSelectedFilter] = useState("day");
   const [newMedication, setNewMedication] = useState("");
   const [newSideEffect, setNewSideEffect] = useState("");
 
-  const handleAddMedication = () => {
-    if (newMedication && newSideEffect) {
-      setMedications([
-        ...medications,
-        {
-          id: medications.length + 1,
-          medication: newMedication,
-          sideEffect: newSideEffect,
-          date: new Date().toLocaleDateString(),
-        },
-      ]);
-      setNewMedication("");
-      setNewSideEffect("");
-    }
+  const fetchMedications = () => {
+    api
+      .get("/medications/all")
+      .then(({ data: res }) => {
+        setMedications(res.data[1]);
+        console.log(res.data[1]);
+        setMedicationCounter(res.data[0]);
+        console.log(res.data[0]);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
+
+  useEffect(() => {
+    fetchMedications();
+  }, []);
 
   return (
     <View
@@ -72,54 +73,77 @@ const MedicationsScreen = ({ route, navigation }: props) => {
         </Text>
       </View>
 
-      {/* Filtro */}
-      <View className="flex-row justify-between items-center mb-6 mt-4">
-        {/* <Picker
-          selectedValue={selectedFilter}
-          style={{ height: 50, width: 150 }}
-          onValueChange={(itemValue) => setSelectedFilter(itemValue)}
-        >
-          <Picker.Item label="Hoje" value="day" />
-          <Picker.Item label="Semana" value="week" />
-          <Picker.Item label="Mês" value="month" />
-        </Picker> */}
+      <View className="relative w-64 ms-4 mt-5">
+        <TextInput
+          placeholder="Pesquisar ..."
+          className="bg-white p-3 rounded-lg mb-4 ps-10"
+        />
+        <View className="absolute left-3 top-2">
+          <Icon name="search-outline" color={"#545454"} size={21}></Icon>
+        </View>
       </View>
-
-      {/* Lista de Remédios */}
       <ScrollView showsVerticalScrollIndicator={false}>
-        {medications.map((item) => (
-          <View
-            key={item.id}
-            className="bg-white p-4 rounded-lg mb-4 flex-row justify-between items-center"
-          >
-            <Text className="text-zinc-900">{item.medication}</Text>
-            <Text className="text-zinc-500">{item.sideEffect}</Text>
-            <Text className="text-zinc-500 text-sm">{item.date}</Text>
+        <View className="rounded-lg border-2 bg-white border-zinc-100 p-3 py-2 mx-4 w-72">
+          <View className="flex-row justify-between items-center">
+            <View className="flex-row justify-start items-center gap-2">
+              <Text>
+                <Icon name="menu-outline" color={"black"} size={24} />
+              </Text>
+              <Text className="text-black font-semibold">
+                Adicionar novo remédio
+              </Text>
+            </View>
+            <Text className="border-zinc-100 border-2 rounded-lg">
+              <Icon name="add-outline" color={"black"} size={23} />
+            </Text>
           </View>
-        ))}
+        </View>
+        <View className="mx-4 mt-4 p-3">
+          <View className="flex-row justify-between items-center mb-3">
+            <Text className="text-zinc-400 text-lg">
+              Todos Remédios(
+              {medicationCounter.count})
+            </Text>
+            <Text className="text-zinc-400 text-lg">
+              <Icon name="ellipsis-horizontal-sharp" color={"#999"} size={24} />
+            </Text>
+          </View>
+          {medicationCounter.count ? (
+            medications.map((item) => (
+              <View
+                key={item.id}
+                className="bg-blue-500/40 p-4 rounded-lg mb-4 flex-row justify-between items-stretch"
+              >
+                <View className="flex-col gap-3">
+                  <Text className="text-black font-semibold text-[13px]">
+                    Nome: {item.name}
+                  </Text>
+                  <Text className="text-zinc-700">Nota: {item.note}</Text>
+                  <Text className="text-zinc-700">dosage: {item.dosage}</Text>
+                  <Text className="text-zinc-700">
+                    Horário: {item.timeReminder}
+                  </Text>
+                </View>
+                <Text className="text-zinc-500 text-sm">
+                  {new Date(item.createdAt).toLocaleDateString()}
+                </Text>
+              </View>
+            ))
+          ) : (
+            <View className="bg-yellow-400/35 w-full p-4 rounded-lg">
+              <Text className="text-yellow-600 font-semibold text-sm text-center">
+                <Icon
+                  name="alert-circle-outline"
+                  color={"#ca8a04;"}
+                  size={24}
+                />
+                Adicione um <Text className="font-bold">remédio</Text> para
+                poder vê-los!
+              </Text>
+            </View>
+          )}
+        </View>
       </ScrollView>
-
-      {/* Adicionar Novo Medicamento */}
-      <View className="flex-row items-center bg-zinc-200 p-4 rounded-lg mt-5">
-        <TextInput
-          value={newMedication}
-          onChangeText={setNewMedication}
-          placeholder="Nome do medicamento"
-          className="flex-1 px-4 py-2 bg-white rounded-lg"
-        />
-        <TextInput
-          value={newSideEffect}
-          onChangeText={setNewSideEffect}
-          placeholder="Efeito colateral"
-          className="flex-1 px-4 py-2 bg-white rounded-lg ml-2"
-        />
-        <TouchableOpacity
-          onPress={handleAddMedication}
-          className="ml-2 bg-blue-500 p-3 rounded-lg"
-        >
-          <Icon name="add" size={24} color="white" />
-        </TouchableOpacity>
-      </View>
     </View>
   );
 };

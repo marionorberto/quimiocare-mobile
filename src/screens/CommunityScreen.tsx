@@ -78,7 +78,7 @@ const CommunityScreen = () => {
       </View>
       <View className="relative w-64 ms-4 mt-5">
         <TextInput
-          placeholder="Pesquisar na comunidade..."
+          placeholder="Pesquisar ..."
           className="bg-white p-3 rounded-lg mb-4 ps-10"
         />
         <View className="absolute left-3 top-2">
@@ -89,83 +89,165 @@ const CommunityScreen = () => {
         <Text className="text-lg font-semibold text-zinc-700 mb-2">
           Junte-se à comunidade
         </Text>
-        <View className="flex-row gap-2">
-          <TouchableOpacity
-            className="bg-green-500/80 px-2 py-2 rounded-lg flex-row items-center"
-            onPress={() => openWhatsApp()}
-          >
-            <Icon name="logo-whatsapp" size={20} color="white" />
-            <Text className="text-white ml-2">WhatsApp</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            className="bg-blue-600 px-2 py-2 rounded-lg flex-row items-center"
-            onPress={() => openFacebook()}
-          >
-            <Icon name="logo-facebook" size={20} color="white" />
-            <Text className="text-white ml-2">Facebook</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            className="bg-blue-400 px-2 py-2 rounded-lg flex-row items-center"
-            onPress={() => openTelegram()}
-          >
-            <Icon name="paper-plane-outline" size={20} color="white" />
-            <Text className="text-white ml-2">Telegram</Text>
+        <View className="flex-row gap-2 justify-start items-center pt-3">
+          <View className="flex-row gap-2 justify-start items-center pt-3">
+            <TouchableOpacity
+              className="bg-blue-500/80 px-2 py-2 rounded-lg flex-row items-center h-10"
+              onPress={() => openWhatsApp()}
+            >
+              <Icon name="logo-whatsapp" size={20} color="white" />
+            </TouchableOpacity>
+            <TouchableOpacity
+              className="bg-blue-600 px-2 py-2 rounded-lg flex-row items-center h-10"
+              onPress={() => openFacebook()}
+            >
+              <Icon name="logo-facebook" size={20} color="white" />
+            </TouchableOpacity>
+            <TouchableOpacity
+              className="bg-blue-400 px-2 py-2 rounded-lg flex-row items-center h-10"
+              onPress={() => openTelegram()}
+            >
+              <Icon name="paper-plane-outline" size={20} color="white" />
+            </TouchableOpacity>
+          </View>
+          <View className="h-11 w-[2px] bg-slate-500/30 mt-2"></View>
+          <TouchableOpacity className="px-4 bg-zinc-700 py-3 rounded-lg flex-row items-center justify-center mb-4 w-36 mx-4 mt-5">
+            <Icon name="create-outline" size={20} color="white" />
+            <Text className="text-white ml-2">Criar Postagem</Text>
           </TouchableOpacity>
         </View>
       </View>
 
-      <TouchableOpacity className="bg-zinc-900 py-3 rounded-lg flex-row items-center justify-center mb-4 w-48 mx-4 mt-4">
-        <Icon name="create-outline" size={20} color="white" />
-        <Text className="text-white ml-2">Criar uma Postagem</Text>
-      </TouchableOpacity>
-
       <ScrollView showsVerticalScrollIndicator={false}>
         <View className="mx-4 pb-40">
-          <Text className="text-lg font-semibold text-zinc-700 mb-2">
-            Últimos Posts
-          </Text>
-          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-            {posts.map((post) => (
-              <TouchableOpacity key={post.id} className="mb-4">
-                <Image
-                  source={require("../../assets/user.png")}
-                  className="w-full h-40 rounded-lg"
-                />
-                <Text className="mt-2 text-zinc-800 font-medium">
-                  {post.title}
+          <View className="mt-5 px-4">
+            <View className="flex-row justify-between items-center">
+              <Text className="text-zinc-900">Posts Recentes</Text>
+              <Text
+                className="text-zinc-400"
+                onPress={() => alert("definir menu opcoes e integrar")}
+              >
+                <Icon name="ellipsis-horizontal-sharp" />
+              </Text>
+            </View>
+            <ScrollView
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+            >
+              <View className="flex-row justify-center items-center bg-blue-400/15 mt-4 p-5 rounded-3xl  h-[16rem] w-80 me-3 relative">
+                <Text className="text-3xl  text-zinc-600 font-light text-wrap text-center">
+                  Como lidar com os efeitos colaterais durate a quimioterapia?
                 </Text>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
-          {/* 🔹 Vídeos Recomendados */}
-          <Text className="text-lg font-semibold text-zinc-700 mt-4 mb-2">
-            Vídeos Recomendados
-          </Text>
-          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-            {videos.map((video) => (
-              <TouchableOpacity key={video.id} className="mb-4">
-                <Image
-                  source={require("../../assets/user.png")}
-                  className="w-full h-40 rounded-lg"
-                />
-                <Text className="mt-2 text-zinc-800 font-medium">
-                  {video.title}
+
+                <Text className="text-black font-light bg-white rounded-2xl px-4 py-2 absolute bottom-3 right-3">
+                  Ler
                 </Text>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
+              </View>
+              <View className="flex-row justify-center items-center bg-blue-400/15 mt-4 p-5 rounded-3xl  h-[16rem] w-80 me-3 relative">
+                <Text className="text-3xl  text-zinc-600 font-light text-wrap text-center">
+                  Meu prazer sexual reduziu depois da primeira quimio
+                </Text>
+
+                <Text className="text-black font-light bg-white rounded-2xl px-4 py-2 absolute bottom-3 right-3">
+                  Ler
+                </Text>
+              </View>
+              <View className="flex-row justify-center items-center bg-blue-400/15 mt-4 p-5 rounded-3xl  h-[16rem] w-80 me-3 relative">
+                <Text className="text-3xl  text-zinc-600 font-light text-wrap text-center">
+                  Meus cabelos cairam e a minha alto estima baixou!
+                </Text>
+
+                <Text className="text-black font-light bg-white rounded-2xl px-4 py-2 absolute bottom-3 right-3">
+                  Ler
+                </Text>
+              </View>
+              <View className="flex-row justify-center items-center bg-blue-400/15 mt-4 p-5 rounded-3xl  h-[16rem] w-80 me-3 relative">
+                <Text className="text-3xl  text-zinc-600 font-light text-wrap text-center">
+                  Estou com crises de pânicos, oque faço?
+                </Text>
+
+                <Text className="text-black font-light bg-white rounded-2xl px-4 py-2 absolute bottom-3 right-3">
+                  Ler
+                </Text>
+              </View>
+            </ScrollView>
+          </View>
+          <View className="mt-5 px-4">
+            <View className="flex-row justify-between items-center">
+              <Text className="text-zinc-900">Video Recomendados</Text>
+              <Text
+                className="text-zinc-400"
+                onPress={() => alert("definir menu opcoes e integrar")}
+              >
+                <Icon name="ellipsis-horizontal-sharp" />
+              </Text>
+            </View>
+            <ScrollView
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+            >
+              <View className="flex-row justify-center items-center bg-blue-400/15 mt-4 p-5 rounded-3xl  h-[16rem] w-80 me-3 relative">
+                <Text className="text-3xl  text-zinc-600 font-light text-wrap text-center">
+                  VIDEO
+                </Text>
+
+                <Text className="text-black font-light bg-white rounded-2xl px-4 py-2 absolute bottom-3 right-3">
+                  <Icon name="expand-outline"></Icon>
+                </Text>
+              </View>
+              <View className="flex-row justify-center items-center bg-blue-400/15 mt-4 p-5 rounded-3xl  h-[16rem] w-80 me-3 relative">
+                <Text className="text-3xl  text-zinc-600 font-light text-wrap text-center">
+                  VIDEO
+                </Text>
+
+                <Text className="text-black font-light bg-white rounded-2xl px-4 py-2 absolute bottom-3 right-3">
+                  <Icon name="expand-outline"></Icon>
+                </Text>
+              </View>
+              <View className="flex-row justify-center items-center bg-blue-400/15 mt-4 p-5 rounded-3xl  h-[16rem] w-80 me-3 relative">
+                <Text className="text-3xl  text-zinc-600 font-light text-wrap text-center">
+                  VIDEO
+                </Text>
+
+                <Text className="text-black font-light bg-white rounded-2xl px-4 py-2 absolute bottom-3 right-3">
+                  <Icon name="expand-outine"></Icon>
+                </Text>
+              </View>
+              <View className="flex-row justify-center items-center bg-blue-400/15 mt-4 p-5 rounded-3xl  h-[16rem] w-80 me-3 relative">
+                <Text className="text-3xl  text-zinc-600 font-light text-wrap text-center">
+                  VIDEO
+                </Text>
+
+                <Text className="text-black font-light bg-white rounded-2xl px-4 py-2 absolute bottom-3 right-3">
+                  <Icon name="expand-outine"></Icon>
+                </Text>
+              </View>
+            </ScrollView>
+          </View>
 
           {/* 🔹 Seção de Perguntas e Respostas */}
           <Text className="text-lg font-semibold text-zinc-700 mt-4 mb-2">
             Perguntas e Respostas
           </Text>
-          <TouchableOpacity className="bg-zinc-200 p-4 rounded-lg mb-2">
+          <TouchableOpacity className="bg-zinc-200 p-4 rounded-lg mb-3">
             <Text className="text-zinc-800 font-medium">
               "Quais são os melhores alimentos para reforçar a imunidade?"
             </Text>
             <Text className="text-zinc-500 text-sm mt-1">5 respostas</Text>
           </TouchableOpacity>
-          <TouchableOpacity className="bg-zinc-200 p-4 rounded-lg mb-2">
+          <TouchableOpacity className="bg-zinc-200 p-4 rounded-lg mb-3">
+            <Text className="text-zinc-800 font-medium">
+              "É normal sentir fraqueza depois da quimio?"
+            </Text>
+            <Text className="text-zinc-500 text-sm mt-1">8 respostas</Text>
+          </TouchableOpacity>
+          <TouchableOpacity className="bg-zinc-200 p-4 rounded-lg mb-3">
+            <Text className="text-zinc-800 font-medium">
+              "É normal sentir fraqueza depois da quimio?"
+            </Text>
+            <Text className="text-zinc-500 text-sm mt-1">8 respostas</Text>
+          </TouchableOpacity>
+          <TouchableOpacity className="bg-zinc-200 p-4 rounded-lg mb-3">
             <Text className="text-zinc-800 font-medium">
               "É normal sentir fraqueza depois da quimio?"
             </Text>

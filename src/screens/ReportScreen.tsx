@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Image,
   Pressable,
+  TextInput,
 } from "react-native";
 import * as DocumentPicker from "expo-document-picker";
 import Icon from "react-native-vector-icons/Ionicons";
@@ -17,17 +18,10 @@ import ScreenNames from "../constants/ScreenName";
 type props = NativeStackScreenProps<RootStackParamsList, ScreenNames>;
 
 const ReportsScreen = ({ route, navigation }: props) => {
-  const [reports, setReports] = useState([
-    { id: 1, name: "Exames_Sangue.pdf", type: "pdf" },
-    {
-      id: 2,
-      name: "Radiografia_Torax.jpg",
-      type: "image",
-      uri: "https://via.placeholder.com/100",
-    },
-    { id: 3, name: "Diagnostico.docx", type: "word" },
-    { id: 4, name: "Planilha_Dados.xlsx", type: "excel" },
-  ]);
+  const [report, setReports] = useState([{ id: "", name: "", type: "" }]);
+  const [reportCounter, setReportCount] = useState({
+    count: 0,
+  });
 
   type fileIconsType = {
     pdf: string;
@@ -70,10 +64,6 @@ const ReportsScreen = ({ route, navigation }: props) => {
   //   }
   // };
 
-  const handleDelete = (id: number) => {
-    setReports(reports.filter((report) => report.id !== id));
-  };
-
   type ReportType = string[];
 
   return (
@@ -94,59 +84,69 @@ const ReportsScreen = ({ route, navigation }: props) => {
         </Text>
       </View>
 
-      <View className="mt-6 px-4">
-        {/* Botão de Upload */}
-        <TouchableOpacity
-          // onPress={handleUpload}
-          onPress={() => alert("make upload function works")}
-          className="bg-black flex-row items-center justify-center py-3 rounded-lg mb-4"
-        >
-          <Icon name="cloud-upload-outline" size={22} color="white" />
-          <Text className="text-white font-medium ml-2">Fazer Upload</Text>
-        </TouchableOpacity>
-
-        {/* Lista de Relatórios */}
-        <ScrollView showsVerticalScrollIndicator={false}>
-          {reports.map((report) => (
-            <View
-              key={report.id}
-              className="flex-row justify-between items-center bg-zinc-100 p-4 rounded-lg mb-3"
-            >
-              {/* Ícone e Nome do Arquivo */}
-              <View className="flex-row items-center">
-                {report.type === "image" ? (
-                  <Image
-                    source={{ uri: report.uri }}
-                    className="w-12 h-12 rounded-md mr-3"
-                  />
-                ) : (
-                  <Icon
-                    // name={fileIcons[report.type]}
-                    name="home-outline"
-                    size={28}
-                    color="#2563EB"
-                    className="mr-3"
-                  />
-                )}
-                <Text className="text-zinc-900 font-medium">{report.name}</Text>
-              </View>
-
-              {/* Ações */}
-              <View className="flex-row">
-                <TouchableOpacity
-                  onPress={() => console.log("Abrir:", report.name)}
-                  className="mr-3"
-                >
-                  <Icon name="eye-outline" size={22} color="#545454" />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => handleDelete(report.id)}>
-                  <Icon name="trash-outline" size={22} color="red" />
-                </TouchableOpacity>
-              </View>
-            </View>
-          ))}
-        </ScrollView>
+      <View className="relative w-64 ms-4 mt-5">
+        <TextInput
+          placeholder="Pesquisar ..."
+          className="bg-white p-3 rounded-lg mb-4 ps-10"
+        />
+        <View className="absolute left-3 top-2">
+          <Icon name="search-outline" color={"#545454"} size={21}></Icon>
+        </View>
       </View>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View className="rounded-lg border-2 bg-white border-zinc-100 p-3 py-2 mx-4 w-72">
+          <View className="flex-row justify-between items-center">
+            <View className="flex-row justify-start items-center gap-2">
+              <Text>
+                <Icon name="menu-outline" color={"black"} size={24} />
+              </Text>
+              <Text className="text-black font-semibold">
+                Adicionar novo relatório
+              </Text>
+            </View>
+            <Text className="border-zinc-100 border-2 rounded-lg">
+              <Icon name="add-outline" color={"black"} size={23} />
+            </Text>
+          </View>
+        </View>
+        <View className="mx-4 mt-4 p-3">
+          <View className="flex-row justify-between items-center mb-3">
+            <Text className="text-zinc-400 text-lg">
+              Todos Selatórios(
+              {reportCounter.count})
+            </Text>
+            <Text className="text-zinc-400 text-lg">
+              <Icon name="ellipsis-horizontal-sharp" color={"#999"} size={24} />
+            </Text>
+          </View>
+          {reportCounter.count ? (
+            report.map((item) => (
+              <View
+                key={item.id}
+                className="bg-zinc-50/40 p-4 rounded-lg mb-4 flex-row justify-between items-stretch"
+              >
+                <View className="flex-col gap-3">
+                  <Text className="text-black font-semibold text-[13px]">
+                    Nome: {item.name}
+                  </Text>
+                </View>
+              </View>
+            ))
+          ) : (
+            <View className="bg-yellow-400/35 w-full p-4 rounded-lg">
+              <Text className="text-yellow-600 font-semibold text-sm text-center flex-row justify-center items-center gap-3">
+                <Icon
+                  name="alert-circle-outline"
+                  color={"#ca8a04;"}
+                  size={24}
+                />
+                Adicione um <Text className="font-bold">relatórios</Text> para
+                poder vê-los!
+              </Text>
+            </View>
+          )}
+        </View>
+      </ScrollView>
     </View>
   );
 };

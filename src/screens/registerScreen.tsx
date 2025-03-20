@@ -19,14 +19,16 @@ import { handleRegister } from "../services/authService";
 type props = NativeStackScreenProps<RootStackParamsList, ScreenNames.Register>;
 
 const RegisterScreen = ({ route, navigation }: props) => {
-  const [isChecked, setChecked] = useState(false);
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [agreed, setAgreed] = useState(false);
+
   const { userType } = route.params;
 
   const register = async () => {
+    if (!agreed) return;
     if (!firstname || !lastname || !email || !password) {
       alert("Todos os campos são obrigatórios");
       return;
@@ -35,8 +37,10 @@ const RegisterScreen = ({ route, navigation }: props) => {
       await handleRegister(firstname, lastname, email, password, userType);
       navigation.navigate("GatherProfileFirstScreen", { title: "Login" });
     } catch (error: any) {
-      alert("Ocorreu algum erro tentando registar, tente novamente!");
-      console.log(error);
+      if (error.data) {
+        alert(`${error.message.map((error: string) => error)}`);
+      }
+      alert(`${error.message}`);
     }
   };
 
@@ -100,13 +104,12 @@ const RegisterScreen = ({ route, navigation }: props) => {
           <View className="py-4 flex-row justify-center items-stretch gap-2 ms-2">
             {/* <Checkbox style={styles.checkbox} value={} onValueChange={setChecked} /> */}
             <CheckBox
-              value={isChecked}
-              onValueChange={setChecked}
+              value={agreed}
+              onValueChange={setAgreed}
               className="pt-1 ms-2"
             />
             <Text className="text-zinc-400 pb-2 ">
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-              Iste{" "}
+              Concordo com todos os termos de uso
             </Text>
           </View>
           <TouchableOpacity
@@ -114,7 +117,7 @@ const RegisterScreen = ({ route, navigation }: props) => {
               register();
               // navigation.navigate("GatherProfileFirstScreen", { title: "" });
             }}
-            className="text-white bg-blue-500 px-5 py-5 rounded-lg ring-1 ring-blue-400/25"
+            className={`text-white ${agreed ? "bg-blue-500" : "bg-zinc-300"} px-5 py-5 rounded-lg ring-1 ring-blue-400/25`}
           >
             <Text className="text-white text-center font-semibold text-lg">
               Registrar

@@ -1,42 +1,40 @@
-import React, { useState } from "react";
-import {
-  View,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-  TextInput,
-  Pressable,
-} from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, Text, ScrollView, TextInput, Pressable } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import Constants from "expo-constants";
 import { RootStackParamsList } from "../navigations/RootStackParamsList";
 import ScreenNames from "../constants/ScreenName";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import api from "../services/api";
 
 type props = NativeStackScreenProps<RootStackParamsList, ScreenNames>;
 
 const SymptomsScreen = ({ route, navigation }: props) => {
   const [symptoms, setSymptoms] = useState([
-    { id: 1, symptom: "Náusea", date: "2023-03-10" },
-    { id: 2, symptom: "Fadiga", date: "2023-03-11" },
+    { id: "", name: "", description: "", severity: 0, createdAt: "" },
   ]);
+  const [symptomsCounter, setSymptomCounter] = useState({ count: 0 });
 
   const [selectedFilter, setSelectedFilter] = useState("day");
   const [newSymptom, setNewSymptom] = useState("");
 
-  const handleAddSymptom = () => {
-    if (newSymptom) {
-      setSymptoms([
-        ...symptoms,
-        {
-          id: symptoms.length + 1,
-          symptom: newSymptom,
-          date: new Date().toLocaleDateString(),
-        },
-      ]);
-      setNewSymptom("");
-    }
+  const fetchSymptom = () => {
+    api
+      .get("/symptoms/all")
+      .then(({ data: res }) => {
+        setSymptoms(res.data[1]);
+        console.log(res.data[1]);
+        setSymptomCounter(res.data[0]);
+        console.log(res.data[0]);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
+
+  useEffect(() => {
+    fetchSymptom();
+  }, []);
 
   return (
     <View
@@ -58,8 +56,89 @@ const SymptomsScreen = ({ route, navigation }: props) => {
         </Text>
       </View>
 
-      {/* Filtro */}
-      {/* <View className="flex-row justify-between items-center mb-6">
+      <View className="relative w-64 ms-4 mt-5">
+        <TextInput
+          placeholder="Pesquisar ..."
+          className="bg-white p-3 rounded-lg mb-4 ps-10"
+        />
+        <View className="absolute left-3 top-2">
+          <Icon name="search-outline" color={"#545454"} size={21}></Icon>
+        </View>
+      </View>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View className="rounded-lg border-2 bg-white border-zinc-100 p-3 py-2 mx-4 w-72">
+          <View className="flex-row justify-between items-center">
+            <View className="flex-row justify-start items-center gap-2">
+              <Text>
+                <Icon name="menu-outline" color={"black"} size={24} />
+              </Text>
+              <Text className="text-black font-semibold">
+                Adicionar novo sintoma
+              </Text>
+            </View>
+            <Text className="border-zinc-100 border-2 rounded-lg">
+              <Icon name="add-outline" color={"black"} size={23} />
+            </Text>
+          </View>
+        </View>
+        <View className="mx-4 mt-4 p-3">
+          <View className="flex-row justify-between items-center mb-3">
+            <Text className="text-zinc-400 text-lg">
+              Todos Sintomas(
+              {symptomsCounter.count})
+            </Text>
+            <Text className="text-zinc-400 text-lg">
+              <Icon name="ellipsis-horizontal-sharp" color={"#999"} size={24} />
+            </Text>
+          </View>
+          {symptomsCounter.count ? (
+            symptoms.map((item) => (
+              <View
+                key={item.id}
+                className="bg-blue-500/40 p-4 rounded-lg mb-4 flex-row justify-between items-stretch"
+              >
+                <View className="flex-col gap-3">
+                  <Text className="text-black font-semibold text-[13px]">
+                    Nome: {item.name}
+                  </Text>
+                  <Text className="text-zinc-700">
+                    Descrição: {item.description}
+                  </Text>
+                  <Text className="text-zinc-700">
+                    Severidade: {item.severity}
+                  </Text>
+                </View>
+                <Text className="text-zinc-500 text-sm">
+                  {new Date(item.createdAt).toLocaleDateString()}
+                </Text>
+              </View>
+            ))
+          ) : (
+            <View className="bg-yellow-400/35 w-full p-4 rounded-lg">
+              <Text className="text-yellow-600 font-semibold text-sm text-center">
+                <Icon
+                  name="alert-circle-outline"
+                  color={"#ca8a04;"}
+                  size={24}
+                />
+                Adicione um <Text className="font-bold">sintomas</Text> para
+                poder vê-los!
+              </Text>
+            </View>
+          )}
+        </View>
+      </ScrollView>
+    </View>
+  );
+};
+
+export default SymptomsScreen;
+
+{
+  /* Filtro */
+}
+{
+  /* <View className="flex-row justify-between items-center mb-6">
         <Picker
           selectedValue={selectedFilter}
           style={{ height: 50, width: 150 }}
@@ -69,38 +148,5 @@ const SymptomsScreen = ({ route, navigation }: props) => {
           <Picker.Item label="Semana" value="week" />
           <Picker.Item label="Mês" value="month" />
         </Picker> 
-      </View> */}
-
-      {/* Lista de Sintomas */}
-      <ScrollView showsVerticalScrollIndicator={false}>
-        {symptoms.map((item) => (
-          <View
-            key={item.id}
-            className="bg-zinc-100 p-4 rounded-lg mb-4 flex-row justify-between items-center"
-          >
-            <Text className="text-zinc-900">{item.symptom}</Text>
-            <Text className="text-zinc-500 text-sm">{item.date}</Text>
-          </View>
-        ))}
-      </ScrollView>
-
-      {/* Adicionar Sintoma */}
-      <View className="flex-row items-center bg-zinc-200 p-4 rounded-lg">
-        <TextInput
-          value={newSymptom}
-          onChangeText={setNewSymptom}
-          placeholder="Adicionar novo sintoma..."
-          className="flex-1 px-4 py-2 bg-white rounded-lg"
-        />
-        <TouchableOpacity
-          onPress={handleAddSymptom}
-          className="ml-2 bg-blue-500 p-3 rounded-lg"
-        >
-          <Icon name="add" size={24} color="white" />
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
-};
-
-export default SymptomsScreen;
+      </View> */
+}

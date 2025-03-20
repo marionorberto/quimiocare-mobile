@@ -48,7 +48,7 @@ const ProfileScreen = ({ route, navigation }: props) => {
     bio: "",
     address: "",
     country_name: "",
-    phone: "",
+    phoneNumber: "",
     created_at: "",
     updated_at: "",
     url_img: "",
@@ -56,7 +56,14 @@ const ProfileScreen = ({ route, navigation }: props) => {
     userId: "",
     job: "",
     user_profile_id: "",
-    tags: [],
+    tags: [
+      {
+        id: "",
+        description: "",
+        createdAt: "",
+        updatedAt: "",
+      },
+    ],
   });
   const [medicalData, setMedicalData] = useState({
     bloodGroup: "",
@@ -72,6 +79,49 @@ const ProfileScreen = ({ route, navigation }: props) => {
     weight: "",
   });
 
+  const [symptomsCounter, setSymptomCounter] = useState({ count: 0 });
+
+  const [medicationCounter, setMedicationCounter] = useState({
+    count: 0,
+  });
+
+  const [appointmentCounter, setAppontmentCounter] = useState({ count: 0 });
+
+  const fetchSymptom = () => {
+    api
+      .get("/symptoms/all")
+      .then(({ data: res }) => {
+        setSymptomCounter(res.data[0]);
+        console.log(res.data[0]);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const fetchAppointment = () => {
+    api
+      .get("/appointments/all")
+      .then(({ data: res }) => {
+        setAppontmentCounter(res.data[0]);
+        console.log("apsso", res.data[0]);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  const fetchMedications = () => {
+    api
+      .get("/medications/all")
+      .then(({ data: res }) => {
+        setMedicationCounter(res.data[0]);
+        console.log(res.data[0]);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   const handleSave = (updatedData: any) => {
     setUserData(updatedData);
   };
@@ -80,6 +130,9 @@ const ProfileScreen = ({ route, navigation }: props) => {
     fetchUserData();
     fetchProfileData();
     fetchMedicalData();
+    fetchSymptom();
+    fetchMedications();
+    fetchAppointment();
   }, []);
 
   const fetchUserData = () => {
@@ -182,15 +235,19 @@ const ProfileScreen = ({ route, navigation }: props) => {
 
             <View className=" w-full border-y-2 border-zinc-300 flex-row justify-around items-center py-4 mt-5">
               <View>
-                <Text className="font-bold text-lg text-center">0</Text>
+                <Text className="font-bold text-lg text-center">
+                  {medicationCounter.count}
+                </Text>
                 <Text className="text-zinc-300 text-center text-sm">
                   Consultas
                 </Text>
               </View>
               <View>
-                <Text className="font-bold text-lg text-center">0</Text>
+                <Text className="font-bold text-lg text-center">
+                  {symptomsCounter.count}
+                </Text>
                 <Text className="text-zinc-300 text-center text-sm">
-                  Remédios
+                  Sintomas
                 </Text>
               </View>
             </View>
@@ -272,7 +329,7 @@ const ProfileScreen = ({ route, navigation }: props) => {
                 <Text className="text-base text-zinc-400">Telefone</Text>
                 {profileData ? (
                   <Text className="text-base text-zinc-800">
-                    {profileData.phone}
+                    {profileData.phoneNumber}
                   </Text>
                 ) : (
                   <Text>--</Text>
@@ -402,7 +459,13 @@ const ProfileScreen = ({ route, navigation }: props) => {
               <View>
                 <Text className="text-base text-zinc-400">Cancer</Text>
                 <Text className="text-base font-semibold py-2 px-3 rounded-lg bg-blue-300/20 text-blue-400">
-                  ---
+                  {profileData ? (
+                    <Text className="text-base font-semibold py-2 px-3 rounded-lg bg-blue-300/20 text-blue-400">
+                      {profileData.tags[0].description}
+                    </Text>
+                  ) : (
+                    <Text>--</Text>
+                  )}
                 </Text>
               </View>
             </View>

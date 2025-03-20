@@ -70,23 +70,6 @@ const TabRoutes = () => {
         }}
       />
 
-      {/* <Tab.Screen
-        name={ScreenNames.Main}
-        component={MainScreen}
-        options={{
-          tabBarLabel: "Search",
-          tabBarButton: (props) => <ButtonSearchCostumized {...props} />,
-
-          tabBarIcon: ({ color, size, focused }) => {
-            return focused ? (
-              <Icons name="search-sharp" color={color} size={size}></Icons>
-            ) : (
-              <Icons name="search-outline" color={color} size={size}></Icons>
-            );
-          },
-        }}
-      /> */}
-
       <Tab.Screen
         name={ScreenNames.Medical}
         component={MedicalScreen}

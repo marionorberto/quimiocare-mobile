@@ -28,6 +28,14 @@ const GatherProfileFirstScreen = ({ route, navigation }: props) => {
   const [codHospital, setCodHospital] = useState<string>("");
   const [targetSupport, setTargetSupport] = useState<string>("");
 
+  const hospitals = [
+    "Intituto IACC",
+    "Hospital Américo Boa Vida",
+    "Lucréci Paim",
+    "Instituto - IPO PORTO(Lubango)",
+    "Clínica Sagrada Esperança",
+    "Clínica Girassol",
+  ];
   const supportWishLevel = ["EMOCIONAL", "MEDICO", "ESPIRITUAL"];
   const stageList = [
     "estágio 0",
@@ -65,7 +73,7 @@ const GatherProfileFirstScreen = ({ route, navigation }: props) => {
       className="flex-col justify-center items-stretch w-full pt-8 pb-14"
     >
       <View className="flex-row justify-start items-center gap-10 px-4">
-        <View className="border-[1px] border-zinc-200 p-[3px] rounded-md bg-white">
+        {/* <View className="border-[1px] border-zinc-200 p-[3px] rounded-md bg-white">
           <Pressable onPress={() => navigation.goBack()}>
             <Icon
               name="chevron-back-outline"
@@ -73,8 +81,8 @@ const GatherProfileFirstScreen = ({ route, navigation }: props) => {
               color={"#505050"}
             ></Icon>
           </Pressable>
-        </View>
-        <Text className="text-xl self-center text-center text-black font-bold">
+        </View> */}
+        <Text className="ps-8 text-xl self-center text-center text-black font-bold">
           Informações Médicas
         </Text>
       </View>
@@ -162,12 +170,17 @@ const GatherProfileFirstScreen = ({ route, navigation }: props) => {
             </View>
             <View className="mt-1">
               <Text className="text-zinc-700 mb-1">Hospital de tratamento</Text>
-              <TextInput
-                placeholder="ex. Centro Oncológico!"
+              <Picker
+                style={{ color: "#999" }}
+                selectedValue={hospital}
+                onValueChange={(itemValue) => setHospital(itemValue)}
                 className="border border-zinc-300 rounded-lg px-4 py-3"
-                value={hospital}
-                onChangeText={setHospital}
-              />
+              >
+                <Picker.Item label="Selecione o desejado" value="" />
+                {hospitals.map((type) => (
+                  <Picker.Item key={type} label={type} value={type} />
+                ))}
+              </Picker>
             </View>
 
             <TouchableOpacity

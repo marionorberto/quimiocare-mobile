@@ -14,10 +14,7 @@ const WelcomeScreen = ({ route, navigation }: props) => {
   const navigationScreen = useNavigation();
 
   return (
-    <View
-      style={styles.container}
-      className="bg-blue-500 h-full w-full relative"
-    >
+    <View style={styles.container} className="bg-white h-full w-full relative">
       {/* <LinearGradient colors={["#48c6ef", "#6f86d6"]} /> */}
       <Image
         contentFit="cover"
@@ -26,7 +23,7 @@ const WelcomeScreen = ({ route, navigation }: props) => {
         style={{ width: 350, height: 280 }}
       />
 
-      <View className="rounded-t-[2rem] p-3 absolute bottom-0 right-0 left-0 h-40 bg-white">
+      <View className="rounded-t-[2rem] p-3 absolute bottom-0 right-0 left-0 h-40 bg-transparent">
         <TouchableOpacity
           className="px-9 py-6 mt-10 rounded-xl flex gap-1 items-center bg-blue-500"
           onPress={() =>

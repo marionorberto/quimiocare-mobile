@@ -24,6 +24,7 @@ import DateTimePicker, {
 } from "@react-native-community/datetimepicker";
 import { createPersonalInformations } from "../services/personalInformationService";
 import axios from "axios";
+import api from "../services/api";
 
 type props = NativeStackScreenProps<RootStackParamsList, ScreenNames>;
 
@@ -108,7 +109,6 @@ const GatherProfileFirstScreen = ({ route, navigation }: props) => {
       !countryName ||
       !job ||
       !urlImg ||
-      !phoneNumber ||
       !address ||
       !tag
     )
@@ -137,9 +137,7 @@ const GatherProfileFirstScreen = ({ route, navigation }: props) => {
   useEffect(() => {
     const fetchCancerTypes = async () => {
       try {
-        const { data: response } = await axios.get(
-          "http://192.168.71.1:3000/api/v1/quimiocare/cancer-types/all"
-        );
+        const { data: response } = await api.get("/cancer-types/all");
         setCancerTypes(response.data[1]);
       } catch (error: any) {
         console.error("Erro ao buscar os tipos de câncer:", error);
@@ -155,16 +153,16 @@ const GatherProfileFirstScreen = ({ route, navigation }: props) => {
       className="flex-col justify-center items-stretch w-full pt-8 pb-14"
     >
       <View className="flex-row justify-start items-center gap-10 px-4">
-        <View className="border-[1px] border-zinc-200 p-[3px] rounded-md bg-white">
-          <Pressable onPress={() => navigation.goBack()}>
+        {/* <View className="border-[1px] border-zinc-200 p-[3px] rounded-md bg-white">
+          <Pressable onPress={() => navigation.}>
             <Icon
               name="chevron-back-outline"
               size={20}
               color={"#505050"}
             ></Icon>
           </Pressable>
-        </View>
-        <Text className="text-xl self-center text-center text-black font-bold">
+        </View> */}
+        <Text className=" ps-5 text-xl self-center text-center text-black font-bold">
           Informações Pessoais
         </Text>
       </View>
@@ -190,9 +188,7 @@ const GatherProfileFirstScreen = ({ route, navigation }: props) => {
               />
             </View>
             <View className="mt-1">
-              <Text className="text-zinc-700 mb-1">
-                Endereco(País/Província/Município)
-              </Text>
+              <Text className="text-zinc-700 mb-1">Morada</Text>
               <TextInput
                 className="border border-zinc-300 rounded-lg px-4 py-3"
                 placeholder="Endereço"

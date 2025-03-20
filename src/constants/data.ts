@@ -81,7 +81,7 @@ export const moodDayFeeling: MoodDayFeelingType[]=  [
   {
     emoji: "☺️",
     description: "Muito Bem",
-  },
+  },                                                                                                                                                                                                                                                                                                                                                                                      
 ];
 
-export const API_URL = 'http://192.168.233.1:3000/api/v1/quimiocare';
+export const API_URL = 'http://192.168.177.1:3000/api/v1/quimiocare';

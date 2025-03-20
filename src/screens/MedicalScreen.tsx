@@ -20,6 +20,12 @@ import DateTimePicker, {
   DateTimePickerEvent,
 } from "@react-native-community/datetimepicker";
 import api from "../services/api";
+import {
+  handleSaveAppointment,
+  handleSaveMedication,
+  handleSaveSymptom,
+} from "../services/mainService";
+import { Picker } from "@react-native-picker/picker";
 
 type props = NativeStackScreenProps<RootStackParamsList, ScreenNames>;
 
@@ -28,7 +34,8 @@ const MedicalScreen = ({ route, navigation }: props) => {
   const handlePress = () => setExpanded(!expanded);
   const [openModalAddMedication, setOpenModalAddMedication] = useState(false);
   const [openModalAddSymptom, setOpenModalAddSymptom] = useState(false);
-  const [symptom, setSymptom] = useState("");
+  const [openModalAddAppointment, setOpenModalAddAppointment] = useState(false);
+  const [name, setName] = useState("");
   const [severity, setSeverity] = useState(0);
   const [description, setDescription] = useState("");
   const [medicationName, setMedicationName] = useState("");
@@ -36,6 +43,26 @@ const MedicalScreen = ({ route, navigation }: props) => {
   const [notes, setNotes] = useState("");
   const [reminderTime, setReminderTime] = useState(new Date());
   const [showTimePicker, setShowTimePicker] = useState(false);
+  const [showTimePickerAppointment, setShowTimePickerAppointment] =
+    useState(false);
+  const [nameAppointment, setNameAppointment] = useState("");
+  const [descriptionAppointment, setDescriptionAppointment] = useState("");
+  const [dateAppointment, setDateAppointment] = useState(new Date());
+  const [type, setType] = useState("");
+  const [noteAppointment, setNoteAppointment] = useState("");
+  const appointments = [
+    "Consulta Médica Geral",
+    "Consulta Oncológica",
+    "Consulta Psicológica",
+    "Consulta Nutricional",
+    "Consulta de Radioterapia",
+    "Consulta de Quimioterapia",
+    "Consulta de Exames",
+    "Consulta Paliativa",
+    "Consulta Cirúrgica",
+    "Consulta de Fisioterapia",
+  ];
+
   const data = {
     labels: ["Out", "Dez", "Jan", "Fev", "Mar"],
     datasets: [
@@ -58,8 +85,76 @@ const MedicalScreen = ({ route, navigation }: props) => {
     barPercentage: 0.5,
     useShadowColorFromDataset: false,
   };
-
   const moodFeeling = moodDayFeeling;
+
+  const onSaveMedication = async () => {
+    if (!medicationName || !dosage || !reminderTime) {
+      alert("Todos os campos não opcionais são obrigatórios!");
+      return;
+    }
+    try {
+      await handleSaveMedication(medicationName, dosage, notes, reminderTime);
+      alert("Medicação cadastrada com sucesso!");
+    } catch (error: any) {
+      if (error.data) {
+        alert(`${error.message.map((error: string) => error)}`);
+      }
+      alert(`${error.message}`);
+    }
+  };
+  const handleTimeChange = (
+    event: DateTimePickerEvent,
+    date: Date | undefined
+  ) => {
+    if (date) {
+      setReminderTime(date);
+    }
+    setShowTimePicker(false);
+  };
+
+  const onSaveSymptoms = async () => {
+    if (!name || !severity || !description) {
+      alert("Todos os campos são obrigatórios");
+      return;
+    }
+    try {
+      await handleSaveSymptom(name, severity, description);
+      alert("Sintoma cadastrado com sucesso!");
+    } catch (error: any) {
+      if (error.data) {
+        alert(`${error.message.map((error: string) => error)}`);
+      }
+      alert(`${error.message}`);
+    }
+  };
+
+  const onSaveAppointment = async () => {
+    if (
+      !nameAppointment ||
+      !descriptionAppointment ||
+      !dateAppointment ||
+      !type ||
+      !noteAppointment
+    ) {
+      alert("Todos os campos são obrigatórios");
+      return;
+    }
+    try {
+      await handleSaveAppointment(
+        nameAppointment,
+        descriptionAppointment,
+        dateAppointment,
+        type,
+        noteAppointment
+      );
+      alert("Consulta cadastrado com sucesso!");
+    } catch (error: any) {
+      if (error.data) {
+        alert(`${error.message.map((error: string) => error)}`);
+      }
+      alert(`${error.message}`);
+    }
+  };
 
   const setDate = (event: DateTimePickerEvent, date: Date) => {
     const {
@@ -270,8 +365,8 @@ const MedicalScreen = ({ route, navigation }: props) => {
                     <TextInput
                       className="border border-zinc-300 rounded-lg px-4 py-2 mb-3"
                       placeholder="Ex: Náusea, Fadiga..."
-                      value={symptom}
-                      onChangeText={setSymptom}
+                      value={name}
+                      onChangeText={setName}
                     />
                     <Text className="text-zinc-700 mb-1">Descrição</Text>
                     <TextInput
@@ -299,7 +394,7 @@ const MedicalScreen = ({ route, navigation }: props) => {
                     <TouchableOpacity
                       className="bg-blue-500 rounded-lg py-3 mt-2 flex-row items-center justify-center"
                       onPress={() => {
-                        onSaveSymptoms({ symptom, severity, description });
+                        onSaveSymptoms();
                         setOpenModalAddSymptom(false);
                       }}
                     >
@@ -381,12 +476,12 @@ const MedicalScreen = ({ route, navigation }: props) => {
                       className="border border-zinc-300 rounded-lg px-4 py-3 flex-row items-center justify-between mb-3"
                       onPress={() => setShowTimePicker(true)}
                     >
-                      <Text className="text-zinc-700">
-                        {reminderTime.toLocaleTimeString([], {
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        })}
+                      <Text>
+                        {reminderTime
+                          ? reminderTime.toLocaleTimeString()
+                          : "selecionar time"}
                       </Text>
+
                       <Icon name="time-outline" size={20} color="#3B82F6" />
                     </TouchableOpacity>
 
@@ -394,23 +489,16 @@ const MedicalScreen = ({ route, navigation }: props) => {
                       <DateTimePicker
                         value={reminderTime}
                         mode="time"
-                        display="default"
-                        onChange={(event, selectedTime) => {
-                          setShowTimePicker(false);
-                          if (selectedTime) setReminderTime(selectedTime);
-                        }}
+                        display="spinner"
+                        is24Hour={true}
+                        onChange={handleTimeChange}
                       />
                     )}
+
                     <TouchableOpacity
                       className="bg-blue-500 rounded-lg py-3 mt-2 flex-row items-center justify-center"
                       onPress={() => {
-                        onSaveMedication({
-                          medicationName,
-                          dosage,
-                          notes,
-                          reminderTime,
-                        });
-
+                        onSaveMedication();
                         setOpenModalAddMedication(false);
                       }}
                     >
@@ -422,6 +510,120 @@ const MedicalScreen = ({ route, navigation }: props) => {
                       />
                       <Text className="text-white text-center font-semibold">
                         Salvar Medicamento
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                </Modal>
+              </View>
+            </Pressable>
+
+            <Pressable
+              onPress={() => {
+                setOpenModalAddAppointment(true);
+              }}
+            >
+              <View className="rounded-lg border-2 border-zinc-300 p-4 mx-2 mt-3">
+                <View className="flex-row justify-between items-center">
+                  <View className="flex-row justify-start items-center gap-2">
+                    <Text>
+                      <Icon name="menu-outline" color={"black"} size={24} />
+                    </Text>
+                    <Text className="text-black font-semibold">
+                      Adicionar Consulta
+                    </Text>
+                  </View>
+                  <Text className="border-zinc-100 border-2 rounded-lg">
+                    <Icon name="add-outline" color={"black"} size={23} />
+                  </Text>
+                </View>
+                <Modal isOpen={openModalAddAppointment} withInput={false}>
+                  <View className="p-6 bg-white rounded-2xl w-full max-w-md shadow-lg">
+                    <View className="flex-row justify-between items-center mb-4">
+                      <Text className="text-lg font-semibold text-zinc-900">
+                        Adicionar Consulta
+                      </Text>
+                      <TouchableOpacity
+                        onPress={() => {
+                          setOpenModalAddAppointment(false);
+                        }}
+                      >
+                        <Icon name="close" size={24} color="#4A4A4A" />
+                      </TouchableOpacity>
+                    </View>
+                    <Text className="text-zinc-700 mb-1">Nome da consulta</Text>
+                    <TextInput
+                      className="border border-zinc-300 rounded-lg px-4 py-2 mb-3"
+                      placeholder="Nome"
+                      value={nameAppointment}
+                      onChangeText={setNameAppointment}
+                    />
+                    <Text className="text-zinc-700 mb-1">Descrição</Text>
+                    <TextInput
+                      className="border border-zinc-300 rounded-lg px-4 py-2 mb-3"
+                      placeholder="Descrição"
+                      value={descriptionAppointment}
+                      onChangeText={setDescriptionAppointment}
+                    />
+                    <Text className="text-zinc-700 mb-1">Data da Consulta</Text>
+
+                    <TouchableOpacity
+                      className="border border-zinc-300 rounded-lg px-4 py-3 flex-row items-center justify-between mb-3"
+                      onPress={() => setShowTimePicker(true)}
+                    >
+                      <Text>
+                        {dateAppointment
+                          ? dateAppointment.toLocaleString()
+                          : "selecionar data"}
+                      </Text>
+
+                      <Icon name="time-outline" size={20} color="#3B82F6" />
+                    </TouchableOpacity>
+
+                    <Text className="text-zinc-700 mb-1">Tipo de consulta</Text>
+
+                    <Picker
+                      className="border border-zinc-300 rounded-lg px-4 py-3"
+                      style={{ color: "#999" }}
+                      selectedValue={type}
+                      onValueChange={(item) => setType(item)}
+                    >
+                      <Picker.Item label="Selecione" value="" />
+                      {appointments.map((item) => (
+                        <Picker.Item key={item} label={item} value={item} />
+                      ))}
+                    </Picker>
+
+                    {showTimePickerAppointment && (
+                      <DateTimePicker
+                        value={dateAppointment}
+                        mode="datetime"
+                        display="spinner"
+                        onChange={handleTimeChange}
+                      />
+                    )}
+                    <Text className="text-zinc-700 mb-1">Nota</Text>
+                    <TextInput
+                      className="border border-zinc-300 rounded-lg px-4 py-2 mb-3"
+                      placeholder="Nota..."
+                      value={noteAppointment}
+                      onChangeText={setNoteAppointment}
+                    />
+
+                    <TouchableOpacity
+                      className="bg-blue-500 rounded-lg py-3 mt-2 flex-row items-center justify-center"
+                      onPress={() => {
+                        onSaveAppointment();
+                        setOpenModalAddAppointment(false);
+                      }}
+                    >
+                      <Icon
+                        name="save"
+                        size={20}
+                        color="white"
+                        className="mr-2"
+                      />
+                      <Text className="text-white text-center font-semibold">
+                        Salvar Consulta
                       </Text>
                     </TouchableOpacity>
                   </View>
@@ -512,43 +714,6 @@ const MedicalScreen = ({ route, navigation }: props) => {
       </ScrollView>
     </View>
   );
-};
-
-const onSaveSymptoms = ({
-  symptom,
-  severity,
-  description,
-}: {
-  symptom: string;
-  severity: number;
-  description: string;
-}) => {
-  console.log({ symptom, severity, description });
-};
-
-const onSaveMedication = ({
-  medicationName,
-  dosage,
-  notes,
-  reminderTime,
-}: {
-  medicationName: string;
-  dosage: string;
-  notes: string;
-  reminderTime: Date;
-}) => {
-  api
-    .post("/medications/create/medication", {
-      name: medicationName,
-      dosage,
-      note: notes,
-      reminder_time: reminderTime.toString(),
-    })
-    .then((res) => {
-      console.log(res.data);
-      alert("Sintoma cadastrado com sucesso!");
-    })
-    .catch((error) => alert(error.message));
 };
 
 export default MedicalScreen;

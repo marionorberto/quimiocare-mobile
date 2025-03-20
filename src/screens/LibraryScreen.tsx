@@ -7,6 +7,8 @@ import {
   Image,
   TextInput,
   Pressable,
+  ImageBackground,
+  SafeAreaView,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
@@ -57,7 +59,7 @@ const LibraryScreen = () => {
   return (
     <View
       style={{ marginTop: Constants.statusBarHeight }}
-      className="flex-col justify-center items-stretch w-full pt-8 pb-40"
+      className="flex-col justify-center items-stretch w-full pt-8 pb-28"
     >
       <View className="flex-row justify-start items-center gap-10 px-4">
         <View className="border-[1px] border-zinc-200 p-[3px] rounded-md bg-white">
@@ -76,19 +78,19 @@ const LibraryScreen = () => {
 
       <View className="relative w-64 ms-4 my-4">
         <TextInput
-          placeholder="Pesquisar na comunidade..."
+          placeholder="Pesquisar..."
           className="bg-white p-3 rounded-lg mb-4 ps-10"
         />
         <View className="absolute left-3 top-2">
           <Icon name="search-outline" color={"#545454"} size={21} />
         </View>
       </View>
-      <View className="px-4 mt-0 mb-5">
+      {/* <View className="px-4 mt-0 mb-5">
         <TouchableOpacity className="bg-zinc-900 py-3 rounded-lg flex-row items-center justify-center mb-4 mt-5 mx-4">
           <Icon name="cloud-upload-outline" size={20} color="white" />
           <Text className="text-white ml-2">Fazer Upload de Artigo</Text>
         </TouchableOpacity>
-      </View>
+      </View> */}
 
       <ScrollView showsVerticalScrollIndicator={false}>
         <View className="px-8">
@@ -96,49 +98,141 @@ const LibraryScreen = () => {
             Livros Recomendados
           </Text>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-            {books.map((book) => (
-              <TouchableOpacity key={book.id} className="mb-4 me-5">
-                <Image
-                  source={require("../../assets/user.png")}
-                  className="w-full h-40 rounded-lg"
-                />
-                <Text className="mt-2 text-zinc-800 font-medium">
-                  {book.title}
-                </Text>
-              </TouchableOpacity>
-            ))}
+            <View className="flex-row justify-center items-center bg-green-400/15 mt-4 p-5 rounded-3xl  h-[16rem] w-80 me-3 relative">
+              <Text className="text-3xl  text-zinc-600 font-light text-wrap text-center">
+                Como lidar com os efeitos colaterais durate a quimioterapia?
+              </Text>
+
+              <Text className="text-black font-light bg-white rounded-2xl px-4 py-2 absolute bottom-3 right-3">
+                Ler
+              </Text>
+            </View>
+            <View className="flex-row justify-center items-center bg-green-400/15 mt-4 p-5 rounded-3xl  h-[16rem] w-80 me-3 relative">
+              <Text className="text-3xl  text-zinc-600 font-light text-wrap text-center">
+                Como lidar com os efeitos colaterais durate a quimioterapia?
+              </Text>
+
+              <Text className="text-black font-light bg-white rounded-2xl px-4 py-2 absolute bottom-3 right-3">
+                Ler
+              </Text>
+            </View>
+            <View className="flex-row justify-center items-center bg-green-400/15 mt-4 p-5 rounded-3xl  h-[16rem] w-80 me-3 relative">
+              <Text className="text-3xl  text-zinc-600 font-light text-wrap text-center">
+                Como lidar com os efeitos colaterais durate a quimioterapia?
+              </Text>
+
+              <Text className="text-black font-light bg-white rounded-2xl px-4 py-2 absolute bottom-3 right-3">
+                Ler
+              </Text>
+            </View>
+            <View className="flex-row justify-center items-center bg-green-400/15 mt-4 p-5 rounded-3xl  h-[16rem] w-80 me-3 relative">
+              <Text className="text-3xl  text-zinc-600 font-light text-wrap text-center">
+                Como lidar com os efeitos colaterais durate a quimioterapia?
+              </Text>
+
+              <Text className="text-black font-light bg-white rounded-2xl px-4 py-2 absolute bottom-3 right-3">
+                Ler
+              </Text>
+            </View>
           </ScrollView>
+          {/* <ScrollView
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            className="w-full"
+          >
+            <SafeAreaView>
+              <TouchableOpacity className="mb-4 w-80 me-4 h-80 bg-black rounded-3xl">
+                <ImageBackground
+                  source={require("../../assets/test.jpeg")}
+                  resizeMode="cover"
+                >
+                  <Text>Inside</Text>
+                </ImageBackground>
+              </TouchableOpacity>
+            </SafeAreaView>
+            <TouchableOpacity className="mb-4 w-80 me-4 h-80 bg-black rounded-3xl"></TouchableOpacity>
+          </ScrollView> */}
           <Text className="text-lg font-semibold text-zinc-700 mt-4 mb-2">
             Artigos Populares
           </Text>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-            {articles.map((article) => (
-              <TouchableOpacity key={article.id} className="mb-4">
-                <Image
-                  source={require("../../assets/user.png")}
-                  className="w-full h-40 rounded-lg"
-                />
-                <Text className="mt-2 text-zinc-800 font-medium">
-                  {article.title}
-                </Text>
-              </TouchableOpacity>
-            ))}
+            <View className="flex-row justify-center items-center bg-green-400/15 mt-4 p-5 rounded-3xl  h-[16rem] w-80 me-3 relative">
+              <Text className="text-3xl  text-zinc-600 font-light text-wrap text-center">
+                Como lidar com os efeitos colaterais durate a quimioterapia?
+              </Text>
+
+              <Text className="text-black font-light bg-white rounded-2xl px-4 py-2 absolute bottom-3 right-3">
+                Ler
+              </Text>
+            </View>
+            <View className="flex-row justify-center items-center bg-green-400/15 mt-4 p-5 rounded-3xl  h-[16rem] w-80 me-3 relative">
+              <Text className="text-3xl  text-zinc-600 font-light text-wrap text-center">
+                Como lidar com os efeitos colaterais durate a quimioterapia?
+              </Text>
+
+              <Text className="text-black font-light bg-white rounded-2xl px-4 py-2 absolute bottom-3 right-3">
+                Ler
+              </Text>
+            </View>
+            <View className="flex-row justify-center items-center bg-green-400/15 mt-4 p-5 rounded-3xl  h-[16rem] w-80 me-3 relative">
+              <Text className="text-3xl  text-zinc-600 font-light text-wrap text-center">
+                Como lidar com os efeitos colaterais durate a quimioterapia?
+              </Text>
+
+              <Text className="text-black font-light bg-white rounded-2xl px-4 py-2 absolute bottom-3 right-3">
+                Ler
+              </Text>
+            </View>
+            <View className="flex-row justify-center items-center bg-green-400/15 mt-4 p-5 rounded-3xl  h-[16rem] w-80 me-3 relative">
+              <Text className="text-3xl  text-zinc-600 font-light text-wrap text-center">
+                Como lidar com os efeitos colaterais durate a quimioterapia?
+              </Text>
+
+              <Text className="text-black font-light bg-white rounded-2xl px-4 py-2 absolute bottom-3 right-3">
+                Ler
+              </Text>
+            </View>
           </ScrollView>
           <Text className="text-lg font-semibold text-zinc-700 mt-4 mb-2">
             Canais do YouTube
           </Text>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-            {youtubeChannels.map((channel) => (
-              <TouchableOpacity key={channel.id} className="mb-4">
-                <Image
-                  source={require("../../assets/user.png")}
-                  className="w-full h-40 rounded-lg"
-                />
-                <Text className="mt-2 text-zinc-800 font-medium">
-                  {channel.title}
-                </Text>
-              </TouchableOpacity>
-            ))}
+            <View className="flex-row justify-center items-center bg-green-400/15 mt-4 p-5 rounded-3xl  h-[16rem] w-80 me-3 relative">
+              <Text className="text-3xl  text-zinc-600 font-light text-wrap text-center">
+                Como lidar com os efeitos colaterais durate a quimioterapia?
+              </Text>
+
+              <Text className="text-black font-light bg-white rounded-2xl px-4 py-2 absolute bottom-3 right-3">
+                Ler
+              </Text>
+            </View>
+            <View className="flex-row justify-center items-center bg-green-400/15 mt-4 p-5 rounded-3xl  h-[16rem] w-80 me-3 relative">
+              <Text className="text-3xl  text-zinc-600 font-light text-wrap text-center">
+                Como lidar com os efeitos colaterais durate a quimioterapia?
+              </Text>
+
+              <Text className="text-black font-light bg-white rounded-2xl px-4 py-2 absolute bottom-3 right-3">
+                Ler
+              </Text>
+            </View>
+            <View className="flex-row justify-center items-center bg-green-400/15 mt-4 p-5 rounded-3xl  h-[16rem] w-80 me-3 relative">
+              <Text className="text-3xl  text-zinc-600 font-light text-wrap text-center">
+                Como lidar com os efeitos colaterais durate a quimioterapia?
+              </Text>
+
+              <Text className="text-black font-light bg-white rounded-2xl px-4 py-2 absolute bottom-3 right-3">
+                Ler
+              </Text>
+            </View>
+            <View className="flex-row justify-center items-center bg-green-400/15 mt-4 p-5 rounded-3xl  h-[16rem] w-80 me-3 relative">
+              <Text className="text-3xl  text-zinc-600 font-light text-wrap text-center">
+                Como lidar com os efeitos colaterais durate a quimioterapia?
+              </Text>
+
+              <Text className="text-black font-light bg-white rounded-2xl px-4 py-2 absolute bottom-3 right-3">
+                Ler
+              </Text>
+            </View>
           </ScrollView>
         </View>
       </ScrollView>
