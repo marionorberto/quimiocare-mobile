@@ -32,7 +32,7 @@ const VerificationPasswordScreen = ({ route, navigation }: props) => {
             ></Icon>
           </Pressable>
         </View>
-        <Text className="text-5xl text-zinc-400 py-5">
+        <Text className="text-3xl text-black py-5 mb-4">
           Introduza o código de verificação!
         </Text>
         <View className="flex flex-col gap-2">
@@ -62,7 +62,9 @@ const VerificationPasswordScreen = ({ route, navigation }: props) => {
           </View>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate(ScreenNames.Main, { title: "Main" });
+              navigation.navigate(ScreenNames.RedefinePasswordScreen, {
+                title: "Main",
+              });
             }}
             className="text-white bg-blue-500 px-5 py-5 rounded-lg ring-1 ring-blue-400/25 mb-4"
           >

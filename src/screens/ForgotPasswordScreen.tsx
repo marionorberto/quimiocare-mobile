@@ -26,9 +26,7 @@ const ForgotPasswordScreen = ({ route, navigation }: props) => {
           <Icon name="chevron-back-outline" size={28} color={"#505050"}></Icon>
         </Pressable>
       </View>
-      <Text className="text-3xl text-zinc-400 mt-6">
-        Recupere a sua password!
-      </Text>
+      <Text className="text-3xl text-black mt-6">Recupere a sua password!</Text>
       <View className="flex flex-col gap-2 mt-4">
         <View>
           <Text className="text-zinc-400 text-lg pb-2">Email</Text>

@@ -20,6 +20,7 @@ type props = NativeStackScreenProps<RootStackParamsList, ScreenNames>;
 const LoginScreen = ({ route, navigation }: props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isVisiblePassword, setIsVisiblePassword] = useState(false);
 
   const Login = async () => {
     if (!email || !password) return alert("Email e a Senha são obrigatórias!");
@@ -61,13 +62,26 @@ const LoginScreen = ({ route, navigation }: props) => {
         </View>
         <View className="mt-2">
           <Text className="text-zinc-700 mb-1">Password</Text>
-          <TextInput
-            className="border border-zinc-300 rounded-lg px-4 py-3"
-            placeholder="Password"
-            value={password}
-            onChangeText={setPassword}
-            keyboardType="visible-password"
-          />
+          <View className="relative">
+            <TextInput
+              className="border border-zinc-300 rounded-lg px-4 py-3"
+              placeholder="Password"
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry={isVisiblePassword}
+              // keyboardType="visible-password"
+            />
+
+            <Icon
+              onPress={() => {
+                setIsVisiblePassword(!isVisiblePassword);
+              }}
+              name="eye-off-outline"
+              color={"black"}
+              size={22}
+              className="absolute right-4 top-3"
+            />
+          </View>
         </View>
         <View>
           <Pressable

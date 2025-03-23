@@ -19,10 +19,10 @@ const RedefineScreenPassword = ({ route, navigation }: props) => {
   return (
     <View
       style={{ marginTop: Contants.statusBarHeight }}
-      className="flex-1 justify-center items-stretch px-10 pt-6 pb-8"
+      className="flex-col justify-center items-stretch px-10  pb-8 pt-14"
     >
-      <Text className="text-5xl text-zinc-900 py-5">
-        Redifina a sua Password!
+      <Text className="text-3xl text-zinc-900 pb-5">
+        Redefina a sua Password!
       </Text>
       <View className="flex flex-col gap-2">
         <View className="mt-2">
@@ -39,7 +39,7 @@ const RedefineScreenPassword = ({ route, navigation }: props) => {
           <Text className="text-zinc-700 mb-1">Repete a Password</Text>
           <TextInput
             className="border border-zinc-300 rounded-lg px-4 py-3"
-            placeholder="Password"
+            placeholder="Repete Password"
             value={passwordRepeat}
             onChangeText={setPasswordRepeat}
             keyboardType="visible-password"
@@ -50,7 +50,7 @@ const RedefineScreenPassword = ({ route, navigation }: props) => {
           onPress={() => {
             handleRedefine();
           }}
-          className="text-white bg-blue-500 px-5 py-5 rounded-lg ring-1 ring-blue-400/25"
+          className="text-white bg-blue-500 px-5 py-5 rounded-lg ring-1 ring-blue-400/25 mt-2"
         >
           <Text className="text-white text-center font-semibold text-lg">
             Redefinir
