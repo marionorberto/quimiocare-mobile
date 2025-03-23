@@ -333,13 +333,13 @@ const MedicalScreen = ({ route, navigation }: props) => {
                 setOpenModalAddSymptom(true);
               }}
             >
-              <View className="rounded-lg border-2 border-zinc-300 p-4 mx-2">
+              <View className="rounded-lg  p-4  py-6 mx-2 bg-blue-400/10">
                 <View className="flex-row justify-between items-center">
                   <View className="flex-row justify-start items-center gap-2">
-                    <Text>
+                    <Text className="rounded-lg bg-white p-2">
                       <Icon name="menu-outline" color={"black"} size={24} />
                     </Text>
-                    <Text className="text-black font-semibold">
+                    <Text className="text-black font-semibold text-xl">
                       Adicionar novo sintoma
                     </Text>
                   </View>
@@ -350,7 +350,7 @@ const MedicalScreen = ({ route, navigation }: props) => {
                 <Modal isOpen={openModalAddSymptom} withInput={false}>
                   <View className="p-6 bg-white rounded-2xl w-full max-w-md shadow-lg">
                     <View className="flex-row justify-between items-center mb-4">
-                      <Text className="text-lg font-semibold text-zinc-900">
+                      <Text className="text-lg font-bold text-black ">
                         Adicionar Sintoma
                       </Text>
                       <TouchableOpacity

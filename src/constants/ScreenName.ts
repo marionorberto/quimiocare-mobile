@@ -26,6 +26,7 @@ enum ScreenNames {
   ChooseUserScreen = "ChooseUserScreen",
   GatherProfileFirstScreen = "GatherProfileFirstScreen",
   GatherProfileSecondScreen = "GatherProfileSecondScreen",
+  RedefinePasswordScreen = "RedefinePasswordScreen",
 }
 
 export default ScreenNames;

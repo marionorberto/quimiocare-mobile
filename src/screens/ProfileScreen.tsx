@@ -92,7 +92,7 @@ const ProfileScreen = ({ route, navigation }: props) => {
       .get("/symptoms/all")
       .then(({ data: res }) => {
         setSymptomCounter(res.data[0]);
-        console.log(res.data[0]);
+        // console.log(res.data[0]);
       })
       .catch((error) => {
         console.log(error);
@@ -104,7 +104,7 @@ const ProfileScreen = ({ route, navigation }: props) => {
       .get("/appointments/all")
       .then(({ data: res }) => {
         setAppontmentCounter(res.data[0]);
-        console.log("apsso", res.data[0]);
+        // console.log("apsso", res.data[0]);
       })
       .catch((error) => {
         console.log(error);
@@ -115,15 +115,11 @@ const ProfileScreen = ({ route, navigation }: props) => {
       .get("/medications/all")
       .then(({ data: res }) => {
         setMedicationCounter(res.data[0]);
-        console.log(res.data[0]);
+        // console.log(res.data[0]);
       })
       .catch((error) => {
         console.log(error);
       });
-  };
-
-  const handleSave = (updatedData: any) => {
-    setUserData(updatedData);
   };
 
   useEffect(() => {
@@ -292,8 +288,8 @@ const ProfileScreen = ({ route, navigation }: props) => {
             <EditPersonalInformationModal
               isVisible={editUserInfoModalVisible}
               onClose={() => setEditUserInfoModalVisible(false)}
-              data={userData}
-              onSave={handleSave}
+              dataUser={userData}
+              dataProfile={profileData}
             />
           </View>
           <View>
@@ -362,8 +358,8 @@ const ProfileScreen = ({ route, navigation }: props) => {
             <EditUserMedicalInformationModal
               isVisible={editUserMedicalInfoModalVisible}
               onClose={() => setEditUserMedicalInfoModalVisible(false)}
-              data={userData}
-              onSave={handleSave}
+              dataProfile={profileData}
+              dataMedical={medicalData}
             />
           </View>
           <View>

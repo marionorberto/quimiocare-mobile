@@ -1,20 +1,31 @@
 import React, { useState } from "react";
 import { Modal, View, Text, TextInput, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
+import api from "../services/api";
 
-type props = { isVisible: boolean; onClose: any; data: any; onSave: any };
+type props = {
+  isVisible: boolean;
+  onClose: any;
+  dataUser: any;
+  dataProfile: any;
+};
 
 const EditPersonalInformationModal = ({
   isVisible,
   onClose,
-  data,
-  onSave,
+  dataUser,
+  dataProfile,
 }: props) => {
-  const [editedData, setEditedData] = useState({ ...data });
+  const [user, setUserData] = useState(dataUser);
+  const [profile, setProfile] = useState(dataProfile);
 
   const handleSave = () => {
-    onSave(editedData); // Passa os dados editados para o componente pai
-    onClose(); // Fecha o modal
+    console.log("user data: ", user.username, user.email);
+    try {
+      api.put("/");
+    } catch (error: any) {}
+
+    alert("Dados do usuário foram editados com sucesso!");
   };
 
   return (
@@ -30,67 +41,62 @@ const EditPersonalInformationModal = ({
             Editar Dados
           </Text>
 
-          {/* Nome */}
           <View className="flex-row justify-start items-center gap-2 mt-3">
             <Icon name="person-outline" color={"black"} size={20} />
             <View className="flex-1">
               <Text className="text-base text-zinc-400">username</Text>
               <TextInput
-                value={editedData.username}
+                value={dataUser.username}
                 onChangeText={(text) =>
-                  setEditedData({ ...editedData, name: text })
+                  setUserData({ ...dataUser, name: text })
                 }
                 className="text-base text-zinc-800 border-b-2 border-zinc-400 p-2"
               />
             </View>
           </View>
 
-          {/* Email */}
           <View className="flex-row justify-start items-center gap-2 mt-3">
             <Icon name="mail-outline" color={"black"} size={20} />
             <View className="flex-1">
               <Text className="text-base text-zinc-400">Email</Text>
               <TextInput
-                value={editedData.email}
+                value={dataUser.email}
                 onChangeText={(text) =>
-                  setEditedData({ ...editedData, email: text })
+                  setUserData({ ...dataUser, email: text })
                 }
                 className="text-base text-zinc-800 border-b-2 border-zinc-400 p-2"
               />
             </View>
           </View>
 
-          {/* Telefone */}
           <View className="flex-row justify-start items-center gap-2 mt-3">
             <Icon name="call-outline" color={"black"} size={20} />
             <View className="flex-1">
               <Text className="text-base text-zinc-400">Telefone</Text>
               <TextInput
-                value={editedData.phone}
+                value={dataProfile.phoneNumber}
                 onChangeText={(text) =>
-                  setEditedData({ ...editedData, phone: text })
+                  setUserData({ ...dataProfile, phoneNumber: text })
                 }
                 className="text-base text-zinc-800 border-b-2 border-zinc-400 p-2"
               />
             </View>
           </View>
 
-          {/* Endereço */}
           <View className="flex-row justify-start items-center gap-2 mt-3">
             <Icon name="location-outline" color={"black"} size={20} />
             <View className="flex-1">
               <Text className="text-base text-zinc-400">Endereço</Text>
               <TextInput
-                value={editedData.address}
+                value={dataProfile.address}
                 onChangeText={(text) =>
-                  setEditedData({ ...editedData, address: text })
+                  setUserData({ ...dataProfile, address: text })
                 }
                 className="text-base text-zinc-800 border-b-2 border-zinc-400 p-2"
               />
             </View>
           </View>
 
-          {/* Botões de Cancelar e Salvar */}
           <View className="flex-row justify-end gap-4 mt-6">
             <TouchableOpacity
               onPress={onClose}
@@ -99,7 +105,7 @@ const EditPersonalInformationModal = ({
               <Text className="text-zinc-900">Cancelar</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={handleSave}
+              onPress={() => handleSave()}
               className="bg-blue-500 p-2 rounded-lg"
             >
               <Text className="text-white">Salvar</Text>

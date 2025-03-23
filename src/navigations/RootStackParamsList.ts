@@ -104,6 +104,10 @@ type  GatherProfileSecondScreen = {
   title: string;
 }
 
+type  RedefinePasswordScreen = {
+  title: string;
+}
+
 export type RootStackParamsList = {
   Home: HomeScreenParams;
   Setting: SettingScreenParams;
@@ -131,4 +135,5 @@ export type RootStackParamsList = {
   ChooseUserScreen: ChooseUserScreen,
   GatherProfileFirstScreen: GatherProfileFirstScreen,
   GatherProfileSecondScreen: GatherProfileSecondScreen,
+  RedefinePasswordScreen: RedefinePasswordScreen,
 }

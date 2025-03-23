@@ -56,7 +56,9 @@ const ForgotPasswordScreen = ({ route, navigation }: props) => {
           <Pressable
             className="ps-2"
             onPress={() =>
-              navigation.navigate(ScreenNames.Login, { title: "Login" })
+              navigation.navigate(ScreenNames.RedefinePasswordScreen, {
+                title: "redefinir",
+              })
             }
           >
             <Text className="text-blue-400">Login</Text>

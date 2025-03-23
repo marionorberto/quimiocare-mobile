@@ -14,6 +14,7 @@ export type BottomTabParamList = {
   Report: undefined;
   Library: undefined,
   Booking: undefined,
+  RedefinirPassword: undefined,
 };
 
 export type onSaveDateMedication = {

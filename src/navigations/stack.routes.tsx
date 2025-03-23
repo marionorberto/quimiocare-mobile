@@ -23,6 +23,7 @@ import MedicationScreen from "../screens/MedicationScreen";
 import ChooseUserScreen from "../screens/ChooseUserScreen";
 import GatherProfileFirstScreen from "../screens/GatherProfileFirstScreen";
 import GatherProfileSecondScreen from "../screens/GatherProfileSecondScreen";
+import RedefineScreenPassword from "../screens/RedefinePassword";
 
 const StackRoutes = () => {
   const Stack = createNativeStackNavigator<RootStackParamsList>();
@@ -126,6 +127,11 @@ const StackRoutes = () => {
       <Stack.Screen
         name={ScreenNames.GatherProfileSecondScreen}
         component={GatherProfileSecondScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name={ScreenNames.RedefinePasswordScreen}
+        component={RedefineScreenPassword}
         options={{ headerShown: false }}
       />
       <Stack.Screen
