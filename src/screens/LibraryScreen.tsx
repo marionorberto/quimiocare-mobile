@@ -6,8 +6,11 @@ import {
   Image,
   TextInput,
   Pressable,
+  ActivityIndicator,
   Linking,
   StyleSheet,
+  FlatList,
+  TouchableOpacity,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
@@ -15,11 +18,14 @@ import Constants from "expo-constants";
 import ScreenNames from "../constants/ScreenName";
 import { RootStackParamsList } from "../navigations/RootStackParamsList";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import YoutubeIframe from "react-native-youtube-iframe";
 import { WebView } from "react-native-webview";
 
 type props = NativeStackScreenProps<RootStackParamsList, ScreenNames>;
 
 const LibraryScreen = ({ route, navigation }: props) => {
+  const [videoReady, setVideoReady] = useState(false);
+  const videoIds = ["THivxQYsJ_U", "0GOUF8vNqzE"];
   const [books, setBooks] = useState([
     {
       id: 1,
@@ -344,17 +350,84 @@ const LibraryScreen = ({ route, navigation }: props) => {
               Assista os melhores videos para te inspirares!
             </Text>
           </View>
-          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-            <View className="flex-row justify-center items-center border-2 border-zinc-300 mt-4 p-1 rounded-3xl  h-[16rem] w-80 me-3 relative">
-              <WebView
-                style={styles.video}
-                source={{
-                  uri: "https://www.youtube.com/watch?v=M5QY2_8704o&t=2804s",
-                }}
-                allowsFullscreenVideo
+          <View className="mt-4 relative border-2 p-2 border-zinc-300 rounded-xl">
+            <YoutubeIframe
+              videoId="F1VlqUJlCko"
+              height={180}
+              onReady={() => setVideoReady(true)}
+            />
+            {!videoReady && (
+              <ActivityIndicator
+                className="absolute right-[50%] top-[50%]"
+                color={"black"}
               />
+            )}
+          </View>
+          <View className="mt-4 relative border-2 p-2 border-zinc-300 rounded-xl">
+            <YoutubeIframe
+              videoId="FGSqYPrJDak"
+              height={180}
+              onReady={() => setVideoReady(true)}
+            />
+            {!videoReady && (
+              <ActivityIndicator
+                className="absolute right-[50%] top-[50%]"
+                color={"black"}
+              />
+            )}
+          </View>
+          <View className="mt-4 relative border-2 p-2 border-zinc-300 rounded-xl">
+            <YoutubeIframe
+              videoId="HuXbsrBYbKg"
+              height={180}
+              onReady={() => setVideoReady(true)}
+            />
+            {!videoReady && (
+              <ActivityIndicator
+                className="absolute right-[50%] top-[50%]"
+                color={"black"}
+              />
+            )}
+          </View>
+          <View className="mt-4 relative border-2 p-2 border-zinc-300 rounded-xl">
+            <YoutubeIframe
+              videoId="AhwSBUwevP0"
+              height={180}
+              onReady={() => setVideoReady(true)}
+            />
+            {!videoReady && (
+              <ActivityIndicator
+                className="absolute right-[50%] top-[50%]"
+                color={"black"}
+              />
+            )}
+          </View>
+          <View className="mt-4 relative border-2 p-2 border-zinc-300 rounded-xl">
+            <YoutubeIframe
+              videoId="Ep5MWBVd3xg"
+              height={180}
+              onReady={() => setVideoReady(true)}
+            />
+            {!videoReady && (
+              <ActivityIndicator
+                className="absolute right-[50%] top-[50%]"
+                color={"black"}
+              />
+            )}
+          </View>
+          <TouchableOpacity
+            onPress={() => {
+              Linking.openURL(
+                "https://www.youtube.com/results?search_query=hist%C3%B3rias+inspiradoras+de+c%C3%A2ncer"
+              ).catch((error: any) => alert("Link não disponível"));
+            }}
+          >
+            <View className="rounde-xl bg-zinc-500/40 p-3 rounded-lg mt-4">
+              <Text className="text-black font-bold  text-lg text-center">
+                Ver Videos Youtube
+              </Text>
             </View>
-          </ScrollView>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </View>
