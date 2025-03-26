@@ -1,6 +1,8 @@
 import { StyleSheet, View, Text, Button, TouchableOpacity } from "react-native";
 import { Image } from "expo-image";
 import React from "react";
+import i18n from "../localization/i18n";
+import { useTranslation } from "react-i18next";
 
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamsList } from "../navigations/RootStackParamsList";
@@ -12,9 +14,12 @@ type props = NativeStackScreenProps<RootStackParamsList, ScreenNames>;
 
 const WelcomeScreen = ({ route, navigation }: props) => {
   const navigationScreen = useNavigation();
-
+  const { t } = useTranslation();
   return (
-    <View style={styles.container} className="bg-white h-full w-full relative">
+    <View
+      style={styles.container}
+      className="h-full w-full relative dar:bg-neutral-800/80 "
+    >
       {/* <LinearGradient colors={["#48c6ef", "#6f86d6"]} /> */}
       <Image
         contentFit="cover"

@@ -13,6 +13,7 @@ export const createPersonalInformations = async (
     tag: string
   ): Promise<any> => {
   try { 
+
     const response = await axios.post(`${API_URL}/profiles/create/profile`, {
       countryName,
       birthday,
@@ -27,7 +28,7 @@ export const createPersonalInformations = async (
 			    description: tag
 		    }
 	    ]
-     });
+     }  );
 
     return response.data;
 

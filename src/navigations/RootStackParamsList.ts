@@ -108,6 +108,31 @@ type  RedefinePasswordScreen = {
   title: string;
 }
 
+type  BookSinglePageScreen = {
+  title: string;
+  art: any;
+}
+
+type  PostSingleScreen = {
+  title: string;
+}
+
+type  ArticleScreen = {
+  title: string;
+}
+
+
+type  CreateAppointmentScreen = {
+  title: string;
+}
+type  CreateMedicationScreen = {
+  title: string;
+}
+
+type CreateSymptomScreen = {
+  title: string;
+}
+
 export type RootStackParamsList = {
   Home: HomeScreenParams;
   Setting: SettingScreenParams;
@@ -136,4 +161,10 @@ export type RootStackParamsList = {
   GatherProfileFirstScreen: GatherProfileFirstScreen,
   GatherProfileSecondScreen: GatherProfileSecondScreen,
   RedefinePasswordScreen: RedefinePasswordScreen,
+  BookSinglePageScreen: BookSinglePageScreen,
+  PostSingleScreen: PostSingleScreen,
+  ArticleScreen: ArticleScreen
+  CreateMedicationScreen: CreateMedicationScreen
+  CreateSymptomScreen: CreateSymptomScreen
+  CreateAppointmentScreen: CreateAppointmentScreen
 }

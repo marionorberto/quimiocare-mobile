@@ -7,8 +7,10 @@ import {
   SafeAreaView,
   Switch,
   Alert,
+  TouchableOpacity,
 } from "react-native";
 import React, { useEffect, useState } from "react";
+import { useColorScheme } from "nativewind";
 import Contants from "expo-constants";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { BottomTabParamList } from "../constants/types";
@@ -20,11 +22,15 @@ import EditUserMedicalInformationModal from "../components/EditUserMedicalInfoMo
 import api from "../services/api";
 import { handleLogout } from "../services/authService";
 import { API_URL } from "../constants/data";
+import ModalChangePassword from "../components/ModalChangePassword";
+import Modal from "../components/Modal";
+import { handleUpdatePassword } from "../services/updatePasswordService";
 
 type props = NativeStackScreenProps<BottomTabParamList>;
 
 const ProfileScreen = ({ route, navigation }: props) => {
-  let isEnabledLayoutMode: boolean = false;
+  const { colorScheme, toggleColorScheme } = useColorScheme();
+  const [isEnabledLayoutMode, setIsEnabledLayoutMode] = useState(false);
   const [isEnabledMedicationReminder, setIsEnabledMedicationReminder] =
     useState(false);
   let isModalEditVisible: boolean = false;
@@ -80,12 +86,32 @@ const ProfileScreen = ({ route, navigation }: props) => {
   });
 
   const [symptomsCounter, setSymptomCounter] = useState({ count: 0 });
-
   const [medicationCounter, setMedicationCounter] = useState({
     count: 0,
   });
 
   const [appointmentCounter, setAppontmentCounter] = useState({ count: 0 });
+  const [atualPassword, setAtualPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [openModalChangePassword, setOpenModalChangePassword] = useState(false);
+
+  const onUpdatePassword = async (
+    atualPassword: string,
+    newPassword: string
+  ): Promise<void> => {
+    try {
+      await handleUpdatePassword(atualPassword, newPassword);
+      Alert.alert(
+        "Atualização de password",
+        "Password atualizada com sucesso, próximo login entre com a sua nova password"
+      );
+    } catch (error: any) {
+      if (error.data) {
+        alert(`${error.message.map((error: string) => error)}`);
+      }
+      alert(`${error.message}`);
+    }
+  };
 
   const fetchSymptom = () => {
     api
@@ -179,15 +205,15 @@ const ProfileScreen = ({ route, navigation }: props) => {
   return (
     <View
       style={{ marginTop: Contants.statusBarHeight }}
-      className="flex-col justify-center items-stretch w-full pt-6"
+      className="flex-col justify-center items-stretch w-full pt-6 dark:bg-neutral-900"
     >
       <View className="flex-row justify-start items-center gap-10 px-4">
-        <View className="border-[1px] border-zinc-200 p-[3px] rounded-md bg-white">
+        <View className="border-[1px] border-zinc-200 p-[3px] rounded-md bg-white dark:bg-neutral-700/60">
           <Pressable onPress={() => navigation.goBack()}>
             <Icon name="chevron-back-outline" size={20} color={"#505050"} />
           </Pressable>
         </View>
-        <Text className="text-xl self-center text-center text-black font-bold">
+        <Text className="text-xl self-center text-center text-black font-bold dark:text-white">
           Perfil
         </Text>
       </View>
@@ -196,53 +222,59 @@ const ProfileScreen = ({ route, navigation }: props) => {
           <View className="flex-col justify-center items-center w-full">
             <View className="relative">
               <Image
+                source={require("../../assets/test.jpeg")}
                 style={{
-                  width: 100,
-                  height: 100,
                   borderRadius: 50,
-                  alignContent: "center",
-                  borderWidth: 5,
-                  borderColor: "white",
-                  backgroundColor: "#ccc",
+                  borderWidth: 4,
+                  borderColor: "#fff",
+                  width: 110,
+                  height: 110,
                 }}
-                source={require("../../assets/user.png")}
-              />
-              <View className="bg-white w-6 h-6 rounded-md absolute bottom-0 right-2 flex-1 justify-center items-center">
-                <Icon name="pencil-outline" color={"black"} size={19} />
+              ></Image>
+              <View className="bg-white w-8 h-8 rounded-md absolute bottom-0 right-2 flex-1 justify-center items-center dark:bg-neutral-700/60">
+                <Icon
+                  name="camera-reverse-outline"
+                  color={"#2563eb"}
+                  size={23}
+                />
               </View>
             </View>
             {userData ? (
-              <Text className="text-black font-semibold text-center text-lg mt-4">
+              <Text className="text-black font-semibold text-center text-lg mt-4 dark:text-white">
                 {userData.username}
               </Text>
             ) : (
               <Text>--</Text>
             )}
             {profileData ? (
-              <Text className="text-zinc-500 text-base">{profileData.job}</Text>
+              <Text className="text-zinc-500 text-base dark:text-zinc-300">
+                {profileData.job}
+              </Text>
             ) : (
               <Text>--</Text>
             )}
             {profileData ? (
-              <Text className="text-zinc-400 text-base">{profileData.bio}</Text>
+              <Text className="text-zinc-400 text-base dark:text-zinc-300">
+                {profileData.bio}
+              </Text>
             ) : (
               <Text>--</Text>
             )}
 
-            <View className=" w-full border-y-2 border-zinc-300 flex-row justify-around items-center py-4 mt-5">
+            <View className=" w-full border-y-2 border-zinc-300 flex-row justify-around items-center py-4 mt-5 dark:border-zinc-500">
               <View>
-                <Text className="font-bold text-lg text-center">
+                <Text className="font-bold text-lg text-center dark:text-white">
                   {medicationCounter.count}
                 </Text>
-                <Text className="text-zinc-300 text-center text-sm">
+                <Text className="text-zinc-300 text-center text-sm dark:text-zinc-200">
                   Consultas
                 </Text>
               </View>
               <View>
-                <Text className="font-bold text-lg text-center">
+                <Text className="font-bold text-lg text-center dark:text-white">
                   {symptomsCounter.count}
                 </Text>
-                <Text className="text-zinc-300 text-center text-sm">
+                <Text className="text-zinc-300 text-center text-sm dark:text-zinc-200">
                   Sintomas
                 </Text>
               </View>
@@ -262,28 +294,18 @@ const ProfileScreen = ({ route, navigation }: props) => {
                   </Text>
                 </Pressable>
               </View>
-
-              <View className=" bg-blue-400/15 rounded-lg px-3 py-2 flex-1 justify-center items-center">
-                <Pressable>
-                  <Text className=" text-center font-bold">
-                    <Icon
-                      name="chatbox-ellipses-sharp"
-                      color={"#3b82f6"}
-                      size={22}
-                    />
-                  </Text>
-                </Pressable>
-              </View>
             </View>
           </View>
         </View>
-        <View className="w-[92%] rounded-lg p-4 bg-white mt-6 mx-auto">
+        <View className="w-[92%] rounded-lg p-4 bg-white mt-6 mx-auto dark:bg-neutral-700/60">
           <View className="flex-row justify-between items-center">
-            <Text className="text-xl font-bold text-black">
+            <Text className="text-xl font-bold text-black dark:text-white">
               Informações Pessoais
             </Text>
             <Pressable onPress={() => setEditUserInfoModalVisible(true)}>
-              <Text className="text-lg font-semibold text-black">Editar</Text>
+              <Text className="text-lg font-semibold text-black dark:text-white">
+                Editar
+              </Text>
             </Pressable>
             <EditPersonalInformationModal
               isVisible={editUserInfoModalVisible}
@@ -296,9 +318,9 @@ const ProfileScreen = ({ route, navigation }: props) => {
             <View className="flex-row justify-start items-center gap-2 mt-3">
               <Icon name="person-outline" color={"black"} size={20}></Icon>
               <View>
-                <Text className="text-base text-zinc-400">Username</Text>
+                <Text className="text-base text-zinc-200">Username</Text>
                 {userData ? (
-                  <Text className="text-base text-zinc-800">
+                  <Text className="text-base text-zinc-800 dark:text-zinc-300">
                     {userData.username}
                   </Text>
                 ) : (
@@ -309,9 +331,11 @@ const ProfileScreen = ({ route, navigation }: props) => {
             <View className="flex-row justify-start items-center gap-2 mt-3">
               <Icon name="mail-outline" color={"black"} size={20} />
               <View>
-                <Text className="text-base text-zinc-400">Email</Text>
+                <Text className="text-base text-zinc-400 dark:text-zinc-200">
+                  Email
+                </Text>
                 {userData ? (
-                  <Text className="text-base text-zinc-800">
+                  <Text className="text-base text-zinc-800 dark:text-zinc-300">
                     {userData.email}
                   </Text>
                 ) : (
@@ -322,9 +346,11 @@ const ProfileScreen = ({ route, navigation }: props) => {
             <View className="flex-row justify-start items-center gap-2 mt-3">
               <Icon name="call-outline" color={"black"} size={20} />
               <View>
-                <Text className="text-base text-zinc-400">Telefone</Text>
+                <Text className="text-base text-zinc-400 dark:text-zinc-200">
+                  Telefone
+                </Text>
                 {profileData ? (
-                  <Text className="text-base text-zinc-800">
+                  <Text className="text-base text-zinc-800 dark:text-zinc-300">
                     {profileData.phoneNumber}
                   </Text>
                 ) : (
@@ -335,9 +361,11 @@ const ProfileScreen = ({ route, navigation }: props) => {
             <View className="flex-row justify-start items-center gap-2 mt-3">
               <Icon name="location-outline" color={"black"} size={20}></Icon>
               <View>
-                <Text className="text-base text-zinc-400">Endereço</Text>
+                <Text className="text-base text-zinc-400 dark:text-zinc-200">
+                  Endereço
+                </Text>
                 {userData ? (
-                  <Text className="text-base text-zinc-800">
+                  <Text className="text-base text-zinc-800 dark:text-zinc-300">
                     {profileData.address}
                   </Text>
                 ) : (
@@ -347,13 +375,15 @@ const ProfileScreen = ({ route, navigation }: props) => {
             </View>
           </View>
         </View>
-        <View className="w-[92%] rounded-lg p-4 bg-white mt-6 mx-auto">
+        <View className="w-[92%] rounded-lg p-4 bg-white mt-6 mx-auto dark:bg-neutral-700/60">
           <View className="flex-row justify-between items-center">
-            <Text className="text-xl font-bold text-black">
+            <Text className="text-xl font-bold text-black dark:text-white">
               Informações Médicas
             </Text>
             <Pressable onPress={() => setEditUserMedicalInfoModalVisible(true)}>
-              <Text className="text-lg font-semibold text-black">Editar</Text>
+              <Text className="text-lg font-semibold text-black dark:text-white">
+                Editar
+              </Text>
             </Pressable>
             <EditUserMedicalInformationModal
               isVisible={editUserMedicalInfoModalVisible}
@@ -402,9 +432,11 @@ const ProfileScreen = ({ route, navigation }: props) => {
                 size={20}
               ></Icon>
               <View>
-                <Text className="text-base text-zinc-400">Sexo</Text>
+                <Text className="text-base text-zinc-400 dark:text-zinc-200">
+                  Sexo
+                </Text>
                 {profileData ? (
-                  <Text className="text-base text-zinc-800">
+                  <Text className="text-base text-zinc-800 dark:text-zinc-300">
                     {profileData.sex.toUpperCase()}
                   </Text>
                 ) : (
@@ -415,19 +447,23 @@ const ProfileScreen = ({ route, navigation }: props) => {
             <View className="flex-row justify-start items-center gap-2 mt-3">
               <Icon name="barbell-outline" color={"black"} size={20}></Icon>
               <View>
-                <Text className="text-base text-zinc-400">Peso | Altura</Text>
+                <Text className="text-base text-zinc-400 dark:text-zinc-200">
+                  Peso | Altura
+                </Text>
                 <View className="flex-row justify-start items-center">
                   {medicalData ? (
-                    <Text className="text-base text-zinc-800">
+                    <Text className="text-base text-zinc-800 dark:text-zinc-300">
                       {medicalData.height}
                     </Text>
                   ) : (
                     <Text>--</Text>
                   )}
 
-                  <Text className="text-base text-zinc-800 mx-3">|</Text>
+                  <Text className="text-base text-zinc-800 mx-3 dark:text-zinc-200">
+                    |
+                  </Text>
                   {medicalData ? (
-                    <Text className="text-base text-zinc-800">
+                    <Text className="text-base text-zinc-800 dark:text-zinc-300">
                       {medicalData.weight}
                     </Text>
                   ) : (
@@ -440,9 +476,11 @@ const ProfileScreen = ({ route, navigation }: props) => {
             <View className="flex-row justify-start items-center gap-2 mt-3">
               <Icon name="bandage-outline" color={"black"} size={20}></Icon>
               <View>
-                <Text className="text-base text-zinc-400">Tipo Sanguíneo</Text>
+                <Text className="text-base text-zinc-400 dark:text-zinc-200">
+                  Tipo Sanguíneo
+                </Text>
                 {medicalData ? (
-                  <Text className="text-base text-zinc-800">
+                  <Text className="text-base text-zinc-800 dark:text-zinc-300">
                     {medicalData.bloodGroup}
                   </Text>
                 ) : (
@@ -453,8 +491,10 @@ const ProfileScreen = ({ route, navigation }: props) => {
             <View className="flex-row justify-start items-center gap-2 mt-3">
               <Icon name="fitness-outline" color={"black"} size={20}></Icon>
               <View>
-                <Text className="text-base text-zinc-400">Cancer</Text>
-                <Text className="text-base font-semibold py-2 px-3 rounded-lg bg-blue-300/20 text-blue-400">
+                <Text className="text-base text-zinc-400 dark:text-zinc-300">
+                  Cancer
+                </Text>
+                <Text className="text-base font-semibold py-2 px-3 rounded-lg bg-blue-300/20 text-blue-400 dark:text-zinc-300">
                   {profileData ? (
                     <Text className="text-base font-semibold py-2 px-3 rounded-lg bg-blue-300/20 text-blue-400">
                       {profileData.tags[0].description}
@@ -477,9 +517,11 @@ const ProfileScreen = ({ route, navigation }: props) => {
             <View className="flex-row justify-start items-center gap-2 mt-3">
               <Icon name="fitness-outline" color={"black"} size={20} />
               <View>
-                <Text className="text-base text-zinc-400">Estadiamento</Text>
+                <Text className="text-base text-zinc-400 dark:text-zinc-200">
+                  Estadiamento
+                </Text>
                 {medicalData ? (
-                  <Text className="text-base font-semibold py-2 px-3 rounded-lg bg-blue-300/20 text-blue-400">
+                  <Text className="text-base font-semibold py-2 px-3 rounded-lg bg-blue-300/20 text-blue-400 dark:text-zinc-300">
                     {medicalData.stage}
                   </Text>
                 ) : (
@@ -490,11 +532,11 @@ const ProfileScreen = ({ route, navigation }: props) => {
             <View className="flex-row justify-start items-center gap-2 mt-3">
               <Icon name="fitness-outline" color={"black"} size={20} />
               <View>
-                <Text className="text-base text-zinc-400">
+                <Text className="text-base text-zinc-400 dark:text-zinc-200">
                   Unidade Hospitar
                 </Text>
                 {medicalData ? (
-                  <Text className="text-base font-semibold py-2 px-3 rounded-lg bg-blue-300/20 text-blue-400">
+                  <Text className="text-base font-semibold py-2 px-3 rounded-lg bg-blue-300/20 text-blue-400 dark:text-zinc-300">
                     {medicalData.hospital}
                   </Text>
                 ) : (
@@ -504,9 +546,11 @@ const ProfileScreen = ({ route, navigation }: props) => {
             </View>
           </View>
         </View>
-        <View className="w-[92%] rounded-lg p-4 bg-white mt-6 mx-auto">
+        <View className="w-[92%] rounded-lg p-4 bg-white mt-6 mx-auto dark:bg-neutral-700/60">
           <View className="flex-row justify-start items-center">
-            <Text className="text-xl font-bold text-black">Preferências</Text>
+            <Text className="text-xl font-bold text-black dark:text-white">
+              Preferências
+            </Text>
           </View>
           <View>
             <View className="flex-row justify-start items-center gap-2 mt-3">
@@ -516,10 +560,10 @@ const ProfileScreen = ({ route, navigation }: props) => {
                 size={20}
               ></Icon>
               <View>
-                <Text className="text-base text-zinc-400">
+                <Text className="text-base text-zinc-400 dark:text-zinc-200">
                   Ativar Notificações
                 </Text>
-                <Text className="text-base text-zinc-800">
+                <Text className="text-base text-zinc-800 dark:text-zinc-300">
                   On/Off lembretes de medicação
                 </Text>
               </View>
@@ -537,35 +581,11 @@ const ProfileScreen = ({ route, navigation }: props) => {
                 </SafeAreaProvider>
               </View>
             </View>
-            <View className="flex-row justify-start items-center gap-2 mt-3">
-              <Icon name="moon-outline" color={"black"} size={20}></Icon>
-              <View>
-                <Text className="text-base text-zinc-400">Tema</Text>
-                <Text className="text-base text-zinc-800">
-                  Modo Claro/Escuro
-                </Text>
-              </View>
-              <View className="ms-auto">
-                <SafeAreaProvider>
-                  <SafeAreaView>
-                    <Switch
-                      trackColor={{ false: "#52525b", true: "#2563eb" }}
-                      thumbColor={isEnabledLayoutMode ? "#000" : "#fff"}
-                      ios_backgroundColor="#fff"
-                      onValueChange={() =>
-                        alert("Apenas o modo claro está disponível!")
-                      }
-                      value={isEnabledLayoutMode}
-                    />
-                  </SafeAreaView>
-                </SafeAreaProvider>
-              </View>
-            </View>
           </View>
         </View>
-        <View className="w-[92%] rounded-lg p-4 bg-white mt-6 mx-auto">
+        <View className="w-[92%] rounded-lg p-4 bg-white mt-6 mx-auto dark:bg-neutral-700/60">
           <View className="flex-row justify-start items-center">
-            <Text className="text-xl font-bold text-black">
+            <Text className="text-xl font-bold text-black dark:text-white">
               Segurança & Conta
             </Text>
           </View>
@@ -573,18 +593,81 @@ const ProfileScreen = ({ route, navigation }: props) => {
             <View className="flex-row justify-start items-center gap-2 mt-3">
               <Icon name="lock-open-outline" color={"black"} size={20}></Icon>
               <View>
-                <Text className="text-base text-zinc-400">
+                <Text className="text-base text-zinc-400 dark:text-zinc-200">
                   Alterar Palavra-Passe
                 </Text>
                 <TextInput
+                  onPress={() => {
+                    setOpenModalChangePassword(true);
+                  }}
                   placeholder="Password Atual"
                   className="py-4 px-4 bg-zinc-200/50 rounded-lg placeholder:text-zinc-400"
                 ></TextInput>
                 <TextInput
+                  onPress={() => {
+                    setOpenModalChangePassword(true);
+                  }}
                   placeholder="Password Nova"
                   className="py-4 px-4 bg-zinc-200/50 rounded-lg placeholder:text-zinc-400 mt-3"
                 ></TextInput>
               </View>
+              <Pressable
+                onPress={() => {
+                  setOpenModalChangePassword(true);
+                }}
+              >
+                <Text>Mudar Password</Text>
+              </Pressable>
+              <Modal isOpen={openModalChangePassword} withInput={true}>
+                <View className="p-6 bg-white rounded-2xl w-full max-w-md shadow-lg dark:bg-neutral-700/80">
+                  <View className="flex-row justify-between items-center mb-4">
+                    <Text className="text-lg font-bold text-black dark:text-white">
+                      Atualizar Password
+                    </Text>
+                    <TouchableOpacity
+                      onPress={() => {
+                        setOpenModalChangePassword(false);
+                      }}
+                    >
+                      <Icon name="close" size={24} color="#4A4A4A" />
+                    </TouchableOpacity>
+                  </View>
+                  <Text className="text-zinc-700 mb-1 dark:text-zinc-300">
+                    Atual Password
+                  </Text>
+                  <TextInput
+                    className="border border-zinc-300 rounded-lg px-4 py-2 mb-3"
+                    placeholder="Ex: Náusea, Fadiga..."
+                    value={atualPassword}
+                    onChangeText={setAtualPassword}
+                  />
+                  <Text className="text-zinc-700 mb-1 dark:text-zinc-300">
+                    Nova Password
+                  </Text>
+                  <TextInput
+                    className="border border-zinc-300 rounded-lg px-4 py-2 mb-3 h-20"
+                    placeholder="Detalhe os sintomas, duração, intensidade..."
+                    multiline
+                    value={newPassword}
+                    onChangeText={setNewPassword}
+                  />
+
+                  <TouchableOpacity
+                    className="bg-blue-500 rounded-lg py-3 mt-2 flex-row items-center justify-center"
+                    onPress={() => onUpdatePassword(atualPassword, newPassword)}
+                  >
+                    <Icon
+                      name="save"
+                      size={20}
+                      color="white"
+                      className="mr-2"
+                    />
+                    <Text className="text-white text-center font-semibold ">
+                      Atualizar
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </Modal>
             </View>
             <View className="flex-row justify-start items-center gap-2 mt-3 mb-5">
               <View className="mt-4">

@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Modal, View, Text, TextInput, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import api from "../services/api";
+import axios from "axios";
+import { API_URL } from "../constants/data";
 
 type props = {
   isVisible: boolean;
@@ -19,13 +21,17 @@ const EditPersonalInformationModal = ({
   const [user, setUserData] = useState(dataUser);
   const [profile, setProfile] = useState(dataProfile);
 
-  const handleSave = () => {
-    console.log("user data: ", user.username, user.email);
+  const handleSave = async () => {
     try {
-      api.put("/");
-    } catch (error: any) {}
+      const response = await api.post(`${API_URL}/update/user`, {
+        email: user.email,
+        username: user.username,
+      });
 
-    alert("Dados do usuário foram editados com sucesso!");
+      return response.data;
+    } catch (error: any) {
+      throw error.response.data || "Erro tentando cadastrar o perfil!";
+    }
   };
 
   return (
@@ -47,9 +53,7 @@ const EditPersonalInformationModal = ({
               <Text className="text-base text-zinc-400">username</Text>
               <TextInput
                 value={dataUser.username}
-                onChangeText={(text) =>
-                  setUserData({ ...dataUser, name: text })
-                }
+                onChangeText={setUserData}
                 className="text-base text-zinc-800 border-b-2 border-zinc-400 p-2"
               />
             </View>

@@ -17,18 +17,18 @@ type props = NativeStackScreenProps<RootStackParamsList, ScreenNames>;
 
 const HomeScreen = ({ route, navigation }: props) => {
   return (
-    <View className="flex-1 justify-center items-center">
+    <View className="flex-1 justify-center items-center dark:bg-neutral-900">
       <Image
         style={{ width: 300, height: 150 }}
         className=""
         source={require("../../assets/login.svg")}
       />
-      <Text className="font-bold text-black text-3xl mb-3 mt-6 opacity-70">
+      <Text className="font-bold text-black text-3xl mb-3 mt-6 opacity-70 dark:text-white">
         QuimioCare{" "}
       </Text>
-      <Text className="text-zinc-300 text-center px-20">
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Mollitia,
-        nesciunt!
+      <Text className="text-zinc-400 text-center px-20">
+        Monitore os seus sintomas, registre os seus dados médicos e conquiste a
+        cura!
       </Text>
       <View className="bg-zinc-200/60 p-4 flex flex-row justify-center items-center rounded-lg mt-14 mb-5">
         <TouchableOpacity
@@ -50,10 +50,10 @@ const HomeScreen = ({ route, navigation }: props) => {
           <Text className="text-blue-400 font-semibold text-lg">Login</Text>
         </Pressable>
       </View>
-      <Text className="text-zinc-300 px-20 text-center">
-        Lorem, ipsum dolor sit{" "}
-        <Text className="text-blue-400">amet consectetur</Text> amet consectetur
-        elit. Accusamus, eius.
+      <Text className="text-zinc-400 px-20 text-center">
+        Uma app para tornar
+        <Text className="text-blue-400"> a tua jornada </Text>
+        mais organizada e controlada!
       </Text>
     </View>
   );

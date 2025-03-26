@@ -24,14 +24,23 @@ import ChooseUserScreen from "../screens/ChooseUserScreen";
 import GatherProfileFirstScreen from "../screens/GatherProfileFirstScreen";
 import GatherProfileSecondScreen from "../screens/GatherProfileSecondScreen";
 import RedefineScreenPassword from "../screens/RedefinePassword";
+import LibraryScreen from "../screens/LibraryScreen";
+import BookSinglePage from "../screens/BookSinglePage";
+import BookSinglePageScreen from "../screens/BookSinglePage";
+import PostSingleScreen from "../screens/PostSingleScreen";
+import ArticleScreen from "../screens/ArticleScreen";
+import CreateMedicationScreen from "../screens/CreateMedicationScreen";
+import CreateAppointmentScreen from "../screens/CreateAppointmentScreen";
+import { SettingsContext } from "react-native-paper/lib/typescript/core/settings";
+import SettingsScreen from "../screens/settingsScreen";
 
 const StackRoutes = () => {
   const Stack = createNativeStackNavigator<RootStackParamsList>();
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name={ScreenNames.Welcome}
-        component={WelcomeScreen}
+        name={ScreenNames.Library}
+        component={LibraryScreen}
         options={{ headerShown: false }}
       />
       <Stack.Screen
@@ -132,6 +141,32 @@ const StackRoutes = () => {
       <Stack.Screen
         name={ScreenNames.RedefinePasswordScreen}
         component={RedefineScreenPassword}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name={ScreenNames.BookSinglePageScreen}
+        component={BookSinglePageScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name={ScreenNames.PostSingleScreen}
+        component={PostSingleScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name={ScreenNames.ArticleScreen}
+        component={ArticleScreen}
+        options={{ headerShown: false }}
+      />
+
+      <Stack.Screen
+        name={ScreenNames.CreateMedicationScreen}
+        component={CreateMedicationScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name={ScreenNames.CreateApppoinmentScreen}
+        component={CreateAppointmentScreen}
         options={{ headerShown: false }}
       />
       <Stack.Screen

@@ -27,6 +27,12 @@ enum ScreenNames {
   GatherProfileFirstScreen = "GatherProfileFirstScreen",
   GatherProfileSecondScreen = "GatherProfileSecondScreen",
   RedefinePasswordScreen = "RedefinePasswordScreen",
+  BookSinglePageScreen = "BookSinglePageScreen",
+  PostSingleScreen = "PostSingleScreen",
+  ArticleScreen = "ArticleScreen",
+  CreateMedicationScreen = "CreateMedicationScreen",
+  CreateSymptomScreen = "CreateSymptomScreen",
+  CreateApppoinmentScreen = "CreateAppointmentScreen",
 }
 
 export default ScreenNames;

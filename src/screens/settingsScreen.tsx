@@ -7,6 +7,7 @@ import {
   SafeAreaView,
   TouchableOpacity,
   TextInput,
+  Alert,
 } from "react-native";
 import React, { useState } from "react";
 import Contants from "expo-constants";
@@ -17,14 +18,16 @@ import { BottomTabParamList } from "../constants/types";
 import Modal from "../components/Modal";
 import WhatsAppButton from "../components/LinkWhatsappSupport";
 import GmailButton from "../components/LinkGmailSupport";
+import { useColorScheme } from "nativewind";
 
 type props = NativeStackScreenProps<BottomTabParamList>;
 
 const SettingsScreen = ({ route, navigation }: props) => {
-  const [isEnabledConsultAlert, setIsEnabledConsultAlert] = useState(false);
+  const { colorScheme, toggleColorScheme } = useColorScheme();
+  const [isEnabledConsultAlert, setIsEnabledConsultAlert] = useState(true);
   const [isEnabledReminderMedication, setIsEnabledReminderMedication] =
-    useState(false);
-  const [isEnabledFA, setIsEnabledFA] = useState(false);
+    useState(true);
+  const [isEnabledFA, setIsEnabledFA] = useState(true);
   const [isEnabledLayoutMode, setIsEnabledLayoutMode] = useState(false);
   const [openModalFeedback, setOpenModalFeedback] = useState(false);
   const toggleReminderMedication = () =>
@@ -40,10 +43,10 @@ const SettingsScreen = ({ route, navigation }: props) => {
   return (
     <View
       style={{ marginTop: Contants.statusBarHeight }}
-      className="flex-col justify-center items-stretch w-full pt-8 pb-14"
+      className="flex-col justify-center items-stretch w-full pt-8 pb-14 dark:bg-neutral-900"
     >
       <View className="flex-row justify-start items-center gap-10 px-4">
-        <View className="border-[1px] border-zinc-200 p-[3px] rounded-md bg-white">
+        <View className="border-[1px] border-zinc-200 p-[3px] rounded-md bg-white dark:bg-neutral-700/60">
           <Pressable onPress={() => navigation.goBack()}>
             <Icon
               name="chevron-back-outline"
@@ -52,27 +55,29 @@ const SettingsScreen = ({ route, navigation }: props) => {
             ></Icon>
           </Pressable>
         </View>
-        <Text className="text-xl self-center text-center text-black font-bold">
+        <Text className="text-xl self-center text-center text-black font-bold dark:text-white">
           Configurações
         </Text>
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View className="w-[92%] rounded-lg p-4 mt-6 mx-auto">
-          <Text className="text-xl font-bold text-black">Dados de Saúde</Text>
+          <Text className="text-xl font-bold text-black dark:text-white">
+            Dados de Saúde
+          </Text>
 
           <Pressable
             onPress={() => {
               navigation.navigate("History");
             }}
           >
-            <View className="flex-row justify-between items-center bg-white mt-2 p-4 rounded-lg">
+            <View className="flex-row justify-between items-center bg-white mt-2 p-4 rounded-lg dark:bg-neutral-700/60">
               <View className="flex-row justify-between items-center gap-4">
                 <Icon
                   name="document-text-outline"
-                  color={"black"}
+                  color={isEnabledLayoutMode ? "#fff" : "#000"}
                   size={24}
                 ></Icon>
-                <Text className="text-lg font-semibold text-black">
+                <Text className="text-lg font-semibold text-black dark:text-white">
                   Histórico De Saúde
                 </Text>
               </View>
@@ -85,10 +90,14 @@ const SettingsScreen = ({ route, navigation }: props) => {
             </View>
           </Pressable>
           <Pressable onPress={() => navigation.navigate("Report")}>
-            <View className="flex-row justify-between items-center bg-white mt-2 p-4 rounded-lg">
+            <View className="flex-row justify-between items-center bg-white mt-2 p-4 rounded-lg dark:bg-neutral-700/60">
               <View className="flex-row justify-between items-center gap-4">
-                <Icon name="analytics-outline" color={"black"} size={24}></Icon>
-                <Text className="text-lg font-semibold text-black">
+                <Icon
+                  name="analytics-outline"
+                  color={isEnabledLayoutMode ? "#fff" : "#000"}
+                  size={24}
+                ></Icon>
+                <Text className="text-lg font-semibold text-black dark:text-white">
                   Exportar Relatórios
                 </Text>
               </View>
@@ -102,11 +111,17 @@ const SettingsScreen = ({ route, navigation }: props) => {
           </Pressable>
         </View>
         <View className="w-[92%] rounded-lg p-4 mt-3 mx-auto">
-          <Text className="text-xl font-bold text-black">Notificações</Text>
-          <View className="flex-row justify-between items-center bg-white mt-2 p-4 rounded-lg">
+          <Text className="text-xl font-bold text-black dark:text-white">
+            Notificações
+          </Text>
+          <View className="flex-row justify-between items-center bg-white mt-2 p-4 rounded-lg dark:bg-neutral-700/60">
             <View className="flex-row justify-between items-center gap-4">
-              <Icon name="alarm-outline" color={"black"} size={24}></Icon>
-              <Text className="text-lg font-semibold text-black">
+              <Icon
+                name="alarm-outline"
+                color={isEnabledLayoutMode ? "#fff" : "#000"}
+                size={24}
+              ></Icon>
+              <Text className="text-lg font-semibold text-black dark:text-white">
                 Lembretes de Medicações
               </Text>
             </View>
@@ -124,10 +139,14 @@ const SettingsScreen = ({ route, navigation }: props) => {
               </SafeAreaProvider>
             </View>
           </View>
-          <View className="flex-row justify-between items-center bg-white mt-2 p-4 rounded-lg">
+          <View className="flex-row justify-between items-center bg-white mt-2 p-4 rounded-lg dark:bg-neutral-700/60">
             <View className="flex-row justify-between items-center gap-4">
-              <Icon name="calendar-outline" color={"black"} size={24}></Icon>
-              <Text className="text-lg font-semibold text-black">
+              <Icon
+                name="calendar-outline"
+                color={isEnabledLayoutMode ? "#fff" : "#000"}
+                size={24}
+              ></Icon>
+              <Text className="text-lg font-semibold text-black dark:text-white">
                 Alertas de Consultas
               </Text>
             </View>
@@ -147,11 +166,17 @@ const SettingsScreen = ({ route, navigation }: props) => {
           </View>
         </View>
         <View className="w-[92%] rounded-lg p-4 mt-3 mx-auto">
-          <Text className="text-xl font-bold text-black">Preferências</Text>
-          <View className="flex-row justify-between items-center bg-white mt-2 p-4 rounded-lg">
+          <Text className="text-xl font-bold text-black dark:text-white">
+            Preferências
+          </Text>
+          <View className="flex-row justify-between items-center bg-white mt-2 p-4 rounded-lg dark:bg-neutral-700/60">
             <View className="flex-row justify-between items-center gap-4">
-              <Icon name="moon-outline" color={"black"} size={24}></Icon>
-              <Text className="text-lg font-semibold text-black">
+              <Icon
+                name="moon-outline"
+                color={isEnabledLayoutMode ? "#fff" : "#000"}
+                size={24}
+              ></Icon>
+              <Text className="text-lg font-semibold text-black dark:text-white">
                 Modo Escuro/Claro
               </Text>
             </View>
@@ -162,9 +187,13 @@ const SettingsScreen = ({ route, navigation }: props) => {
                     trackColor={{ false: "#52525b", true: "#2563eb" }}
                     thumbColor={isEnabledLayoutMode ? "#000" : "#fff"}
                     ios_backgroundColor="#fff"
-                    onValueChange={() =>
-                      alert("Apenas o modo claro está disponível!")
-                    }
+                    onValueChange={() => {
+                      setIsEnabledLayoutMode(!isEnabledLayoutMode);
+                      toggleColorScheme();
+                      alert(
+                        `${isEnabledLayoutMode ? "Modo Escuro Ativado!" : "Modo Claro Ativado!"}`
+                      );
+                    }}
                     value={isEnabledLayoutMode}
                   />
                 </SafeAreaView>
@@ -172,10 +201,14 @@ const SettingsScreen = ({ route, navigation }: props) => {
             </View>
           </View>
 
-          <View className="flex-row justify-between items-center bg-white mt-2 p-4 rounded-lg">
+          <View className="flex-row justify-between items-center bg-white mt-2 p-4 rounded-lg dark:bg-neutral-700/60">
             <View className="flex-row justify-between items-center gap-4">
-              <Icon name="language-outline" color={"black"} size={24}></Icon>
-              <Text className="text-lg font-semibold text-black">
+              <Icon
+                name="language-outline"
+                color={isEnabledLayoutMode ? "#fff" : "#000"}
+                size={24}
+              ></Icon>
+              <Text className="text-lg font-semibold text-black dark:text-white">
                 Configuração de Idioma
               </Text>
             </View>
@@ -188,16 +221,22 @@ const SettingsScreen = ({ route, navigation }: props) => {
           </View>
         </View>
         <View className="w-[92%] rounded-lg p-4 mt-3 mx-auto">
-          <Text className="text-xl font-bold text-black">Perfil & Conta</Text>
+          <Text className="text-xl font-bold text-black dark:text-white">
+            Perfil & Conta
+          </Text>
           <Pressable
             onPress={() => {
               navigation.navigate("Profile");
             }}
           >
-            <View className="flex-row justify-between items-center bg-white mt-2 p-4 rounded-lg">
+            <View className="flex-row justify-between items-center bg-white mt-2 p-4 rounded-lg dark:bg-neutral-700/60">
               <View className="flex-row justify-between items-center gap-4">
-                <Icon name="create-outline" color={"black"} size={24}></Icon>
-                <Text className="text-lg font-semibold text-black">
+                <Icon
+                  name="create-outline"
+                  color={isEnabledLayoutMode ? "#fff" : "#000"}
+                  size={24}
+                ></Icon>
+                <Text className="text-lg font-semibold text-black dark:text-white">
                   Editar Perfil
                 </Text>
               </View>
@@ -215,10 +254,14 @@ const SettingsScreen = ({ route, navigation }: props) => {
               setOpenModalChangePassword(true);
             }}
           >
-            <View className="flex-row justify-between items-center bg-white mt-2 p-4 rounded-lg">
+            <View className="flex-row justify-between items-center bg-white mt-2 p-4 rounded-lg dark:bg-neutral-700/60">
               <View className="flex-row justify-between items-center gap-4">
-                <Icon name="key-outline" color={"black"} size={24}></Icon>
-                <Text className="text-lg font-semibold text-black">
+                <Icon
+                  name="key-outline"
+                  color={isEnabledLayoutMode ? "#fff" : "#000"}
+                  size={24}
+                ></Icon>
+                <Text className="text-lg font-semibold text-black dark:text-white">
                   Alterar Senha
                 </Text>
               </View>
@@ -230,10 +273,14 @@ const SettingsScreen = ({ route, navigation }: props) => {
               ></Icon>
             </View>
             <Modal isOpen={openModalChangePassword} withInput={false}>
-              <View className="flex-row justify-start items-center gap-2 mt-3 bg-white w-11/12 p-6 rounded-2xl shadow-lg">
-                <Icon name="lock-open-outline" color={"black"} size={20}></Icon>
+              <View className="flex-row justify-start items-center gap-2 mt-3 bg-white w-11/12 p-6 rounded-2xl shadow-lg dark:bg-neutral-700/60">
+                <Icon
+                  name="lock-open-outline"
+                  color={isEnabledLayoutMode ? "#fff" : "#000"}
+                  size={20}
+                ></Icon>
                 <View>
-                  <Text className="text-black text-lg mb-2 font-semibold">
+                  <Text className="text-black text-lg mb-2 font-semibold dark:text-white">
                     Alterar Palavra-Passe
                   </Text>
                   <TextInput
@@ -265,13 +312,17 @@ const SettingsScreen = ({ route, navigation }: props) => {
           </Pressable>
         </View>
         <View className="w-[92%] rounded-lg p-4 mt-3 mx-auto">
-          <Text className="text-xl font-bold text-black">
+          <Text className="text-xl font-bold text-black dark:text-white">
             Segurança & Privacidade
           </Text>
-          <View className="flex-row justify-between items-center bg-white mt-2 p-4 rounded-lg">
+          <View className="flex-row justify-between items-center bg-white mt-2 p-4 rounded-lg dark:bg-neutral-700/60">
             <View className="flex-row justify-between items-center gap-4">
-              <Icon name="key-outline" color={"black"} size={24}></Icon>
-              <Text className="text-lg font-semibold text-black">
+              <Icon
+                name="key-outline"
+                color={isEnabledLayoutMode ? "#fff" : "#000"}
+                size={24}
+              ></Icon>
+              <Text className="text-lg font-semibold text-black dark:text-white">
                 2FA Autenticação
               </Text>
             </View>
@@ -306,16 +357,22 @@ const SettingsScreen = ({ route, navigation }: props) => {
           </View> */}
         </View>
         <View className=" w-[92%] rounded-lg p-4 mt-3 mx-auto">
-          <Text className="text-xl font-bold text-black">Ajuda & Suporte</Text>
+          <Text className="text-xl font-bold text-black dark:text-white">
+            Ajuda & Suporte
+          </Text>
           <Pressable
             onPress={() => {
               navigation.navigate("Faq");
             }}
           >
-            <View className="flex-row justify-between items-center bg-white mt-2 p-4 rounded-lg">
+            <View className="flex-row justify-between items-center bg-white mt-2 p-4 rounded-lg dark:bg-neutral-700/60">
               <View className="flex-row justify-between items-center gap-4">
-                <Icon name="help-outline" color={"black"} size={24}></Icon>
-                <Text className="text-lg font-semibold text-black">
+                <Icon
+                  name="help-outline"
+                  color={isEnabledLayoutMode ? "#fff" : "#000"}
+                  size={24}
+                ></Icon>
+                <Text className="text-lg font-semibold text-black dark:text-white">
                   Perguntas Frequentes
                 </Text>
               </View>
@@ -333,14 +390,14 @@ const SettingsScreen = ({ route, navigation }: props) => {
               setOpenTeamSupportLinks(!openTeamSupportLinks);
             }}
           >
-            <View className="flex-row justify-between items-center bg-white mt-2 p-4 rounded-lg">
+            <View className="flex-row justify-between items-center bg-white mt-2 p-4 rounded-lg dark:bg-neutral-700/60">
               <View className="flex-row justify-between items-center gap-4">
                 <Icon
                   name="accessibility-outline"
-                  color={"black"}
+                  color={isEnabledLayoutMode ? "#fff" : "#000"}
                   size={24}
                 ></Icon>
-                <Text className="text-lg font-semibold text-black">
+                <Text className="text-lg font-semibold text-black dark:text-white">
                   Falar com Equipa de Suporte
                 </Text>
               </View>
@@ -351,7 +408,7 @@ const SettingsScreen = ({ route, navigation }: props) => {
                     ? "chevron-up-outline"
                     : "chevron-down-outline"
                 }
-                color={"#999"}
+                color={isEnabledLayoutMode ? "#fff" : "#000"}
                 size={30}
               ></Icon>
             </View>
@@ -367,10 +424,14 @@ const SettingsScreen = ({ route, navigation }: props) => {
               setOpenModalFeedback(true);
             }}
           >
-            <View className="flex-row justify-between items-center bg-white mt-2 p-4 rounded-lg">
+            <View className="flex-row justify-between items-center bg-white mt-2 p-4 rounded-lg dark:bg-neutral-700/60">
               <View className="flex-row justify-between items-center gap-4">
-                <Icon name="star-half-outline" color={"black"} size={24}></Icon>
-                <Text className="text-lg font-semibold text-black">
+                <Icon
+                  name="star-half-outline"
+                  color={isEnabledLayoutMode ? "#fff" : "#000"}
+                  size={24}
+                ></Icon>
+                <Text className="text-lg font-semibold text-black dark:text-white">
                   Feedback
                 </Text>
               </View>
@@ -381,14 +442,16 @@ const SettingsScreen = ({ route, navigation }: props) => {
                 size={30}
               ></Icon>
               <Modal isOpen={openModalFeedback} withInput={false}>
-                <View className="bg-white w-11/12 p-6 rounded-2xl shadow-lg">
+                <View className="bg-white w-11/12 p-6 rounded-2xl shadow-lg dark:bg-zinc-800/80">
                   {/* Título */}
-                  <Text className="text-black text-xl font-semibold text-center mb-4">
+                  <Text className="text-black text-xl font-semibold text-center mb-4 dark:text-white">
                     Deixe seu Feedback
                   </Text>
 
                   {/* Seção de Avaliação */}
-                  <Text className="text-zinc-700 text-sm mb-2">Avaliação:</Text>
+                  <Text className="text-zinc-700 text-sm mb-2 dark:text-white">
+                    Avaliação:
+                  </Text>
                   <View className="flex-row justify-center mb-4">
                     {[1, 2, 3, 4, 5].map((num) => (
                       <TouchableOpacity
@@ -404,12 +467,12 @@ const SettingsScreen = ({ route, navigation }: props) => {
                   </View>
 
                   {/* Seção de Comentário */}
-                  <Text className="text-zinc-700 text-sm mb-2">
+                  <Text className="text-zinc-700 text-sm mb-2 dark:text-white">
                     Comentário:
                   </Text>
                   <TextInput
                     placeholder="Digite seu comentário..."
-                    className="border border-zinc-300 rounded-lg p-3 text-black text-sm"
+                    className="border border-zinc-300 rounded-lg p-3 text-black text-sm dark:text-white"
                     multiline
                     numberOfLines={4}
                     value={comment}
@@ -421,7 +484,9 @@ const SettingsScreen = ({ route, navigation }: props) => {
                       onPress={() => setOpenModalFeedback(false)}
                       className="px-5 py-3 rounded-lg bg-zinc-300"
                     >
-                      <Text className="text-black font-semibold">Cancelar</Text>
+                      <Text className="text-black font-semibold dark:text-white">
+                        Cancelar
+                      </Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity
@@ -440,61 +505,67 @@ const SettingsScreen = ({ route, navigation }: props) => {
               navigation.navigate("About");
             }}
           >
-            <View className="flex-row justify-between items-center bg-white mt-2 p-4 rounded-lg">
+            <View className="flex-row justify-between items-center bg-white mt-2 p-4 rounded-lg dark:bg-neutral-700/60">
               <View className="flex-row justify-between items-center gap-4">
-                <Icon name="analytics-outline" color={"black"} size={24}></Icon>
-                <Text className="text-lg font-semibold text-black">
+                <Icon
+                  name="analytics-outline"
+                  color={isEnabledLayoutMode ? "#fff" : "#000"}
+                  size={24}
+                ></Icon>
+                <Text className="text-lg font-semibold text-black dark:text-white">
                   Sobre o App
                 </Text>
               </View>
               <Icon
                 style={{ alignSelf: "flex-end" }}
                 name="chevron-forward-outline"
-                color={"#999"}
+                color={isEnabledLayoutMode ? "#fff" : "#000"}
                 size={30}
               ></Icon>
             </View>
           </Pressable>
         </View>
         <View className=" w-[92%] rounded-lg p-4 mt-3 mx-auto">
-          <Text className="text-xl font-bold text-black">Legal</Text>
+          <Text className="text-xl font-bold text-black dark:text-white">
+            Legal
+          </Text>
           <Pressable onPress={() => navigation.navigate("Policy")}>
-            <View className="flex-row justify-between items-center bg-white mt-2 p-4 rounded-lg">
+            <View className="flex-row justify-between items-center bg-white mt-2 p-4 rounded-lg dark:bg-neutral-700/60">
               <View className="flex-row justify-between items-center gap-4">
                 <Icon
                   name="document-lock-outline"
-                  color={"black"}
+                  color={isEnabledLayoutMode ? "#fff" : "#000"}
                   size={24}
                 ></Icon>
-                <Text className="text-lg font-semibold text-black">
+                <Text className="text-lg font-semibold text-black dark:text-white">
                   Políticas de Privacidade
                 </Text>
               </View>
               <Icon
                 style={{ alignSelf: "flex-end" }}
                 name="chevron-forward-outline"
-                color={"#999"}
+                color={isEnabledLayoutMode ? "#fff" : "#000"}
                 size={30}
               ></Icon>
             </View>
           </Pressable>
 
           <Pressable onPress={() => navigation.navigate("Terms")}>
-            <View className="flex-row justify-between items-center bg-white mt-2 p-4 rounded-lg">
+            <View className="flex-row justify-between items-center bg-white mt-2 p-4 rounded-lg dark:bg-neutral-700/60">
               <View className="flex-row justify-between items-center gap-4">
                 <Icon
                   name="document-attach-outline"
-                  color={"black"}
+                  color={isEnabledLayoutMode ? "#fff" : "#000"}
                   size={24}
                 ></Icon>
-                <Text className="text-lg font-semibold text-black">
+                <Text className="text-lg font-semibold text-black dark:text-white">
                   Termos de Uso
                 </Text>
               </View>
               <Icon
                 style={{ alignSelf: "flex-end" }}
                 name="chevron-forward-outline"
-                color={"#999"}
+                color={isEnabledLayoutMode ? "#fff" : "#000"}
                 size={30}
               ></Icon>
             </View>

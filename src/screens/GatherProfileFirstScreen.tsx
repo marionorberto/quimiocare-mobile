@@ -29,6 +29,7 @@ import api from "../services/api";
 type props = NativeStackScreenProps<RootStackParamsList, ScreenNames>;
 
 const GatherProfileFirstScreen = ({ route, navigation }: props) => {
+  const FormData = global.FormData;
   const [countryName, setcountryName] = useState("");
   const [birthday, setBirthday] = useState(new Date());
   const [sex, setSex] = useState<string>("");
@@ -91,6 +92,7 @@ const GatherProfileFirstScreen = ({ route, navigation }: props) => {
 
     if (!result.canceled) {
       seturlImg(result.assets[0].uri);
+      console.log(urlImg);
     }
   };
 

@@ -204,23 +204,7 @@ const MainScreen = ({ navigation, route }: props) => {
             <View className="bg-red-500 absolute top-1 right-2 rounded-xl h-2 w-2"></View>
           </View>
         </View>
-        <View className="flex-row justify-between items-csenter pe-4">
-          <View className="flex-row justify-start items-center gap-3 rounded-full bg-zinc-100 p-3 w-[13rem] mt-5 ms-3">
-            <View className="flex-1 justify-center items-center rounded-full bg-white p-[1px]">
-              <TouchableHighlight
-                onPress={() => alert("Deve mostrar apenas dados de hoje")}
-              >
-                <Text className="font-bold text-base text-black p-1">Hoje</Text>
-              </TouchableHighlight>
-            </View>
-            <View className="flex-1 justify-center items-center rounded-xl p-1">
-              <TouchableHighlight
-                onPress={() => alert("Deve mostrar apenas dados semanais")}
-              >
-                <Text className="font-bold text-base text-black">Semana</Text>
-              </TouchableHighlight>
-            </View>
-          </View>
+        <View className="flex-row justify-end items-center pe-4">
           <View className="flex-row gap-2 justify-end items-center pt-3">
             <TouchableOpacity
               className="bg-blue-500/80 px-2 py-2 rounded-lg flex-row items-center h-10"

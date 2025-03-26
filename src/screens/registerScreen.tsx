@@ -24,6 +24,7 @@ const RegisterScreen = ({ route, navigation }: props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [agreed, setAgreed] = useState(false);
+  const [isVisiblePassword, setIsVisiblePassword] = useState(false);
 
   const { userType } = route.params;
 
@@ -54,7 +55,7 @@ const RegisterScreen = ({ route, navigation }: props) => {
           <Icon name="chevron-back-outline" size={22} color={"#505050"}></Icon>
         </Pressable>
       </View>
-      <ScrollView className="">
+      <ScrollView showsVerticalScrollIndicator={false}>
         <Text className="text-5xl text-zinc-900 py-5">
           Olá, Registra a sua conta!
         </Text>
@@ -91,14 +92,24 @@ const RegisterScreen = ({ route, navigation }: props) => {
               keyboardType="email-address"
             />
           </View>
-          <View className="mt-1">
-            <Text className="text-zinc-700 mb-1">Password</Text>
+          <View className="relative">
             <TextInput
               className="border border-zinc-300 rounded-lg px-4 py-3"
               placeholder="Password"
               value={password}
               onChangeText={setPassword}
-              keyboardType="visible-password"
+              secureTextEntry={isVisiblePassword}
+              // keyboardType="visible-password"
+            />
+
+            <Icon
+              onPress={() => {
+                setIsVisiblePassword(!isVisiblePassword);
+              }}
+              name={`${isVisiblePassword ? "eye-outline" : "eye-off-outline"}`}
+              color={"black"}
+              size={22}
+              className="absolute right-4 top-3"
             />
           </View>
           <View className="py-4 flex-row justify-center items-stretch gap-2 ms-2">
@@ -112,6 +123,14 @@ const RegisterScreen = ({ route, navigation }: props) => {
               Concordo com todos os termos de uso
             </Text>
           </View>
+          <Text
+            onPress={() => {
+              navigation.navigate("Terms", { title: "termos" });
+            }}
+            className="text-blue-400 pb-2 "
+          >
+            Ler Termos de uso
+          </Text>
           <TouchableOpacity
             onPress={() => {
               register();
