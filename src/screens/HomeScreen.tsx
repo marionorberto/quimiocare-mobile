@@ -23,14 +23,14 @@ const HomeScreen = ({ route, navigation }: props) => {
         className=""
         source={require("../../assets/login.svg")}
       />
-      <Text className="font-bold text-black text-3xl mb-3 mt-6 opacity-70 dark:text-white">
+      <Text className="font-bold text-black text-3xl mb-3 mt-6 opacity-70 dark:text-white dark">
         QuimioCare{" "}
       </Text>
-      <Text className="text-zinc-400 text-center px-20">
+      <Text className="text-zinc-400 text-center px-20 dark:text-white">
         Monitore os seus sintomas, registre os seus dados médicos e conquiste a
         cura!
       </Text>
-      <View className="bg-zinc-200/60 p-4 flex flex-row justify-center items-center rounded-lg mt-14 mb-5">
+      <View className="bg-zinc-200/60 p-4 flex flex-row justify-center items-center rounded-lg mt-14 mb-5 dark:bg-neutral-800/60">
         <TouchableOpacity
           onPress={() =>
             navigation.navigate(ScreenNames.ChooseUserScreen, {
@@ -45,14 +45,14 @@ const HomeScreen = ({ route, navigation }: props) => {
           onPress={() => {
             navigation.navigate(ScreenNames.Login, { title: "Login" });
           }}
-          className="text-blue-400 bg-white  px-7 py-5 rounded-r-lg"
+          className="text-blue-400 bg-white  px-7 py-5 rounded-r-lg dark:bg-neutral-700/90"
         >
           <Text className="text-blue-400 font-semibold text-lg">Login</Text>
         </Pressable>
       </View>
-      <Text className="text-zinc-400 px-20 text-center">
+      <Text className="text-zinc-400 px-20 text-center dark:text-white">
         Uma app para tornar
-        <Text className="text-blue-400"> a tua jornada </Text>
+        <Text className="text-blue-400 dark:text-white"> a tua jornada </Text>
         mais organizada e controlada!
       </Text>
     </View>

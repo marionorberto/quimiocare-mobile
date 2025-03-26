@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { API_URL } from '../constants/data';
+import api from './api';
 
 export const handleUpdatePassword = async (
     atualPassword: string,
@@ -7,7 +8,7 @@ export const handleUpdatePassword = async (
   ): Promise<any> => {
   try { 
 
-    const response = await axios.put(`${API_URL}/password/update/user`, {
+    const response = await api.put(`${API_URL}/users/password/user/update`, {
       atualPassword,
       newPassword,
      });

@@ -39,8 +39,8 @@ const StackRoutes = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name={ScreenNames.Library}
-        component={LibraryScreen}
+        name={ScreenNames.Welcome}
+        component={WelcomeScreen}
         options={{ headerShown: false }}
       />
       <Stack.Screen

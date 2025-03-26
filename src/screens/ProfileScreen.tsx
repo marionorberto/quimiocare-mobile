@@ -101,10 +101,12 @@ const ProfileScreen = ({ route, navigation }: props) => {
   ): Promise<void> => {
     try {
       await handleUpdatePassword(atualPassword, newPassword);
+      setOpenModalChangePassword(false);
       Alert.alert(
         "Atualização de password",
         "Password atualizada com sucesso, próximo login entre com a sua nova password"
       );
+      navigation.navigate("Login");
     } catch (error: any) {
       if (error.data) {
         alert(`${error.message.map((error: string) => error)}`);
@@ -556,7 +558,8 @@ const ProfileScreen = ({ route, navigation }: props) => {
             <View className="flex-row justify-start items-center gap-2 mt-3">
               <Icon
                 name="notifications-circle-outline"
-                color={"black"}
+                // color={"black"}
+
                 size={20}
               ></Icon>
               <View>
@@ -611,13 +614,7 @@ const ProfileScreen = ({ route, navigation }: props) => {
                   className="py-4 px-4 bg-zinc-200/50 rounded-lg placeholder:text-zinc-400 mt-3"
                 ></TextInput>
               </View>
-              <Pressable
-                onPress={() => {
-                  setOpenModalChangePassword(true);
-                }}
-              >
-                <Text>Mudar Password</Text>
-              </Pressable>
+
               <Modal isOpen={openModalChangePassword} withInput={true}>
                 <View className="p-6 bg-white rounded-2xl w-full max-w-md shadow-lg dark:bg-neutral-700/80">
                   <View className="flex-row justify-between items-center mb-4">
@@ -637,7 +634,7 @@ const ProfileScreen = ({ route, navigation }: props) => {
                   </Text>
                   <TextInput
                     className="border border-zinc-300 rounded-lg px-4 py-2 mb-3"
-                    placeholder="Ex: Náusea, Fadiga..."
+                    placeholder="Senha Atual..."
                     value={atualPassword}
                     onChangeText={setAtualPassword}
                   />
@@ -646,7 +643,7 @@ const ProfileScreen = ({ route, navigation }: props) => {
                   </Text>
                   <TextInput
                     className="border border-zinc-300 rounded-lg px-4 py-2 mb-3 h-20"
-                    placeholder="Detalhe os sintomas, duração, intensidade..."
+                    placeholder="A tua nova senha requerida"
                     multiline
                     value={newPassword}
                     onChangeText={setNewPassword}
