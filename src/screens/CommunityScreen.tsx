@@ -92,7 +92,7 @@ const CommunityScreen = () => {
         <View className="flex-row gap-2 justify-start items-center pt-3">
           <View className="flex-row gap-2 justify-start items-center pt-3">
             <TouchableOpacity
-              className="bg-blue-500/80 px-2 py-2 rounded-lg flex-row items-center h-10"
+              className="bg-green-500/80 px-2 py-2 rounded-lg flex-row items-center h-10"
               onPress={() => openWhatsApp()}
             >
               <Icon name="logo-whatsapp" size={20} color="white" />
@@ -133,94 +133,337 @@ const CommunityScreen = () => {
             <ScrollView
               horizontal={true}
               showsHorizontalScrollIndicator={false}
+              className="py-4"
             >
-              <View className="flex-row justify-center items-center bg-blue-400/15 mt-4 p-5 rounded-3xl  h-[16rem] w-80 me-3 relative">
-                <Text className="text-3xl  text-zinc-600 font-light text-wrap text-center">
-                  Como lidar com os efeitos colaterais durate a quimioterapia?
-                </Text>
+              <View className=" shadow-zinc-400 border-2 border-zinc-200 flex-col justify-center items-start bg-white mt-4 p-5 rounded-lg  h-[16rem] w-80 me-3 relative">
+                <View className="w-full py-3 pt-1">
+                  <View className="flex-row justify-start items-center gap-3 ">
+                    <Image
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 50,
+                        alignContent: "center",
+                        borderWidth: 2,
+                        borderColor: "#fff",
+                        backgroundColor: "#ccc",
+                      }}
+                      source={require("../../assets/user.png")}
+                    />
+                    <Text className="font-semibold text-sm text-black">
+                      Mário Norberto
+                    </Text>
+                  </View>
+                  <View className="flex-row justify-between items-center gap-3">
+                    <Text className="font-semibold text-sm text-black flex-row justify-start items-center">
+                      <View className="h-1 w-1 bg-blue-400 rounded-full"></View>
+                      <Text>Post</Text>
+                    </Text>
+                    <Text className="rounded-xl bg-blue-500/30 text-blue-600 font-semibold px-[11px] py-[3px]">
+                      Meloma
+                    </Text>
+                  </View>
+                </View>
+                <View>
+                  <Text className="text-sm  text-zinc-400 font-light text-wrap text-justify">
+                    Como lidar com os efeitos colaterais durate a quimioterapia?
+                    Como lidar com os efeitos colaterais durate a quimioterapia?
+                    Como lidar com os efeitos colaterais durate a quimioterapia?
+                  </Text>
+                </View>
+                <View className="flex-row justify-start items-center">
+                  <View className="flex-row justify-start items-center me-2">
+                    <Icon
+                      name="heart-circle-outline"
+                      color={"black"}
+                      size={18}
+                    />
+                    <Text className="rounded-sm py-2 px-1 text-black text-sm">
+                      Adoro
+                    </Text>
+                  </View>
 
-                <Text className="text-black font-light bg-white rounded-2xl px-4 py-2 absolute bottom-3 right-3">
-                  Ler
-                </Text>
+                  <View className="flex-row justify-start items-center me-2">
+                    <Icon name="bookmark-outline" color={"black"} size={17} />
+                    <Text className="rounded-sm py-2 px-1 text-black text-sm">
+                      Guardar
+                    </Text>
+                  </View>
+                  <View className="flex-row justify-start items-center me-2">
+                    <Icon
+                      name="share-social-outline"
+                      color={"black"}
+                      size={17}
+                    />
+                    <Text className="rounded-sm py-2 px-1 text-black text-sm">
+                      Partilhar
+                    </Text>
+                  </View>
+                </View>
               </View>
-              <View className="flex-row justify-center items-center bg-blue-400/15 mt-4 p-5 rounded-3xl  h-[16rem] w-80 me-3 relative">
-                <Text className="text-3xl  text-zinc-600 font-light text-wrap text-center">
-                  Meu prazer sexual reduziu depois da primeira quimio
-                </Text>
+              <View className=" shadow-zinc-400 border-2 border-zinc-200 flex-col justify-center items-start bg-white mt-4 p-5 rounded-lg  h-[16rem] w-80 me-3 relative">
+                <View className="w-full py-3 pt-1">
+                  <View className="flex-row justify-start items-center gap-3 ">
+                    <Image
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 50,
+                        alignContent: "center",
+                        borderWidth: 2,
+                        borderColor: "#fff",
+                        backgroundColor: "#ccc",
+                      }}
+                      source={require("../../assets/user.png")}
+                    />
+                    <Text className="font-semibold text-sm text-black">
+                      Mário Norberto
+                    </Text>
+                  </View>
+                  <View className="flex-row justify-between items-center gap-3">
+                    <Text className="font-semibold text-sm text-black flex-row justify-start items-center">
+                      <View className="h-1 w-1 bg-blue-400 rounded-full"></View>
+                      <Text>Post</Text>
+                    </Text>
+                    <Text className="rounded-xl bg-blue-500/30 text-blue-600 font-semibold px-[11px] py-[3px]">
+                      Meloma
+                    </Text>
+                  </View>
+                </View>
+                <View>
+                  <Text className="text-sm  text-zinc-400 font-light text-wrap text-justify">
+                    Como lidar com os efeitos colaterais durate a quimioterapia?
+                    Como lidar com os efeitos colaterais durate a quimioterapia?
+                    Como lidar com os efeitos colaterais durate a quimioterapia?
+                  </Text>
+                </View>
+                <View className="flex-row justify-start items-center">
+                  <View className="flex-row justify-start items-center me-2">
+                    <Icon
+                      name="heart-circle-outline"
+                      color={"black"}
+                      size={18}
+                    />
+                    <Text className="rounded-sm py-2 px-1 text-black text-sm">
+                      Adoro
+                    </Text>
+                  </View>
 
-                <Text className="text-black font-light bg-white rounded-2xl px-4 py-2 absolute bottom-3 right-3">
-                  Ler
-                </Text>
+                  <View className="flex-row justify-start items-center me-2">
+                    <Icon name="bookmark-outline" color={"black"} size={17} />
+                    <Text className="rounded-sm py-2 px-1 text-black text-sm">
+                      Guardar
+                    </Text>
+                  </View>
+                  <View className="flex-row justify-start items-center me-2">
+                    <Icon
+                      name="share-social-outline"
+                      color={"black"}
+                      size={17}
+                    />
+                    <Text className="rounded-sm py-2 px-1 text-black text-sm">
+                      Partilhar
+                    </Text>
+                  </View>
+                </View>
               </View>
-              <View className="flex-row justify-center items-center bg-blue-400/15 mt-4 p-5 rounded-3xl  h-[16rem] w-80 me-3 relative">
-                <Text className="text-3xl  text-zinc-600 font-light text-wrap text-center">
-                  Meus cabelos cairam e a minha alto estima baixou!
-                </Text>
+              <View className=" shadow-zinc-400 border-2 border-zinc-200 flex-col justify-center items-start bg-white mt-4 p-5 rounded-lg  h-[16rem] w-80 me-3 relative">
+                <View className="w-full py-3 pt-1">
+                  <View className="flex-row justify-start items-center gap-3 ">
+                    <Image
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 50,
+                        alignContent: "center",
+                        borderWidth: 2,
+                        borderColor: "#fff",
+                        backgroundColor: "#ccc",
+                      }}
+                      source={require("../../assets/user.png")}
+                    />
+                    <Text className="font-semibold text-sm text-black">
+                      Mário Norberto
+                    </Text>
+                  </View>
+                  <View className="flex-row justify-between items-center gap-3">
+                    <Text className="font-semibold text-sm text-black flex-row justify-start items-center">
+                      <View className="h-1 w-1 bg-blue-400 rounded-full"></View>
+                      <Text>Post</Text>
+                    </Text>
+                    <Text className="rounded-xl bg-blue-500/30 text-blue-600 font-semibold px-[11px] py-[3px]">
+                      Meloma
+                    </Text>
+                  </View>
+                </View>
+                <View>
+                  <Text className="text-sm  text-zinc-400 font-light text-wrap text-justify">
+                    Como lidar com os efeitos colaterais durate a quimioterapia?
+                    Como lidar com os efeitos colaterais durate a quimioterapia?
+                    Como lidar com os efeitos colaterais durate a quimioterapia?
+                  </Text>
+                </View>
+                <View className="flex-row justify-start items-center">
+                  <View className="flex-row justify-start items-center me-2">
+                    <Icon
+                      name="heart-circle-outline"
+                      color={"black"}
+                      size={18}
+                    />
+                    <Text className="rounded-sm py-2 px-1 text-black text-sm">
+                      Adoro
+                    </Text>
+                  </View>
 
-                <Text className="text-black font-light bg-white rounded-2xl px-4 py-2 absolute bottom-3 right-3">
-                  Ler
-                </Text>
+                  <View className="flex-row justify-start items-center me-2">
+                    <Icon name="bookmark-outline" color={"black"} size={17} />
+                    <Text className="rounded-sm py-2 px-1 text-black text-sm">
+                      Guardar
+                    </Text>
+                  </View>
+                  <View className="flex-row justify-start items-center me-2">
+                    <Icon
+                      name="share-social-outline"
+                      color={"black"}
+                      size={17}
+                    />
+                    <Text className="rounded-sm py-2 px-1 text-black text-sm">
+                      Partilhar
+                    </Text>
+                  </View>
+                </View>
               </View>
-              <View className="flex-row justify-center items-center bg-blue-400/15 mt-4 p-5 rounded-3xl  h-[16rem] w-80 me-3 relative">
-                <Text className="text-3xl  text-zinc-600 font-light text-wrap text-center">
-                  Estou com crises de pânicos, oque faço?
-                </Text>
+              <View className=" shadow-zinc-400 border-2 border-zinc-200 flex-col justify-center items-start bg-white mt-4 p-5 rounded-lg  h-[16rem] w-80 me-3 relative">
+                <View className="w-full py-3 pt-1">
+                  <View className="flex-row justify-start items-center gap-3 ">
+                    <Image
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 50,
+                        alignContent: "center",
+                        borderWidth: 2,
+                        borderColor: "#fff",
+                        backgroundColor: "#ccc",
+                      }}
+                      source={require("../../assets/user.png")}
+                    />
+                    <Text className="font-semibold text-sm text-black">
+                      Mário Norberto
+                    </Text>
+                  </View>
+                  <View className="flex-row justify-between items-center gap-3">
+                    <Text className="font-semibold text-sm text-black flex-row justify-start items-center">
+                      <View className="h-1 w-1 bg-blue-400 rounded-full"></View>
+                      <Text>Post</Text>
+                    </Text>
+                    <Text className="rounded-xl bg-blue-500/30 text-blue-600 font-semibold px-[11px] py-[3px]">
+                      Meloma
+                    </Text>
+                  </View>
+                </View>
+                <View>
+                  <Text className="text-sm  text-zinc-400 font-light text-wrap text-justify">
+                    Como lidar com os efeitos colaterais durate a quimioterapia?
+                    Como lidar com os efeitos colaterais durate a quimioterapia?
+                    Como lidar com os efeitos colaterais durate a quimioterapia?
+                  </Text>
+                </View>
+                <View className="flex-row justify-start items-center">
+                  <View className="flex-row justify-start items-center me-2">
+                    <Icon
+                      name="heart-circle-outline"
+                      color={"black"}
+                      size={18}
+                    />
+                    <Text className="rounded-sm py-2 px-1 text-black text-sm">
+                      Adoro
+                    </Text>
+                  </View>
 
-                <Text className="text-black font-light bg-white rounded-2xl px-4 py-2 absolute bottom-3 right-3">
-                  Ler
-                </Text>
+                  <View className="flex-row justify-start items-center me-2">
+                    <Icon name="bookmark-outline" color={"black"} size={17} />
+                    <Text className="rounded-sm py-2 px-1 text-black text-sm">
+                      Guardar
+                    </Text>
+                  </View>
+                  <View className="flex-row justify-start items-center me-2">
+                    <Icon
+                      name="share-social-outline"
+                      color={"black"}
+                      size={17}
+                    />
+                    <Text className="rounded-sm py-2 px-1 text-black text-sm">
+                      Partilhar
+                    </Text>
+                  </View>
+                </View>
               </View>
-            </ScrollView>
-          </View>
-          <View className="mt-5 px-4">
-            <View className="flex-row justify-between items-center">
-              <Text className="text-zinc-900">Video Recomendados</Text>
-              <Text
-                className="text-zinc-400"
-                onPress={() => alert("definir menu opcoes e integrar")}
-              >
-                <Icon name="ellipsis-horizontal-sharp" />
-              </Text>
-            </View>
-            <ScrollView
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-            >
-              <View className="flex-row justify-center items-center bg-blue-400/15 mt-4 p-5 rounded-3xl  h-[16rem] w-80 me-3 relative">
-                <Text className="text-3xl  text-zinc-600 font-light text-wrap text-center">
-                  VIDEO
-                </Text>
+              <View className=" shadow-zinc-400 border-2 border-zinc-200 flex-col justify-center items-start bg-white mt-4 p-5 rounded-lg  h-[16rem] w-80 me-3 relative">
+                <View className="w-full py-3 pt-1">
+                  <View className="flex-row justify-start items-center gap-3 ">
+                    <Image
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 50,
+                        alignContent: "center",
+                        borderWidth: 2,
+                        borderColor: "#fff",
+                        backgroundColor: "#ccc",
+                      }}
+                      source={require("../../assets/user.png")}
+                    />
+                    <Text className="font-semibold text-sm text-black">
+                      Mário Norberto
+                    </Text>
+                  </View>
+                  <View className="flex-row justify-between items-center gap-3">
+                    <Text className="font-semibold text-sm text-black flex-row justify-start items-center">
+                      <View className="h-1 w-1 bg-blue-400 rounded-full"></View>
+                      <Text>Post</Text>
+                    </Text>
+                    <Text className="rounded-xl bg-blue-500/30 text-blue-600 font-semibold px-[11px] py-[3px]">
+                      Meloma
+                    </Text>
+                  </View>
+                </View>
+                <View>
+                  <Text className="text-sm  text-zinc-400 font-light text-wrap text-justify">
+                    Como lidar com os efeitos colaterais durate a quimioterapia?
+                    Como lidar com os efeitos colaterais durate a quimioterapia?
+                    Como lidar com os efeitos colaterais durate a quimioterapia?
+                  </Text>
+                </View>
+                <View className="flex-row justify-start items-center">
+                  <View className="flex-row justify-start items-center me-2">
+                    <Icon
+                      name="heart-circle-outline"
+                      color={"black"}
+                      size={18}
+                    />
+                    <Text className="rounded-sm py-2 px-1 text-black text-sm">
+                      Adoro
+                    </Text>
+                  </View>
 
-                <Text className="text-black font-light bg-white rounded-2xl px-4 py-2 absolute bottom-3 right-3">
-                  <Icon name="expand-outline"></Icon>
-                </Text>
-              </View>
-              <View className="flex-row justify-center items-center bg-blue-400/15 mt-4 p-5 rounded-3xl  h-[16rem] w-80 me-3 relative">
-                <Text className="text-3xl  text-zinc-600 font-light text-wrap text-center">
-                  VIDEO
-                </Text>
-
-                <Text className="text-black font-light bg-white rounded-2xl px-4 py-2 absolute bottom-3 right-3">
-                  <Icon name="expand-outline"></Icon>
-                </Text>
-              </View>
-              <View className="flex-row justify-center items-center bg-blue-400/15 mt-4 p-5 rounded-3xl  h-[16rem] w-80 me-3 relative">
-                <Text className="text-3xl  text-zinc-600 font-light text-wrap text-center">
-                  VIDEO
-                </Text>
-
-                <Text className="text-black font-light bg-white rounded-2xl px-4 py-2 absolute bottom-3 right-3">
-                  <Icon name="expand-outine"></Icon>
-                </Text>
-              </View>
-              <View className="flex-row justify-center items-center bg-blue-400/15 mt-4 p-5 rounded-3xl  h-[16rem] w-80 me-3 relative">
-                <Text className="text-3xl  text-zinc-600 font-light text-wrap text-center">
-                  VIDEO
-                </Text>
-
-                <Text className="text-black font-light bg-white rounded-2xl px-4 py-2 absolute bottom-3 right-3">
-                  <Icon name="expand-outine"></Icon>
-                </Text>
+                  <View className="flex-row justify-start items-center me-2">
+                    <Icon name="bookmark-outline" color={"black"} size={17} />
+                    <Text className="rounded-sm py-2 px-1 text-black text-sm">
+                      Guardar
+                    </Text>
+                  </View>
+                  <View className="flex-row justify-start items-center me-2">
+                    <Icon
+                      name="share-social-outline"
+                      color={"black"}
+                      size={17}
+                    />
+                    <Text className="rounded-sm py-2 px-1 text-black text-sm">
+                      Partilhar
+                    </Text>
+                  </View>
+                </View>
               </View>
             </ScrollView>
           </View>

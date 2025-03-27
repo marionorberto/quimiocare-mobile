@@ -4,7 +4,9 @@ import { AppRegistry } from "react-native";
 import { PaperProvider, DefaultTheme } from "react-native-paper";
 import { expo } from "./app.json";
 import { TailwindProvider } from "tailwindcss-react-native";
+import { ThemeProvider } from "./src/helpers/theme-context";
 import Routes from "./src/routes";
+import { ThemeContext } from "@react-navigation/native";
 
 const theme = {
   ...DefaultTheme,
@@ -17,10 +19,12 @@ const theme = {
 
 export default function App() {
   return (
-    <TailwindProvider>
-      <PaperProvider theme={theme}>
-        <Routes />
-      </PaperProvider>
-    </TailwindProvider>
+    <ThemeProvider>
+      <TailwindProvider>
+        <PaperProvider theme={theme}>
+          <Routes />
+        </PaperProvider>
+      </TailwindProvider>
+    </ThemeProvider>
   );
 }

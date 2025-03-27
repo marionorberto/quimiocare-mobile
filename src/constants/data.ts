@@ -84,4 +84,4 @@ export const moodDayFeeling: MoodDayFeelingType[]=  [
   },                                                                                                                                                                                                                                                                                                                                                                                      
 ];
 
-export const API_URL = 'http://192.168.1.214:3000/api/v1/quimiocare';
+export const API_URL = 'http://192.168.212.1:3000/api/v1/quimiocare';

@@ -28,8 +28,11 @@
     },
     "plugins": [
       "expo-router",
-      ["expo-document-picker"],
-      "expo-image-picker"
+      [
+        "expo-document-picker"
+      ],
+      "expo-image-picker",
+      "expo-secure-store"
     ],
     "extra": {
       "router": {

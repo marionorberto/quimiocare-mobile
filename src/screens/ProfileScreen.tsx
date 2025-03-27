@@ -25,6 +25,7 @@ import { API_URL } from "../constants/data";
 import ModalChangePassword from "../components/ModalChangePassword";
 import Modal from "../components/Modal";
 import { handleUpdatePassword } from "../services/updatePasswordService";
+import { useTheme } from "../helpers/theme-context";
 
 type props = NativeStackScreenProps<BottomTabParamList>;
 
@@ -174,6 +175,20 @@ const ProfileScreen = ({ route, navigation }: props) => {
     }
   };
 
+  const handleSave = (updatedData: {
+    id: string;
+    username: string;
+    email: string;
+    typeUser: string;
+    createdAt: string;
+    updatedAt: string;
+    notifications: [];
+    tags: [];
+  }) => {
+    setUserData(updatedData);
+    setEditUserInfoModalVisible(false);
+  };
+
   const fetchProfileData = () => {
     try {
       api
@@ -204,10 +219,12 @@ const ProfileScreen = ({ route, navigation }: props) => {
     }
   };
 
+  const { theme, toggleTheme } = useTheme();
+
   return (
     <View
       style={{ marginTop: Contants.statusBarHeight }}
-      className="flex-col justify-center items-stretch w-full pt-6 dark:bg-neutral-900"
+      className={`flex-col justify-center items-stretch w-full pt-6 ${theme === "dark" ? "bg-neutral-900" : ""} `}
     >
       <View className="flex-row justify-start items-center gap-10 px-4">
         <View className="border-[1px] border-zinc-200 p-[3px] rounded-md bg-white dark:bg-neutral-700/60">
@@ -215,10 +232,13 @@ const ProfileScreen = ({ route, navigation }: props) => {
             <Icon name="chevron-back-outline" size={20} color={"#505050"} />
           </Pressable>
         </View>
-        <Text className="text-xl self-center text-center text-black font-bold dark:text-white">
+        <Text
+          className={`text-xl self-center text-center text-black font-bold  ${theme === "dark" ? "text-white" : "text-black"}`}
+        >
           Perfil
         </Text>
       </View>
+
       <ScrollView className="pb-20" showsVerticalScrollIndicator={false}>
         <View className="flex-col justify-center items-center w-full mt-6">
           <View className="flex-col justify-center items-center w-full">
@@ -233,50 +253,64 @@ const ProfileScreen = ({ route, navigation }: props) => {
                   height: 110,
                 }}
               ></Image>
-              <View className="bg-white w-8 h-8 rounded-md absolute bottom-0 right-2 flex-1 justify-center items-center dark:bg-neutral-700/60">
-                <Icon
-                  name="camera-reverse-outline"
-                  color={"#2563eb"}
-                  size={23}
-                />
+              <View
+                className={`bg-white w-8 h-8 rounded-md absolute bottom-0 right-2 flex-1 justify-center items-center ${theme === "dark" ? "bg-neutral-700/60" : ""} `}
+              >
+                <Icon name="camera-reverse-outline" color={"#fff"} size={23} />
               </View>
             </View>
             {userData ? (
-              <Text className="text-black font-semibold text-center text-lg mt-4 dark:text-white">
+              <Text
+                className={`text-black font-semibold text-center text-lg mt-4 ${theme === "dark" ? "text-white" : ""}  `}
+              >
                 {userData.username}
               </Text>
             ) : (
               <Text>--</Text>
             )}
             {profileData ? (
-              <Text className="text-zinc-500 text-base dark:text-zinc-300">
+              <Text
+                className={`text-zinc-500 text-base ${theme === "dark" ? "text-zinc-300" : ""} `}
+              >
                 {profileData.job}
               </Text>
             ) : (
               <Text>--</Text>
             )}
             {profileData ? (
-              <Text className="text-zinc-400 text-base dark:text-zinc-300">
+              <Text
+                className={`text-zinc-400 text-base ${theme === "dark" ? "text-zinc-300" : ""} `}
+              >
                 {profileData.bio}
               </Text>
             ) : (
               <Text>--</Text>
             )}
 
-            <View className=" w-full border-y-2 border-zinc-300 flex-row justify-around items-center py-4 mt-5 dark:border-zinc-500">
+            <View
+              className={` w-full border-y-2 border-zinc-300 flex-row justify-around items-center py-4 mt-5 ${theme === "dark" ? "border-zinc-500" : ""} `}
+            >
               <View>
-                <Text className="font-bold text-lg text-center dark:text-white">
+                <Text
+                  className={`font-bold text-lg text-center ${theme === "dark" ? "text-white" : ""} `}
+                >
                   {medicationCounter.count}
                 </Text>
-                <Text className="text-zinc-300 text-center text-sm dark:text-zinc-200">
+                <Text
+                  className={`text-zinc-300 text-center text-sm ${theme === "dark" ? "text-zinc-200" : ""} `}
+                >
                   Consultas
                 </Text>
               </View>
               <View>
-                <Text className="font-bold text-lg text-center dark:text-white">
+                <Text
+                  className={`font-bold text-lg text-center ${theme === "dark" ? "text-white" : ""} `}
+                >
                   {symptomsCounter.count}
                 </Text>
-                <Text className="text-zinc-300 text-center text-sm dark:text-zinc-200">
+                <Text
+                  className={`text-zinc-300 text-center text-sm ${theme === "dark" ? "text-zinc-200" : ""} `}
+                >
                   Sintomas
                 </Text>
               </View>
@@ -299,22 +333,29 @@ const ProfileScreen = ({ route, navigation }: props) => {
             </View>
           </View>
         </View>
-        <View className="w-[92%] rounded-lg p-4 bg-white mt-6 mx-auto dark:bg-neutral-700/60">
+        <View
+          className={`w-[92%] rounded-lg p-4 bg-white mt-6 mx-auto ${theme === "dark" ? "bg-neutral-700/60" : ""} `}
+        >
           <View className="flex-row justify-between items-center">
-            <Text className="text-xl font-bold text-black dark:text-white">
+            <Text
+              className={`text-xl font-bold text-black ${theme === "dark" ? "text-white" : ""} `}
+            >
               Informações Pessoais
             </Text>
             <Pressable onPress={() => setEditUserInfoModalVisible(true)}>
-              <Text className="text-lg font-semibold text-black dark:text-white">
+              <Text
+                className={`text-lg font-semibold text-black ${theme === "dark" ? "text-white" : ""} `}
+              >
                 Editar
               </Text>
             </Pressable>
-            <EditPersonalInformationModal
+            {/* <EditPersonalInformationModal
               isVisible={editUserInfoModalVisible}
               onClose={() => setEditUserInfoModalVisible(false)}
-              dataUser={userData}
-              dataProfile={profileData}
-            />
+              userData={userData}
+              profileData={profileData}
+              onSave={handleSave}
+            /> */}
           </View>
           <View>
             <View className="flex-row justify-start items-center gap-2 mt-3">
@@ -322,7 +363,9 @@ const ProfileScreen = ({ route, navigation }: props) => {
               <View>
                 <Text className="text-base text-zinc-200">Username</Text>
                 {userData ? (
-                  <Text className="text-base text-zinc-800 dark:text-zinc-300">
+                  <Text
+                    className={`text-base text-zinc-800 ${theme === "dark" ? "text-zinc-300" : ""} `}
+                  >
                     {userData.username}
                   </Text>
                 ) : (
@@ -333,11 +376,15 @@ const ProfileScreen = ({ route, navigation }: props) => {
             <View className="flex-row justify-start items-center gap-2 mt-3">
               <Icon name="mail-outline" color={"black"} size={20} />
               <View>
-                <Text className="text-base text-zinc-400 dark:text-zinc-200">
+                <Text
+                  className={`text-base text-zinc-400 ${theme === "dark" ? "text-zinc-200" : ""}`}
+                >
                   Email
                 </Text>
                 {userData ? (
-                  <Text className="text-base text-zinc-800 dark:text-zinc-300">
+                  <Text
+                    className={`text-base text-zinc-800 ${theme === "dark" ? "text-zinc-300 " : ""} `}
+                  >
                     {userData.email}
                   </Text>
                 ) : (
@@ -348,11 +395,15 @@ const ProfileScreen = ({ route, navigation }: props) => {
             <View className="flex-row justify-start items-center gap-2 mt-3">
               <Icon name="call-outline" color={"black"} size={20} />
               <View>
-                <Text className="text-base text-zinc-400 dark:text-zinc-200">
+                <Text
+                  className={`text-base text-zinc-400 ${theme === "dark" ? "text-zinc-200" : ""} `}
+                >
                   Telefone
                 </Text>
                 {profileData ? (
-                  <Text className="text-base text-zinc-800 dark:text-zinc-300">
+                  <Text
+                    className={`text-base text-zinc-800 ${theme === "dark" ? "text-zinc-300" : ""} `}
+                  >
                     {profileData.phoneNumber}
                   </Text>
                 ) : (
@@ -363,11 +414,15 @@ const ProfileScreen = ({ route, navigation }: props) => {
             <View className="flex-row justify-start items-center gap-2 mt-3">
               <Icon name="location-outline" color={"black"} size={20}></Icon>
               <View>
-                <Text className="text-base text-zinc-400 dark:text-zinc-200">
+                <Text
+                  className={`text-base text-zinc-400 ${theme === "dark" ? "text-zinc-200" : ""} `}
+                >
                   Endereço
                 </Text>
                 {userData ? (
-                  <Text className="text-base text-zinc-800 dark:text-zinc-300">
+                  <Text
+                    className={`text-base text-zinc-800 ${theme === "dark" ? "text-zinc-300" : ""} `}
+                  >
                     {profileData.address}
                   </Text>
                 ) : (
@@ -377,7 +432,9 @@ const ProfileScreen = ({ route, navigation }: props) => {
             </View>
           </View>
         </View>
-        <View className="w-[92%] rounded-lg p-4 bg-white mt-6 mx-auto dark:bg-neutral-700/60">
+        <View
+          className={`w-[92%] rounded-lg p-4 bg-white mt-6 mx-auto ${theme === "dark" ? "bg-neutral-700/60" : ""} `}
+        >
           <View className="flex-row justify-between items-center">
             <Text className="text-xl font-bold text-black dark:text-white">
               Informações Médicas
@@ -548,9 +605,13 @@ const ProfileScreen = ({ route, navigation }: props) => {
             </View>
           </View>
         </View>
-        <View className="w-[92%] rounded-lg p-4 bg-white mt-6 mx-auto dark:bg-neutral-700/60">
+        <View
+          className={`w-[92%] rounded-lg p-4 bg-white mt-6 mx-auto ${theme === "dark" ? "bg-neutral-700/60" : ""} `}
+        >
           <View className="flex-row justify-start items-center">
-            <Text className="text-xl font-bold text-black dark:text-white">
+            <Text
+              className={`text-xl font-bold text-black ${theme === "dark" ? "text-white" : ""} `}
+            >
               Preferências
             </Text>
           </View>
@@ -563,10 +624,14 @@ const ProfileScreen = ({ route, navigation }: props) => {
                 size={20}
               ></Icon>
               <View>
-                <Text className="text-base text-zinc-400 dark:text-zinc-200">
+                <Text
+                  className={`text-base text-zinc-400 ${theme === "dark" ? "text-zinc-200" : ""} `}
+                >
                   Ativar Notificações
                 </Text>
-                <Text className="text-base text-zinc-800 dark:text-zinc-300">
+                <Text
+                  className={`text-base text-zinc-800 ${theme === "dark" ? "text-zinc-300" : ""} `}
+                >
                   On/Off lembretes de medicação
                 </Text>
               </View>
@@ -586,9 +651,13 @@ const ProfileScreen = ({ route, navigation }: props) => {
             </View>
           </View>
         </View>
-        <View className="w-[92%] rounded-lg p-4 bg-white mt-6 mx-auto dark:bg-neutral-700/60">
+        <View
+          className={`w-[92%] rounded-lg p-4 bg-white mt-6 mx-auto ${theme === "dark" ? "bg-neutral-700/60" : ""} `}
+        >
           <View className="flex-row justify-start items-center">
-            <Text className="text-xl font-bold text-black dark:text-white">
+            <Text
+              className={`text-xl font-bold text-black ${theme === "dark" ? "text-white" : ""} `}
+            >
               Segurança & Conta
             </Text>
           </View>
@@ -596,7 +665,9 @@ const ProfileScreen = ({ route, navigation }: props) => {
             <View className="flex-row justify-start items-center gap-2 mt-3">
               <Icon name="lock-open-outline" color={"black"} size={20}></Icon>
               <View>
-                <Text className="text-base text-zinc-400 dark:text-zinc-200">
+                <Text
+                  className={`text-base text-zinc-400 ${theme === "dark" ? "text-zinc-200" : ""} `}
+                >
                   Alterar Palavra-Passe
                 </Text>
                 <TextInput

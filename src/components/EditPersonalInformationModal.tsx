@@ -8,18 +8,22 @@ import { API_URL } from "../constants/data";
 type props = {
   isVisible: boolean;
   onClose: any;
-  dataUser: any;
-  dataProfile: any;
+  userData: any;
+  profileData: any;
+  onSave: any;
 };
 
 const EditPersonalInformationModal = ({
   isVisible,
   onClose,
-  dataUser,
-  dataProfile,
+  userData,
+  profileData,
+  onSave,
 }: props) => {
-  const [user, setUserData] = useState(dataUser);
-  const [profile, setProfile] = useState(dataProfile);
+  const [user, setUserData] = useState(userData);
+  const [profile, setProfile] = useState(profileData);
+
+  const onSave = (userData) => {};
 
   const handleSave = async () => {
     try {

@@ -4,6 +4,7 @@ import {
   Pressable,
   ScrollView,
   TextInput,
+  StyleSheet,
   TouchableOpacity,
 } from "react-native";
 import React, { useEffect, useState } from "react";
@@ -333,18 +334,24 @@ const MedicalScreen = ({ route, navigation }: props) => {
                 setOpenModalAddSymptom(true);
               }}
             >
-              <View className="rounded-lg  p-4  py-6 mx-2 bg-blue-400/10">
+              <View
+                style={{
+                  backgroundColor:
+                    "radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%);",
+                }}
+                className="rounded-lg  bg-lime-400 p-4 mx-2 mt-3 h-24 flex-row justify-start items-center"
+              >
                 <View className="flex-row justify-between items-center">
                   <View className="flex-row justify-start items-center gap-2">
-                    <Text className="rounded-lg bg-white p-2">
-                      <Icon name="menu-outline" color={"black"} size={24} />
-                    </Text>
-                    <Text className="text-black font-semibold text-xl">
-                      Adicionar novo sintoma
+                    <View className="rounded-full h-14 w-14 bg-white/30 flex-col justify-center items-center">
+                      <Icon name="sad-outline" color={"white"} size={24} />
+                    </View>
+                    <Text className="text-white font-semibold text-lg">
+                      Adicionar Novo Sintoma
                     </Text>
                   </View>
-                  <Text className="border-zinc-100 border-2 rounded-lg">
-                    <Icon name="add-outline" color={"black"} size={23} />
+                  <Text className="rounded-lg ps-4">
+                    <Icon name="add-outline" color={"white"} size={23} />
                   </Text>
                 </View>
                 <Modal isOpen={openModalAddSymptom} withInput={false}>
@@ -417,18 +424,28 @@ const MedicalScreen = ({ route, navigation }: props) => {
                 setOpenModalAddMedication(true);
               }}
             >
-              <View className="rounded-lg border-2 border-zinc-300 p-4 mx-2 mt-3">
+              <View
+                style={{
+                  backgroundColor:
+                    "linear-gradient(90deg, rgba(71,177,130,1) 0%, rgba(80,179,136,1) 41%, rgba(120,193,100,1) 100%);",
+                }}
+                className="rounded-lg  bg-violet-400 p-4 mx-2 mt-3 h-24 flex-row justify-start items-center"
+              >
                 <View className="flex-row justify-between items-center">
                   <View className="flex-row justify-start items-center gap-2">
-                    <Text>
-                      <Icon name="menu-outline" color={"black"} size={24} />
-                    </Text>
-                    <Text className="text-black font-semibold">
-                      Adicionar novo Medicamento
+                    <View className="rounded-full h-14 w-14 bg-white/30 flex-col justify-center items-center">
+                      <Icon
+                        name="thermometer-outline"
+                        color={"white"}
+                        size={24}
+                      />
+                    </View>
+                    <Text className="text-white font-semibold text-lg">
+                      Adicionar Novo Remédio
                     </Text>
                   </View>
-                  <Text className="border-zinc-100 border-2 rounded-lg">
-                    <Icon name="add-outline" color={"black"} size={23} />
+                  <Text className="rounded-lg ps-4">
+                    <Icon name="add-outline" color={"white"} size={23} />
                   </Text>
                 </View>
                 <Modal isOpen={openModalAddMedication} withInput={false}>
@@ -522,18 +539,24 @@ const MedicalScreen = ({ route, navigation }: props) => {
                 setOpenModalAddAppointment(true);
               }}
             >
-              <View className="rounded-lg border-2 border-zinc-300 p-4 mx-2 mt-3">
+              <View
+                style={{
+                  backgroundColor:
+                    "linear-gradient(90deg, rgba(160,126,251,1) 0%, rgba(188,126,254,1) 41%, rgba(120,193,100,1) 100%);",
+                }}
+                className="rounded-lg  bg-slate-500 p-4 mx-2 mt-3 h-24 flex-row justify-start items-center"
+              >
                 <View className="flex-row justify-between items-center">
                   <View className="flex-row justify-start items-center gap-2">
-                    <Text>
-                      <Icon name="menu-outline" color={"black"} size={24} />
-                    </Text>
-                    <Text className="text-black font-semibold">
-                      Adicionar Consulta
+                    <View className="rounded-full h-14 w-14 bg-white/30 flex-col justify-center items-center">
+                      <Icon name="bandage-outline" color={"white"} size={24} />
+                    </View>
+                    <Text className="text-white font-semibold text-lg">
+                      Adicionar Nova Consulta
                     </Text>
                   </View>
-                  <Text className="border-zinc-100 border-2 rounded-lg">
-                    <Icon name="add-outline" color={"black"} size={23} />
+                  <Text className="rounded-lg ps-4">
+                    <Icon name="add-outline" color={"white"} size={23} />
                   </Text>
                 </View>
                 <Modal isOpen={openModalAddAppointment} withInput={false}>

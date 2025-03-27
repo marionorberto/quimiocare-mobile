@@ -13,13 +13,11 @@ import {
   TouchableOpacity,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-import { useNavigation } from "@react-navigation/native";
 import Constants from "expo-constants";
 import ScreenNames from "../constants/ScreenName";
 import { RootStackParamsList } from "../navigations/RootStackParamsList";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import YoutubeIframe from "react-native-youtube-iframe";
-import { WebView } from "react-native-webview";
 
 type props = NativeStackScreenProps<RootStackParamsList, ScreenNames>;
 

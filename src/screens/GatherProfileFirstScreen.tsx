@@ -139,7 +139,7 @@ const GatherProfileFirstScreen = ({ route, navigation }: props) => {
   useEffect(() => {
     const fetchCancerTypes = async () => {
       try {
-        const { data: response } = await api.get("/cancer-types/all");
+        const { data: response } = await api.get("/tags/all");
         setCancerTypes(response.data[1]);
       } catch (error: any) {
         console.error("Erro ao buscar os tipos de câncer:", error);

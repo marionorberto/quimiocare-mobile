@@ -95,22 +95,30 @@ const SymptomsScreen = ({ route, navigation }: props) => {
             symptoms.map((item) => (
               <View
                 key={item.id}
-                className="bg-blue-500/40 p-4 rounded-lg mb-4 flex-row justify-between items-stretch"
+                className="bg-blue-600/50 p-4 rounded-lg mb-4 flex-row justify-between items-stretch"
               >
-                <View className="flex-col gap-3">
-                  <Text className="text-black font-semibold text-[13px]">
-                    Nome: {item.name}
-                  </Text>
-                  <Text className="text-zinc-700">
-                    Descrição: {item.description}
-                  </Text>
-                  <Text className="text-zinc-700">
-                    Severidade: {item.severity}
-                  </Text>
+                <View className="flex-col  items-center">
+                  <View className="flex-row justify-between items-center">
+                    <View className="rounded-full h-14 w-14 bg-white/30 flex-col justify-center items-center mt-3">
+                      <Icon name="sad-outline" color={"white"} size={24} />
+                    </View>
+                    <View className="flex-col gap-3 ps-6">
+                      <Text className="text-white font-bold text-[17px]">
+                        Nome - {item.name}
+                      </Text>
+                      <Text className="text-zinc-100 text-lg">
+                        Descrição - {item.description}
+                      </Text>
+                      <Text className="text-zinc-100 text-lg">
+                        Severidade - {item.severity}
+                      </Text>
+                    </View>
+                  </View>
+                  <View className="flex-row justify-end items-center gap-3">
+                    <Icon name="trash-outline" color={"white"} size={23} />
+                    <Icon name="create-outline" color={"white"} size={23} />
+                  </View>
                 </View>
-                <Text className="text-zinc-500 text-sm">
-                  {new Date(item.createdAt).toLocaleDateString()}
-                </Text>
               </View>
             ))
           ) : (
