@@ -24,18 +24,11 @@ import ChooseUserScreen from "../screens/ChooseUserScreen";
 import GatherProfileFirstScreen from "../screens/GatherProfileFirstScreen";
 import GatherProfileSecondScreen from "../screens/GatherProfileSecondScreen";
 import RedefineScreenPassword from "../screens/RedefinePassword";
-import LibraryScreen from "../screens/LibraryScreen";
-import BookSinglePage from "../screens/BookSinglePage";
 import BookSinglePageScreen from "../screens/BookSinglePage";
 import PostSingleScreen from "../screens/PostSingleScreen";
 import ArticleScreen from "../screens/ArticleScreen";
 import CreateMedicationScreen from "../screens/CreateMedicationScreen";
 import CreateAppointmentScreen from "../screens/CreateAppointmentScreen";
-import { SettingsContext } from "react-native-paper/lib/typescript/core/settings";
-import SettingsScreen from "../screens/settingsScreen";
-import MedicalScreen from "../screens/MedicalScreen";
-import MainScreen from "../screens/MainScreen";
-import CommunityScreen from "../screens/CommunityScreen";
 
 const StackRoutes = () => {
   const Stack = createNativeStackNavigator<RootStackParamsList>();

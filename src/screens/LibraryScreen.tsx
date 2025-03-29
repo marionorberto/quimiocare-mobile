@@ -16,7 +16,10 @@ import Constants from "expo-constants";
 import ScreenNames from "../constants/ScreenName";
 import { RootStackParamsList } from "../navigations/RootStackParamsList";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import YoutubeIframe from "react-native-youtube-iframe";
+import { useTheme } from "../helpers/theme-context";
+// import YoutubeIframe from "react-native-youtube-iframe";
+
+// bg-neutral-700/60 bg-neutral-900
 
 type props = NativeStackScreenProps<RootStackParamsList, ScreenNames>;
 
@@ -198,10 +201,12 @@ const LibraryScreen = ({ route, navigation }: props) => {
     );
   };
 
+  const { theme, toggleTheme } = useTheme();
+
   return (
     <View
       style={{ marginTop: Constants.statusBarHeight }}
-      className="flex-col justify-center items-stretch w-full pt-8 pb-28"
+      className={`flex-col justify-center items-stretch w-full pt-8 pb-28 ${theme === "dark" ? "bg-neutral-900" : ""}`}
     >
       <View className="flex-row justify-start items-center gap-10 px-4">
         <View className="border-[1px] border-zinc-200 p-[3px] rounded-md bg-white">
@@ -213,7 +218,9 @@ const LibraryScreen = ({ route, navigation }: props) => {
             ></Icon>
           </Pressable>
         </View>
-        <Text className="text-xl self-center text-center text-black font-bold">
+        <Text
+          className={`text-xl self-center text-center ${theme === "dark" ? "text-white" : "text-black"}  font-bold`}
+        >
           Biblioteca
         </Text>
       </View>
@@ -221,7 +228,7 @@ const LibraryScreen = ({ route, navigation }: props) => {
       <View className="relative w-64 ms-4 my-4">
         <TextInput
           placeholder="Pesquisar..."
-          className="bg-white p-3 rounded-lg mb-4 ps-10"
+          className={` p-3 rounded-lg mb-4 ps-10 ${theme === "dark" ? "" : "bg-white"}`}
         />
         <View className="absolute left-3 top-2">
           <Icon name="search-outline" color={"#545454"} size={21} />
@@ -236,7 +243,9 @@ const LibraryScreen = ({ route, navigation }: props) => {
 
       <ScrollView showsVerticalScrollIndicator={false}>
         <View className="px-8 mb-6">
-          <Text className="text-lg font-semibold text-black mb-2">
+          <Text
+            className={`text-lg font-semibold  mb-2 ${theme === "dark" ? "text-white" : "text-black"}`}
+          >
             Livros Recomendados
           </Text>
           <Text className="text-zinc-500">
@@ -287,7 +296,9 @@ const LibraryScreen = ({ route, navigation }: props) => {
               ))}
           </ScrollView>
 
-          <Text className="text-lg font-semibold text-black mt-10">
+          <Text
+            className={`text-lg font-semibold  mt-10 ${theme === "dark" ? "text-white" : "text-black"}`}
+          >
             Artigos Populares
           </Text>
 
@@ -347,7 +358,7 @@ const LibraryScreen = ({ route, navigation }: props) => {
               Assista os melhores videos para te inspirares!
             </Text>
           </View>
-          <View className="mt-4 relative border-2 p-2 border-zinc-300 rounded-xl">
+          {/* <View className="mt-4 relative border-2 p-2 border-zinc-300 rounded-xl">
             <YoutubeIframe
               videoId="F1VlqUJlCko"
               height={180}
@@ -411,7 +422,7 @@ const LibraryScreen = ({ route, navigation }: props) => {
                 color={"black"}
               />
             )}
-          </View>
+          </View> */}
           <TouchableOpacity
             onPress={() => {
               Linking.openURL(

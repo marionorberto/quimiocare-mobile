@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   TextInput,
   Linking,
+  Alert,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import Contants from "expo-constants";
@@ -25,6 +26,8 @@ import {
   handleSaveMedication,
   handleSaveSymptom,
 } from "../services/mainService";
+import { useTheme } from "../helpers/theme-context";
+import { API_URL } from "../constants/data";
 
 type props = NativeStackScreenProps<RootStackParamsList, ScreenNames>;
 
@@ -39,6 +42,7 @@ const MainScreen = ({ navigation, route }: props) => {
   const [notes, setNotes] = useState("");
   const [reminderTime, setReminderTime] = useState<Date>(new Date());
   const [showTimePicker, setShowTimePicker] = useState(false);
+  const [userImg, setUserImg] = useState("");
   const [tipsData, setTipsData] = useState({
     id: "",
     description: "",
@@ -94,7 +98,23 @@ const MainScreen = ({ navigation, route }: props) => {
     fetchSymptom();
     fetchMedications();
     fetchAppointment();
+    fetchImgUser();
   }, []);
+
+  const fetchImgUser = async () => {
+    try {
+      api
+        .get(`${API_URL}/profiles/single`)
+        .then(({ data: response }) => {
+          setUserImg(response.data.urlImg);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } catch (error: any) {
+      Alert.alert("Erro", "erro tentando pegar os dados de perfil");
+    }
+  };
 
   const fetchTips = async () => {
     await api
@@ -162,8 +182,10 @@ const MainScreen = ({ navigation, route }: props) => {
     );
   };
 
+  const { theme, toggleTheme } = useTheme();
+
   return (
-    <View className="">
+    <View className={`${theme === "dark" ? "bg-neutral-700/60" : ""}`}>
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={{
@@ -184,7 +206,7 @@ const MainScreen = ({ navigation, route }: props) => {
                 borderColor: "#fff",
                 backgroundColor: "#ccc",
               }}
-              source={require("../../assets/user.png")}
+              source={{ uri: userImg }}
             />
           </View>
           <View className="p-[6px] rounded-full relative bg-slate-300/30">
@@ -455,7 +477,7 @@ const MainScreen = ({ navigation, route }: props) => {
             </TouchableOpacity>
           </ScrollView>
         </View>
-
+        <View className="h-1 w-full bg-zinc-100 mt-10"></View>
         <View className="mt-5 px-4">
           <View className="flex-row justify-between items-center">
             <Text className="font-bold text-black">Posts recentes</Text>

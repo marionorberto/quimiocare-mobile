@@ -8,6 +8,7 @@ import {
   Switch,
   Alert,
   TouchableOpacity,
+  ToastAndroid,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useColorScheme } from "nativewind";
@@ -33,7 +34,7 @@ const ProfileScreen = ({ route, navigation }: props) => {
   const { colorScheme, toggleColorScheme } = useColorScheme();
   const [isEnabledLayoutMode, setIsEnabledLayoutMode] = useState(false);
   const [isEnabledMedicationReminder, setIsEnabledMedicationReminder] =
-    useState(false);
+    useState(true);
   let isModalEditVisible: boolean = false;
   const [editUserInfoModalVisible, setEditUserInfoModalVisible] =
     useState(false);
@@ -58,7 +59,7 @@ const ProfileScreen = ({ route, navigation }: props) => {
     phoneNumber: "",
     created_at: "",
     updated_at: "",
-    url_img: "",
+    urlImg: "",
     sex: "",
     userId: "",
     job: "",
@@ -250,7 +251,9 @@ const ProfileScreen = ({ route, navigation }: props) => {
           <View className="flex-col justify-center items-center w-full">
             <View className="relative">
               <Image
-                source={require("../../assets/test.jpeg")}
+                source={{
+                  uri: profileData.urlImg,
+                }}
                 style={{
                   borderRadius: 50,
                   borderWidth: 4,
@@ -260,7 +263,7 @@ const ProfileScreen = ({ route, navigation }: props) => {
                 }}
               ></Image>
               <View
-                className={` w-8 h-8 rounded-md absolute bottom-0 right-2 flex-1 justify-center items-center ${theme === "dark" ? "bg-neutral-700/60" : "bg-white"} `}
+                className={`w-8 h-8 rounded-md absolute bottom-0 right-2 flex-1 justify-center items-center ${theme === "dark" ? "bg-neutral-700/60" : "bg-white"}`}
               >
                 <Icon
                   name="camera-reverse-outline"
@@ -652,12 +655,14 @@ const ProfileScreen = ({ route, navigation }: props) => {
                 size={20}
               />
               <View>
-                <Text className="text-base text-zinc-400 dark:text-zinc-200">
+                <Text
+                  className={`text-base ${theme === "dark" ? "text-zinc-200" : "text-zinc-400"}  `}
+                >
                   Estadiamento
                 </Text>
                 {medicalData ? (
                   <Text
-                    className={`text-base font-semibold py-2 px-3 rounded-lg bg-blue-300/20 text-blue-400 dark:text-zinc-300`}
+                    className={`text-base font-semibold py-2 px-3 rounded-lg ${theme === "dark" ? "text-zinc-300 " : "bg-blue-300/20 text-blue-400"}    `}
                   >
                     {medicalData.stage}
                   </Text>
@@ -727,8 +732,17 @@ const ProfileScreen = ({ route, navigation }: props) => {
                       trackColor={{ false: "#52525b", true: "#2563eb" }}
                       thumbColor={isEnabledMedicationReminder ? "#000" : "#fff"}
                       ios_backgroundColor="#fff"
-                      onValueChange={() => setIsEnabledMedicationReminder(true)}
-                      value={isEnabledLayoutMode}
+                      onValueChange={() => {
+                        setIsEnabledMedicationReminder(
+                          !isEnabledMedicationReminder
+                        );
+
+                        ToastAndroid.show(
+                          `Lembretes de Medicações  ${!isEnabledMedicationReminder ? "ativada" : "desativada"}`,
+                          ToastAndroid.TOP
+                        );
+                      }}
+                      value={isEnabledMedicationReminder}
                     />
                   </SafeAreaView>
                 </SafeAreaProvider>

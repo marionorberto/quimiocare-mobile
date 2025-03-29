@@ -1,5 +1,5 @@
-import { TouchableOpacity, View } from "react-native";
-import React, { ReactElement, ReactNode } from "react";
+import { Alert, TouchableOpacity, View } from "react-native";
+import React, { ReactElement, ReactNode, useEffect, useState } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import ScreenNames from "../constants/ScreenName";
 import { BottomTabParamList } from "../constants/types";
@@ -11,6 +11,8 @@ import MainScreen from "../screens/MainScreen";
 import SettingsScreen from "../screens/settingsScreen";
 import { Image } from "expo-image";
 import LibraryScreen from "../screens/LibraryScreen";
+import api from "../services/api";
+import { API_URL } from "../constants/data";
 
 const Tab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -36,6 +38,25 @@ const ButtonSearchCostumized = ({ children }: { children: ReactElement }) => {
 };
 
 const TabRoutes = () => {
+  const [userImg, setUserImg] = useState("");
+  useEffect(() => {
+    fetchImgUser();
+  });
+
+  const fetchImgUser = async () => {
+    try {
+      api
+        .get(`${API_URL}/profiles/single`)
+        .then(({ data: response }) => {
+          setUserImg(response.data.urlImg);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } catch (error: any) {
+      Alert.alert("Erro", "erro tentando pegar os dados de perfil");
+    }
+  };
   return (
     <Tab.Navigator
       initialRouteName="Main"
@@ -181,7 +202,7 @@ const TabRoutes = () => {
                 borderColor: "#60a5fa",
                 backgroundColor: "#ccc",
               }}
-              source={require("../../assets/user.png")}
+              source={{ uri: userImg }}
             ></Image>
           ),
         }}

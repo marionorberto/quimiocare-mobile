@@ -15,9 +15,7 @@ import ScreenNames from "../constants/ScreenName";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamsList } from "../navigations/RootStackParamsList";
 import { Picker } from "@react-native-picker/picker";
-import Icon from "react-native-vector-icons/Ionicons";
 import Constants from "expo-constants";
-import { ProfileTagType } from "../constants/types";
 import * as ImagePicker from "expo-image-picker";
 import { Image } from "expo-image";
 import DateTimePicker, {
@@ -26,7 +24,7 @@ import DateTimePicker, {
 import { createPersonalInformations } from "../services/personalInformationService";
 import axios from "axios";
 import api from "../services/api";
-import { API_URL } from "../constants/data";
+import { API_URL, API_URL_UPLOAD } from "../constants/data";
 
 type props = NativeStackScreenProps<RootStackParamsList, ScreenNames>;
 
@@ -92,7 +90,7 @@ const GatherProfileFirstScreen = ({ route, navigation }: props) => {
         urlImg.length
       );
       const extension = filename.split(".")[1];
-      console.log(filename, extension);
+      console.log("peguei da phone e troquei o filename", filename, extension);
       formData.append(
         "file",
         JSON.parse(
@@ -112,13 +110,13 @@ const GatherProfileFirstScreen = ({ route, navigation }: props) => {
 
       if (response.data.error) {
         alert("não foi possivel enviar imagem");
-        return false;
+        return { imageUploaded: false, filename: "" };
       } else {
-        return true;
+        return { imageUploaded: true, filename: response.data.filename };
       }
     } catch (error: any) {
       alert("error ao enviar imagem");
-      return false;
+      return { imageUploaded: false, filename: "" };
     }
   };
 
@@ -168,17 +166,17 @@ const GatherProfileFirstScreen = ({ route, navigation }: props) => {
       return alert("Todos os campos são obrigatórias!");
 
     try {
-      const imageUploaded: boolean = await uploadImage(urlImg);
+      const { imageUploaded, filename } = await uploadImage(urlImg);
 
       if (!imageUploaded) {
         ToastAndroid.show(
           "Não foi possivel cadastrar a imagem",
           ToastAndroid.SHORT
         );
+        return;
       } else {
         ToastAndroid.show("Imagem cadastrada com sucesso", ToastAndroid.SHORT);
       }
-
       await createPersonalInformations(
         countryName,
         birthday.toISOString().split("T")[0],
@@ -187,7 +185,7 @@ const GatherProfileFirstScreen = ({ route, navigation }: props) => {
         phoneNumber,
         sex,
         address,
-        urlImg,
+        `http://${API_URL_UPLOAD}:3000/uploads/${filename}`,
         tag
       );
       navigation.navigate("GatherProfileSecondScreen", { title: "SECOND" });
