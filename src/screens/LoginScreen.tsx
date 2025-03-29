@@ -14,6 +14,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import Contants from "expo-constants";
 import { Image } from "expo-image";
 import { handleLogin } from "../services/authService";
+import { useTheme } from "../helpers/theme-context";
 
 type props = NativeStackScreenProps<RootStackParamsList, ScreenNames>;
 
@@ -36,24 +37,39 @@ const LoginScreen = ({ route, navigation }: props) => {
     }
   };
 
+  const { theme, toggleTheme } = useTheme();
+
   return (
     <View
       style={{ marginTop: Contants.statusBarHeight }}
-      className="flex-1 justify-center items-stretch px-10 pt-6 pb-8"
+      className={`flex-1 justify-center items-stretch px-10 pt-6 pb-8 ${theme === "dark" ? "bg-neutral-900" : ""}`}
     >
-      <View className="border-[1px] border-zinc-200 p-[3px] rounded-md bg-white w-8 text-center">
+      <View
+        className={`w-8 border-[1px]  p-[3px] rounded-md  ${theme === "dark" ? "bg-neutral-900 border-zinc-600" : "bg-white border-zinc-200"}`}
+      >
         <Pressable onPress={() => navigation.goBack()}>
-          <Icon name="chevron-back-outline" size={22} color={"#505050"}></Icon>
+          <Icon
+            color={theme === "dark" ? "#fff" : "#000"}
+            name="chevron-back-outline"
+            size={22}
+          ></Icon>
         </Pressable>
       </View>
-      <Text className="text-5xl text-zinc-900 py-5">
+
+      <Text
+        className={`text-5xl  py-5 ${theme === "dark" ? "text-white" : "text-zinc-900"}`}
+      >
         Olá, Bem-vindo de volta!
       </Text>
       <View className="flex flex-col gap-2">
         <View>
-          <Text className="text-zinc-700 mb-1">Email</Text>
+          <Text
+            className={` mb-1 ${theme === "dark" ? "text-white" : "text-zinc-700"}`}
+          >
+            Email
+          </Text>
           <TextInput
-            className="border border-zinc-300 rounded-lg px-4 py-3 mb-3"
+            className={`border border-zinc-300 rounded-lg px-4 py-3 mb-3 ${theme === "dark" ? "placeholder:text-white text-white" : ""}`}
             placeholder="Teu Email"
             value={email}
             onChangeText={setEmail}
@@ -61,10 +77,14 @@ const LoginScreen = ({ route, navigation }: props) => {
           />
         </View>
         <View className="mt-2">
-          <Text className="text-zinc-700 mb-1">Password</Text>
+          <Text
+            className={` mb-1 ${theme === "dark" ? "text-white" : "text-zinc-700"}`}
+          >
+            Password
+          </Text>
           <View className="relative">
             <TextInput
-              className="border border-zinc-300 rounded-lg px-4 py-3"
+              className={`border border-zinc-300 rounded-lg px-4 py-3  ${theme === "dark" ? "placeholder:text-white text-white" : ""}`}
               placeholder="Password"
               value={password}
               onChangeText={setPassword}
@@ -77,7 +97,7 @@ const LoginScreen = ({ route, navigation }: props) => {
                 setIsVisiblePassword(!isVisiblePassword);
               }}
               name={`${isVisiblePassword ? "eye-outline" : "eye-off-outline"}`}
-              color={"black"}
+              color={theme === "dark" ? "white" : "black"}
               size={22}
               className="absolute right-4 top-3"
             />
@@ -118,7 +138,11 @@ const LoginScreen = ({ route, navigation }: props) => {
                 source={require("../../assets/icon-google.svg")}
                 style={{ width: 20, height: 20 }}
               />
-              <Text className="text-zinc-400">Google</Text>
+              <Text
+                className={` ${theme === "dark" ? "text-white" : "text-zinc-400"}`}
+              >
+                Google
+              </Text>
             </Pressable>
           </View>
           <View>
@@ -127,7 +151,11 @@ const LoginScreen = ({ route, navigation }: props) => {
               className="py-4 px-5 bg-zinc-300/50 rounded-lg flex-row justify-center items-center gap-2"
             >
               <Icon name="logo-facebook"></Icon>
-              <Text className="text-zinc-400">Facebook</Text>
+              <Text
+                className={` ${theme === "dark" ? "text-white" : "text-zinc-400"}`}
+              >
+                Facebook
+              </Text>
             </Pressable>
           </View>
         </View>

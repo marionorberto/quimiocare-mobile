@@ -209,12 +209,14 @@ const LibraryScreen = ({ route, navigation }: props) => {
       className={`flex-col justify-center items-stretch w-full pt-8 pb-28 ${theme === "dark" ? "bg-neutral-900" : ""}`}
     >
       <View className="flex-row justify-start items-center gap-10 px-4">
-        <View className="border-[1px] border-zinc-200 p-[3px] rounded-md bg-white">
+        <View
+          className={`border-[1px]  p-[3px] rounded-md  ${theme === "dark" ? "bg-neutral-900 border-zinc-600" : "bg-white border-zinc-200"}`}
+        >
           <Pressable onPress={() => navigation.goBack()}>
             <Icon
               name="chevron-back-outline"
               size={20}
-              color={"#505050"}
+              color={theme === "dark" ? "#fff" : "#505050"}
             ></Icon>
           </Pressable>
         </View>
@@ -228,18 +230,12 @@ const LibraryScreen = ({ route, navigation }: props) => {
       <View className="relative w-64 ms-4 my-4">
         <TextInput
           placeholder="Pesquisar..."
-          className={` p-3 rounded-lg mb-4 ps-10 ${theme === "dark" ? "" : "bg-white"}`}
+          className={` p-3 rounded-lg mb-4 ps-10 ${theme === "dark" ? "bg-white" : "bg-white"}`}
         />
         <View className="absolute left-3 top-2">
           <Icon name="search-outline" color={"#545454"} size={21} />
         </View>
       </View>
-      {/* <View className="px-4 mt-0 mb-5">
-        <TouchableOpacity className="bg-zinc-900 py-3 rounded-lg flex-row items-center justify-center mb-4 mt-5 mx-4">
-          <Icon name="cloud-upload-outline" size={20} color="white" />
-          <Text className="text-white ml-2">Fazer Upload de Artigo</Text>
-        </TouchableOpacity>
-      </View> */}
 
       <ScrollView showsVerticalScrollIndicator={false}>
         <View className="px-8 mb-6">
@@ -350,7 +346,9 @@ const LibraryScreen = ({ route, navigation }: props) => {
               ))}
           </ScrollView>
 
-          <Text className="text-lg font-semibold text-black mt-10 mb-2">
+          <Text
+            className={`text-lg font-semibold ${theme === "dark" ? "text-white" : "text-black"}  mt-10 mb-2`}
+          >
             Canais do YouTube
           </Text>
           <View>
@@ -358,71 +356,7 @@ const LibraryScreen = ({ route, navigation }: props) => {
               Assista os melhores videos para te inspirares!
             </Text>
           </View>
-          {/* <View className="mt-4 relative border-2 p-2 border-zinc-300 rounded-xl">
-            <YoutubeIframe
-              videoId="F1VlqUJlCko"
-              height={180}
-              onReady={() => setVideoReady(true)}
-            />
-            {!videoReady && (
-              <ActivityIndicator
-                className="absolute right-[50%] top-[50%]"
-                color={"black"}
-              />
-            )}
-          </View>
-          <View className="mt-4 relative border-2 p-2 border-zinc-300 rounded-xl">
-            <YoutubeIframe
-              videoId="FGSqYPrJDak"
-              height={180}
-              onReady={() => setVideoReady(true)}
-            />
-            {!videoReady && (
-              <ActivityIndicator
-                className="absolute right-[50%] top-[50%]"
-                color={"black"}
-              />
-            )}
-          </View>
-          <View className="mt-4 relative border-2 p-2 border-zinc-300 rounded-xl">
-            <YoutubeIframe
-              videoId="HuXbsrBYbKg"
-              height={180}
-              onReady={() => setVideoReady(true)}
-            />
-            {!videoReady && (
-              <ActivityIndicator
-                className="absolute right-[50%] top-[50%]"
-                color={"black"}
-              />
-            )}
-          </View>
-          <View className="mt-4 relative border-2 p-2 border-zinc-300 rounded-xl">
-            <YoutubeIframe
-              videoId="AhwSBUwevP0"
-              height={180}
-              onReady={() => setVideoReady(true)}
-            />
-            {!videoReady && (
-              <ActivityIndicator
-                className="absolute right-[50%] top-[50%]"
-                color={"black"}
-              />
-            )}
-          </View>
-          <View className="mt-4 relative border-2 p-2 border-zinc-300 rounded-xl">
-            <YoutubeIframe
-              videoId="Ep5MWBVd3xg"
-              height={180}
-              onReady={() => setVideoReady(true)}
-            />
-            {!videoReady && (
-              <ActivityIndicator
-                className="absolute right-[50%] top-[50%]"
-                color={"black"}
-              />
-            )}
-          </View> */}
+
           <TouchableOpacity
             onPress={() => {
               Linking.openURL(
@@ -430,7 +364,9 @@ const LibraryScreen = ({ route, navigation }: props) => {
               ).catch((error: any) => alert("Link não disponível"));
             }}
           >
-            <View className="rounde-xl bg-zinc-500/40 p-3 rounded-lg mt-4">
+            <View
+              className={`rounde-xl  p-3 rounded-lg mt-4 ${theme === "dark" ? "bg-white text-black" : "bg-zinc-500/40"}`}
+            >
               <Text className="text-black font-bold  text-lg text-center">
                 Ver Videos Youtube
               </Text>

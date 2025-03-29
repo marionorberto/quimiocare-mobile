@@ -27,6 +27,7 @@ import {
   handleSaveSymptom,
 } from "../services/mainService";
 import { Picker } from "@react-native-picker/picker";
+import { useTheme } from "../helpers/theme-context";
 
 type props = NativeStackScreenProps<RootStackParamsList, ScreenNames>;
 
@@ -163,11 +164,11 @@ const MedicalScreen = ({ route, navigation }: props) => {
       nativeEvent: { timestamp, utcOffset },
     } = event;
   };
-
+  const { theme, toggleTheme } = useTheme();
   return (
     <View
       style={{ marginTop: Contants.statusBarHeight }}
-      className="flex-col justify-center items-stretch w-full px-4 pt-8 pb-10"
+      className={`flex-col justify-center items-stretch w-full px-4 pt-8 pb-10 ${theme === "dark" ? "bg-neutral-900" : ""}`}
     >
       <ScrollView showsVerticalScrollIndicator={false}>
         <View className="flex-row justify-start items-center gap-10">
