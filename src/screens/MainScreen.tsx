@@ -356,19 +356,18 @@ const MainScreen = ({ navigation, route }: props) => {
             color={"#2563eb"}
             size={34}
           ></Icon>
-          <Text className="text-zinc-400">Registro diário</Text>
-          <Text className="w-40 text-center text-zinc-700 my-3">
+          <Text className="text-zinc-500 text-xl">Registro diário</Text>
+          <Text className="w-40 text-center text-zinc-700 my-3 text-lg">
             Registe como estás se sentindo hoje, a tua disposição, ânimo,
-            sintomas melhorias.
+            sintomas, melhorias.
           </Text>
-          <TouchableOpacity
-            className="bg-blue-500 rounded-full py-1 mt-2 flex-row items-center justify-center w-72"
-            onPress={() => {
-              onSaveSymptoms();
-              setOpenModalAddSymptom(false);
-            }}
-          >
-            <Text className="text-white text-center font-semibold">
+          <TouchableOpacity className="bg-blue-500 rounded-full py-1 mt-2 flex-row items-center justify-center w-56 h-14">
+            <Text
+              onPress={() => {
+                navigation.navigate("Medical", { title: "medication" });
+              }}
+              className="text-white text-center font-semibold text-lg"
+            >
               Registro Agora
             </Text>
           </TouchableOpacity>
@@ -383,36 +382,80 @@ const MainScreen = ({ navigation, route }: props) => {
             showsHorizontalScrollIndicator={false}
             className="mt-3"
           >
-            <View className="rounded-lg bg-green-200/80 p-2 me-4 w-32 h-32 flex-col justify-center items-center">
-              <Text className="text-zinc-300">LOGO</Text>
-              <Text className="text-black font-bold text-3xl mt-3">IACC</Text>
-            </View>
-            <View className="rounded-lg bg-violet-200/80 p-2 me-4 w-32 h-32 flex-col justify-center items-center">
-              <Text className="text-zinc-300">LOGO</Text>
-              <Text className="text-black font-bold text-xl mt-3 text-center">
-                H.A BOAVINDA
-              </Text>
-            </View>
-            <View className="rounded-lg bg-amber-200/80 p-2 me-4 w-32 h-32 flex-col justify-center items-center">
-              <Text className="text-zinc-300">LOGO</Text>
-              <Text className="ext-black font-bold text-xl mt-3 text-center">
-                LUCRÉCIA PAIM
-              </Text>
-            </View>
-            <View className="rounded-lg bg-zinc-200/80 p-2 me-4 w-32 h-32 flex-col justify-center items-center">
-              <Text className="text-zinc-300">LOGO</Text>
-              <Text className="text-black font-bold text-xl mt-3 text-center">
-                C.S ESPERANÇA
-              </Text>
-            </View>
-            <View className="rounded-lg bg-rose-200/80 p-2 me-4 w-32 h-32 flex-col justify-center items-center">
-              <Text className="text-zinc-300">LOGO</Text>
-              <Text className="text-black font-bold text-xl mt-3 text-center">
-                CLÍNICA GIRASSOL
-              </Text>
-            </View>
+            <TouchableOpacity
+              onPress={() => {
+                Linking.openURL("https://iacc-angola.ao/");
+              }}
+            >
+              <View className="border-2 border-zinc-200 rounded-lg bg-gree-200/80 p-2 me-4 w-32 h-40 flex-col justify-center items-center">
+                <Image
+                  style={{
+                    height: 50,
+                    width: 100,
+                  }}
+                  source={require("../../assets/iacc.png")}
+                />
+                <Text className="text-black font-bold text-3xl mt-7">IACC</Text>
+              </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => {
+                Linking.openURL("https://www.clinicasagradaesperanca.co.ao/");
+              }}
+            >
+              <View className="border-2 border-zinc-200 rounded-lg p-2 me-4 w-32 h-40 flex-col justify-center items-center">
+                <Image
+                  style={{
+                    height: 50,
+                    width: 100,
+                  }}
+                  source={require("../../assets/sagrada-esperanca.png")}
+                />
+                <Text className="text-black font-bold text-xl mt-3 text-center">
+                  C.S ESPERANÇA
+                </Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                Linking.openURL("https://clinicagirassol.co.ao/");
+              }}
+            >
+              <View className="border-2 border-zinc-200 rounded-lg p-2 me-4 w-32 h-40 flex-col justify-center items-center">
+                <Image
+                  style={{
+                    height: 50,
+                    width: 100,
+                  }}
+                  source={require("../../assets/clinica-girassol.png")}
+                />
+                <Text className="text-black font-bold text-xl mt-3 text-center">
+                  CLÍNICA GIRASSOL
+                </Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                Linking.openURL("https://lucreciapaim.gov.ao/update/");
+              }}
+            >
+              <View className="border-2 border-zinc-200 rounded-lg  p-2 me-4 w-32 h-40 flex-col justify-center items-center">
+                <Image
+                  style={{
+                    height: 50,
+                    width: 100,
+                  }}
+                  source={require("../../assets/lucrecia-paim.png")}
+                />
+                <Text className="ext-black font-bold text-xl mt-3 text-center">
+                  LUCRÉCIA PAIM
+                </Text>
+              </View>
+            </TouchableOpacity>
           </ScrollView>
         </View>
+
         <View className="mt-5 px-4">
           <View className="flex-row justify-between items-center">
             <Text className="font-bold text-black">Posts recentes</Text>

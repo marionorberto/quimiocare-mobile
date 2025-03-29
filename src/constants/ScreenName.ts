@@ -33,6 +33,7 @@ enum ScreenNames {
   CreateMedicationScreen = "CreateMedicationScreen",
   CreateSymptomScreen = "CreateSymptomScreen",
   CreateApppoinmentScreen = "CreateAppointmentScreen",
+  AskReplyScreen = "AskReplyScreen",
 }
 
 export default ScreenNames;

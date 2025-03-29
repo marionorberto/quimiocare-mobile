@@ -12,8 +12,13 @@ import {
 import Icon from "react-native-vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
 import Constants from "expo-constants";
+import ScreenNames from "../constants/ScreenName";
+import { RootStackParamsList } from "../navigations/RootStackParamsList";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-const CommunityScreen = () => {
+type props = NativeStackScreenProps<RootStackParamsList, ScreenNames.Community>;
+
+const CommunityScreen = ({ route, navigation }: props) => {
   const openWhatsApp = () => {
     const url = `https://chat.whatsapp.com/KlSrANYmVuHK8pk2v4UBWp`;
     Linking.openURL(url).catch((err) =>
@@ -35,7 +40,6 @@ const CommunityScreen = () => {
     );
   };
 
-  const navigation = useNavigation();
   const posts = [
     {
       id: 1,
@@ -86,7 +90,7 @@ const CommunityScreen = () => {
         </View>
       </View>
       <View className="mb-4 mt-5 px-4">
-        <Text className="text-lg font-semibold text-zinc-700 mb-2">
+        <Text className="text-lg  text-black mb-2 font-bold">
           Junte-se à comunidade
         </Text>
         <View className="flex-row gap-2 justify-start items-center pt-3">
@@ -110,8 +114,9 @@ const CommunityScreen = () => {
               <Icon name="paper-plane-outline" size={20} color="white" />
             </TouchableOpacity>
           </View>
-          <View className="h-11 w-[2px] bg-slate-500/30 mt-2"></View>
-          <TouchableOpacity className="px-4 bg-zinc-700 py-3 rounded-lg flex-row items-center justify-center mb-4 w-36 mx-4 mt-5">
+        </View>
+        <View>
+          <TouchableOpacity className=" bg-black py-3 rounded-lg flex-row items-center justify-center mb-4 w-36 mt-5">
             <Icon name="create-outline" size={20} color="white" />
             <Text className="text-white ml-2">Criar Postagem</Text>
           </TouchableOpacity>
@@ -120,9 +125,9 @@ const CommunityScreen = () => {
 
       <ScrollView showsVerticalScrollIndicator={false}>
         <View className="mx-4 pb-40">
-          <View className="mt-5 px-4">
+          <View className="mt-1 px-4">
             <View className="flex-row justify-between items-center">
-              <Text className="text-zinc-900">Posts Recentes</Text>
+              <Text className="font-bold">Posts Recentes</Text>
               <Text
                 className="text-zinc-400"
                 onPress={() => alert("definir menu opcoes e integrar")}
@@ -469,32 +474,37 @@ const CommunityScreen = () => {
           </View>
 
           {/* 🔹 Seção de Perguntas e Respostas */}
-          <Text className="text-lg font-semibold text-zinc-700 mt-4 mb-2">
+          <Text className="text-lg font-semibold text-black mt-4 mb-2">
             Perguntas e Respostas
           </Text>
           <TouchableOpacity className="bg-zinc-200 p-4 rounded-lg mb-3">
-            <Text className="text-zinc-800 font-medium">
+            <Text className="text-zinc-800 font-medium text-lg">
               "Quais são os melhores alimentos para reforçar a imunidade?"
             </Text>
-            <Text className="text-zinc-500 text-sm mt-1">5 respostas</Text>
+            <Text className="text-zinc-500 text-sm mt-2">5 respostas</Text>
           </TouchableOpacity>
-          <TouchableOpacity className="bg-zinc-200 p-4 rounded-lg mb-3">
-            <Text className="text-zinc-800 font-medium">
+          <TouchableOpacity className="bg-zinc-200 p-4 rounded-lg mb-3 ">
+            <Text className="text-zinc-800 font-medium text-lg">
               "É normal sentir fraqueza depois da quimio?"
             </Text>
-            <Text className="text-zinc-500 text-sm mt-1">8 respostas</Text>
+            <Text className="text-zinc-500 text-sm mt-2">8 respostas</Text>
           </TouchableOpacity>
           <TouchableOpacity className="bg-zinc-200 p-4 rounded-lg mb-3">
-            <Text className="text-zinc-800 font-medium">
+            <Text className="text-zinc-800 font-medium text-lg">
               "É normal sentir fraqueza depois da quimio?"
             </Text>
-            <Text className="text-zinc-500 text-sm mt-1">8 respostas</Text>
+            <Text className="text-zinc-500 text-sm mt-2">8 respostas</Text>
           </TouchableOpacity>
-          <TouchableOpacity className="bg-zinc-200 p-4 rounded-lg mb-3">
-            <Text className="text-zinc-800 font-medium">
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("AskReplyScreen", { title: "" });
+            }}
+            className="bg-zinc-200 p-4 rounded-lg mb-3"
+          >
+            <Text className="text-zinc-800 font-medium text-lg">
               "É normal sentir fraqueza depois da quimio?"
             </Text>
-            <Text className="text-zinc-500 text-sm mt-1">8 respostas</Text>
+            <Text className="text-zinc-500 text-sm mt-2">8 respostas</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -503,354 +513,3 @@ const CommunityScreen = () => {
 };
 
 export default CommunityScreen;
-
-{
-  /* <ScrollView showsVerticalScrollIndicator={false}>
-
-        <View className="flex-row justify-start items-center gap-10 px-4 w-full">
-          <View className="border-[1px] border-zinc-200 p-[3px] rounded-md bg-white mt-5">
-            <Pressable onPress={() => navigation.goBack()}>
-              <Icon
-                name="chevron-back-outline"
-                size={20}
-                color={"#505050"}
-              ></Icon>
-            </Pressable>
-          </View>
-          <Text className="text-xl self-center text-center text-black font-bold">
-            Comunidade de apoio
-          </Text>
-        </View>
-        <View className="rounded-lg p-4 mt-2 mx-auto">
-          <Text className="text-xl font-bold text-black">Grupo de Apoio</Text>
-          <ScrollView
-            horizontal={true}
-            className="gap-2 pt-3"
-            showsHorizontalScrollIndicator={false}
-          >
-            <View className="flex-col justify-strecth items-center gap-1 relative bg-zinc-200/25 rounded-xl w-20 h-24 me-4">
-              <View className="bg-green-500 absolute top-0 right-0 rounded-xl h-2 w-2"></View>
-              <Image
-                style={{
-                  width: 50,
-                  height: 50,
-                  borderRadius: 50,
-                  alignContent: "center",
-                  // borderWidth: 2,
-                  // borderColor: "#fff",
-                  marginTop: 10,
-                  backgroundColor: "#ccc",
-                }}
-                source={require("../../assets/user.png")}
-              />
-              <Text className="text-black font-semibold text-lg mt-1">
-                Mário
-              </Text>
-            </View>
-            <View className="flex-col justify-strecth items-center gap-1 relative bg-zinc-200/25 rounded-xl w-20 h-24 me-4">
-              <View className="bg-green-500 absolute top-0 right-0 rounded-xl h-2 w-2"></View>
-              <Image
-                style={{
-                  width: 50,
-                  height: 50,
-                  borderRadius: 50,
-                  alignContent: "center",
-                  // borderWidth: 2,
-                  // borderColor: "#fff",
-                  marginTop: 10,
-                  backgroundColor: "#ccc",
-                }}
-                source={require("../../assets/user.png")}
-              />
-              <Text className="text-black font-semibold text-lg mt-1">
-                Joaquina
-              </Text>
-            </View>
-            <View className="flex-col justify-strecth items-center gap-1 relative bg-zinc-200/25 rounded-xl w-20 h-24 me-4">
-              <View className="bg-green-500 absolute top-0 right-0 rounded-xl h-2 w-2"></View>
-              <Image
-                style={{
-                  width: 50,
-                  height: 50,
-                  borderRadius: 50,
-                  alignContent: "center",
-                  // borderWidth: 2,
-                  // borderColor: "#fff",
-                  marginTop: 10,
-                  backgroundColor: "#ccc",
-                }}
-                source={require("../../assets/user.png")}
-              />
-              <Text className="text-black font-semibold text-lg mt-1">
-                Estefânia
-              </Text>
-            </View>
-            <View className="flex-col justify-strecth items-center gap-1 relative bg-zinc-200/25 rounded-xl w-20 h-24 me-4">
-              <View className="bg-green-500 absolute top-0 right-0 rounded-xl h-2 w-2"></View>
-              <Image
-                style={{
-                  width: 50,
-                  height: 50,
-                  borderRadius: 50,
-                  alignContent: "center",
-                  // borderWidth: 2,
-                  // borderColor: "#fff",
-                  marginTop: 10,
-                  backgroundColor: "#ccc",
-                }}
-                source={require("../../assets/user.png")}
-              />
-              <Text className="text-black font-semibold text-lg mt-1">
-                Estefânia
-              </Text>
-            </View>
-            <View className="flex-col justify-strecth items-center gap-1 relative bg-zinc-200/25 rounded-xl w-20 h-24 me-4">
-              <View className="bg-green-500 absolute top-0 right-0 rounded-xl h-2 w-2"></View>
-              <Image
-                style={{
-                  width: 50,
-                  height: 50,
-                  borderRadius: 50,
-                  alignContent: "center",
-                  // borderWidth: 2,
-                  // borderColor: "#fff",
-                  marginTop: 10,
-                  backgroundColor: "#ccc",
-                }}
-                source={require("../../assets/user.png")}
-              />
-              <Text className="text-black font-semibold text-lg mt-1">
-                Estefânia
-              </Text>
-            </View>
-            <View className="flex-col justify-strecth items-center gap-1 relative bg-zinc-200/25 rounded-xl w-20 h-24 me-4">
-              <View className="bg-green-500 absolute top-0 right-0 rounded-xl h-2 w-2"></View>
-              <Image
-                style={{
-                  width: 50,
-                  height: 50,
-                  borderRadius: 50,
-                  alignContent: "center",
-                  // borderWidth: 2,
-                  // borderColor: "#fff",
-                  marginTop: 10,
-                  backgroundColor: "#ccc",
-                }}
-                source={require("../../assets/user.png")}
-              />
-              <Text className="text-black font-semibold text-lg mt-1">
-                Estefânia
-              </Text>
-            </View>
-          </ScrollView>
-        </View>
-
-        <View className="flex-row justify-between items-center my-4 px-4">
-          <Text className="text-xl font-semibold text-zinc-400">
-            Posts recentes
-          </Text>
-          <Text className="text-sm font-bold text-blue-400">Ver Todos</Text>
-        </View>
-        <ScrollView
-          horizontal={true}
-          className="px-4"
-          showsHorizontalScrollIndicator={false}
-        >
-          <View className="h-72 w-96 me-3">
-            <View className="border-2 border-zinc-200 rounded-2xl p-4">
-              <View className="flex-row justify-between items-center">
-                <Text className="font-bold text-black text-base">
-                  Mário Norberto
-                </Text>
-                <Text className="font-semibold text-zinc-300 text-sm">
-                  1d Atrás
-                </Text>
-              </View>
-              <Text className="text-xl font-semibold text-black mt-4 text-justify">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Voluptate, distinctio? Voluptate, distinctio? Voluptate,
-                Voluptate, distinctio? Voluptate, distinctio? Voluptate,
-                Voluptate, distinctio? Voluptate
-              </Text>
-            </View>
-          </View>
-          <View className="h-72 w-96 me-3">
-            <View className="border-2 border-zinc-200 rounded-2xl p-4">
-              <View className="flex-row justify-between items-center">
-                <Text className="font-bold text-black text-base">
-                  Mário Norberto
-                </Text>
-                <Text className="font-semibold text-zinc-300 text-sm">
-                  1d Atrás
-                </Text>
-              </View>
-              <Text className="text-xl font-semibold text-black mt-4 text-justify">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Voluptate, distinctio? Voluptate, distinctio? Voluptate,
-                Voluptate, distinctio? Voluptate, distinctio? Voluptate,
-                Voluptate, distinctio? Voluptate
-              </Text>
-            </View>
-          </View>
-          <View className="h-72 w-96 me-3">
-            <View className="border-2 border-zinc-200 rounded-2xl p-4">
-              <View className="flex-row justify-between items-center">
-                <Text className="font-bold text-black text-base">
-                  Mário Norberto
-                </Text>
-                <Text className="font-semibold text-zinc-300 text-sm">
-                  1d Atrás
-                </Text>
-              </View>
-              <Text className="text-xl font-semibold text-black mt-4 text-justify">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Voluptate, distinctio? Voluptate, distinctio? Voluptate,
-                Voluptate, distinctio? Voluptate, distinctio? Voluptate,
-                Voluptate, distinctio? Voluptate
-              </Text>
-            </View>
-          </View>
-        </ScrollView>
-
-        <View className="rounded-lg p-4 mt-2 mx-auto">
-          <Text className="text-xl font-bold text-black">Novos Artigos</Text>
-          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-            <View className="flex-row justify-center items-center bg-green-400/15 mt-4 p-5 rounded-3xl  h-[16rem] w-80 me-3 relative">
-              <Text className="text-3xl  text-zinc-600 font-light text-wrap text-center">
-                Como lidar com os efeitos colaterais durate a quimioterapia?
-              </Text>
-
-              <Text className="text-black font-light bg-white rounded-2xl px-4 py-2 absolute bottom-3 right-3">
-                Ler
-              </Text>
-            </View>
-            <View className="flex-row justify-center items-center bg-green-400/15 mt-4 p-5 rounded-3xl  h-[16rem] w-80 me-3 relative">
-              <Text className="text-3xl  text-zinc-600 font-light text-wrap text-center">
-                Como lidar com os efeitos colaterais durate a quimioterapia?
-              </Text>
-
-              <Text className="text-black font-light bg-white rounded-2xl px-4 py-2 absolute bottom-3 right-3">
-                Ler
-              </Text>
-            </View>
-            <View className="flex-row justify-center items-center bg-green-400/15 mt-4 p-5 rounded-3xl  h-[16rem] w-80 me-3 relative">
-              <Text className="text-3xl  text-zinc-600 font-light text-wrap text-center">
-                Como lidar com os efeitos colaterais durate a quimioterapia?
-              </Text>
-
-              <Text className="text-black font-light bg-white rounded-2xl px-4 py-2 absolute bottom-3 right-3">
-                Ler
-              </Text>
-            </View>
-            <View className="flex-row justify-center items-center bg-green-400/15 mt-4 p-5 rounded-3xl  h-[16rem] w-80 me-3 relative">
-              <Text className="text-3xl  text-zinc-600 font-light text-wrap text-center">
-                Como lidar com os efeitos colaterais durate a quimioterapia?
-              </Text>
-
-              <Text className="text-black font-light bg-white rounded-2xl px-4 py-2 absolute bottom-3 right-3">
-                Ler
-              </Text>
-            </View>
-          </ScrollView>
-        </View>
-        <View className="rounded-lg p-4 mt-2 mx-auto">
-          <Text className="text-xl font-bold text-black">Novas Dicas</Text>
-          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-            <View className="flex-row justify-center items-center bg-zinc-400/15 mt-4 p-5 rounded-3xl  h-[16rem] w-80 me-3 relative">
-              <Text className="text-3xl  text-zinc-600 font-light text-wrap text-center">
-                VIDEO
-              </Text>
-              <View className="text-black font-light bg-zinc-300/35 rounded-2xl px-4 py-2 absolute top-2 right-3">
-                <Icon name="expand-outline" color={"black"} size={25}></Icon>
-              </View>
-            </View>
-            <View className="flex-row justify-center items-center bg-zinc-400/15 mt-4 p-5 rounded-3xl  h-[16rem] w-80 me-3 relative">
-              <Text className="text-3xl  text-zinc-600 font-light text-wrap text-center">
-                VIDEO
-              </Text>
-              <View className="text-black font-light bg-zinc-300/35 rounded-2xl px-4 py-2 absolute top-2 right-3">
-                <Icon name="expand-outline" color={"black"} size={25}></Icon>
-              </View>
-            </View>
-            <View className="flex-row justify-center items-center bg-zinc-400/15 mt-4 p-5 rounded-3xl  h-[16rem] w-80 me-3 relative">
-              <Text className="text-3xl  text-zinc-600 font-light text-wrap text-center">
-                VIDEO
-              </Text>
-              <View className="text-black font-light bg-zinc-300/35 rounded-2xl px-4 py-2 absolute top-2 right-3">
-                <Icon name="expand-outline" color={"black"} size={25}></Icon>
-              </View>
-            </View>
-            <View className="flex-row justify-center items-center bg-zinc-400/15 mt-4 p-5 rounded-3xl  h-[16rem] w-80 me-3 relative">
-              <Text className="text-3xl  text-zinc-600 font-light text-wrap text-center">
-                VIDEO
-              </Text>
-
-              <View className="text-black font-light bg-zinc-300/35 rounded-2xl px-4 py-2 absolute top-2 right-3">
-                <Icon name="expand-outline" color={"black"} size={25}></Icon>
-              </View>
-            </View>
-          </ScrollView>
-        </View>
-
-        <View className="rounded-lg p-4 mt-2 mx-auto">
-          <View className="flex-col justify-center items-center gap-3">
-            <View className="flex-row justify-between items-center bg-green-400/15  p-4 rounded-lg">
-              <View className="flex-row justify-between items-center gap-4">
-                <Image
-                  style={{
-                    width: 30,
-                    height: 30,
-                    borderRadius: 50,
-                    alignContent: "center",
-                    borderWidth: 2,
-                    borderColor: "#fff",
-                    backgroundColor: "#ccc",
-                  }}
-                  source={require("../../assets/whatsapp-icon.png")}
-                ></Image>
-                <Text className="text-lg font-semibold text-black">
-                  Ir Comunidade Do whatsapp
-                </Text>
-              </View>
-              <Icon
-                style={{ alignSelf: "flex-end" }}
-                name="chevron-forward-outline"
-                color={"#999"}
-                size={30}
-              ></Icon>
-            </View>
-            <View className="flex-row justify-between items-center bg-blue-500  p-4 rounded-lg text-white">
-              <View className="flex-row justify-between items-center gap-4">
-                <Icon name="logo-facebook" color={"white"} size={28}></Icon>
-
-                <Text className="text-lg font-semibold text-white">
-                  Ir Comunidade Do Facebook
-                </Text>
-              </View>
-              <Icon
-                style={{ alignSelf: "flex-end" }}
-                name="chevron-forward-outline"
-                color={"#fff"}
-                size={30}
-              ></Icon>
-            </View>
-            <View className="flex-row justify-between items-center bg-blue-400  p-4 rounded-lg text-white">
-              <View className="flex-row justify-between items-center gap-4 ">
-                <View className="-rotate-45">
-                  <Icon name="send-sharp" color={"white"} size={28}></Icon>
-                </View>
-                <Text className="text-lg font-semibold text-white">
-                  Ir Comunidade Do Telegram
-                </Text>
-              </View>
-              <Icon
-                style={{ alignSelf: "flex-end" }}
-                name="chevron-forward-outline"
-                color={"#fff"}
-                size={30}
-              ></Icon>
-            </View>
-          </View>
-        </View>
-      </ScrollView> */
-}

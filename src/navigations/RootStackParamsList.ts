@@ -133,6 +133,10 @@ type CreateSymptomScreen = {
   title: string;
 }
 
+type AskReplyScreen = {
+  title: string;
+}
+
 export type RootStackParamsList = {
   Home: HomeScreenParams;
   Setting: SettingScreenParams;
@@ -167,4 +171,5 @@ export type RootStackParamsList = {
   CreateMedicationScreen: CreateMedicationScreen
   CreateSymptomScreen: CreateSymptomScreen
   CreateAppointmentScreen: CreateAppointmentScreen
+  AskReplyScreen: AskReplyScreen
 }

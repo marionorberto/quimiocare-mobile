@@ -48,13 +48,19 @@ const SettingsScreen = ({ route, navigation }: props) => {
       className={`flex-col justify-center items-stretch w-full pt-8 pb-14 ${theme === "dark" ? "bg-neutral-900" : ""}`}
     >
       <View className="flex-row justify-start items-center gap-10 px-4">
-        <View className="border-[1px] border-zinc-200 p-[3px] rounded-md bg-white">
+        <View
+          className={`border-[1px]  p-[3px] rounded-md  ${theme === "dark" ? "bg-neutral-900 border-zinc-600" : "bg-white border-zinc-200"}`}
+        >
           <Pressable onPress={() => navigation.goBack()}>
-            <Icon name="chevron-back-outline" size={20} color={"#000"}></Icon>
+            <Icon
+              name="chevron-back-outline"
+              size={20}
+              color={theme === "dark" ? "#fff" : "#000"}
+            ></Icon>
           </Pressable>
         </View>
         <Text
-          className={`text-xl self-center text-center text-black font-bold ${theme === "dark" ? "text-white" : ""}`}
+          className={`text-xl self-center text-center  font-bold ${theme === "dark" ? "text-white" : "text-black"}`}
         >
           Configurações
         </Text>
@@ -62,7 +68,7 @@ const SettingsScreen = ({ route, navigation }: props) => {
       <ScrollView showsVerticalScrollIndicator={false}>
         <View className="w-[92%] rounded-lg p-4 mt-6 mx-auto">
           <Text
-            className={`text-xl font-bold text-black ${theme === "dark" ? "text-white" : ""}`}
+            className={`text-xl font-bold  ${theme === "dark" ? "text-white" : "text-black"}`}
           >
             Dados de Saúde
           </Text>
@@ -73,7 +79,7 @@ const SettingsScreen = ({ route, navigation }: props) => {
             }}
           >
             <View
-              className={`flex-row justify-between items-center bg-white mt-2 p-4 rounded-lg ${theme === "dark" ? "bg-neutral-700/60" : ""} `}
+              className={`flex-row justify-between items-center  mt-2 p-4 rounded-lg ${theme === "dark" ? "bg-neutral-700/60" : "bg-white"} `}
             >
               <View className="flex-row justify-between items-center gap-4">
                 <Icon
@@ -82,7 +88,7 @@ const SettingsScreen = ({ route, navigation }: props) => {
                   size={24}
                 ></Icon>
                 <Text
-                  className={`text-lg font-semibold text-black ${theme === "dark" ? "text-white" : ""}`}
+                  className={`text-lg font-semibold  ${theme === "dark" ? "text-white" : "text-black"}`}
                 >
                   Histórico De Saúde
                 </Text>
@@ -97,7 +103,7 @@ const SettingsScreen = ({ route, navigation }: props) => {
           </Pressable>
           <Pressable onPress={() => navigation.navigate("Report")}>
             <View
-              className={`flex-row justify-between items-center bg-white mt-2 p-4 rounded-lg ${theme === "dark" ? "bg-neutral-700/60" : ""}`}
+              className={`flex-row justify-between items-center  mt-2 p-4 rounded-lg ${theme === "dark" ? "bg-neutral-700/60" : "bg-white"}`}
             >
               <View className="flex-row justify-between items-center gap-4">
                 <Icon
@@ -106,7 +112,7 @@ const SettingsScreen = ({ route, navigation }: props) => {
                   size={24}
                 ></Icon>
                 <Text
-                  className={`text-lg font-semibold text-black ${theme === "dark" ? "text-white" : ""} `}
+                  className={`text-lg font-semibold  ${theme === "dark" ? "text-white" : "text-black"} `}
                 >
                   Exportar Relatórios
                 </Text>
@@ -122,12 +128,12 @@ const SettingsScreen = ({ route, navigation }: props) => {
         </View>
         <View className="w-[92%] rounded-lg p-4 mt-3 mx-auto">
           <Text
-            className={`text-xl font-bold text-black ${theme === "dark" ? "text-white" : ""} `}
+            className={`text-xl font-bold  ${theme === "dark" ? "text-white" : "text-black"} `}
           >
             Notificações
           </Text>
           <View
-            className={`flex-row justify-between items-center bg-white mt-2 p-4 rounded-lg ${theme === "dark" ? "bg-neutral-700/60" : ""} `}
+            className={`flex-row justify-between items-center  mt-2 p-4 rounded-lg ${theme === "dark" ? "bg-neutral-700/60" : "bg-white"} `}
           >
             <View className="flex-row justify-between items-center gap-4">
               <Icon
@@ -136,7 +142,7 @@ const SettingsScreen = ({ route, navigation }: props) => {
                 size={24}
               ></Icon>
               <Text
-                className={`text-lg font-semibold text-black ${theme === "dark" ? "bg-neutral-700/60 text-white" : ""}`}
+                className={`text-lg font-semibold  ${theme === "dark" ? " text-white" : "text-black"}`}
               >
                 Lembretes de Medicações
               </Text>
@@ -156,7 +162,7 @@ const SettingsScreen = ({ route, navigation }: props) => {
             </View>
           </View>
           <View
-            className={`flex-row justify-between items-center bg-white mt-2 p-4 rounded-lg  ${theme === "dark" ? "bg-neutral-700/60" : ""} `}
+            className={`flex-row justify-between items-center  mt-2 p-4 rounded-lg  ${theme === "dark" ? "bg-neutral-700/60" : "bg-white"} `}
           >
             <View className="flex-row justify-between items-center gap-4">
               <Icon
@@ -165,7 +171,7 @@ const SettingsScreen = ({ route, navigation }: props) => {
                 size={24}
               ></Icon>
               <Text
-                className={`text-lg font-semibold text-black ${theme === "dark" ? "bg-neutral-700/60 text-white" : ""} `}
+                className={`text-lg font-semibold  ${theme === "dark" ? " text-white" : "text-black"} `}
               >
                 Alertas de Consultas
               </Text>
@@ -187,12 +193,12 @@ const SettingsScreen = ({ route, navigation }: props) => {
         </View>
         <View className="w-[92%] rounded-lg p-4 mt-3 mx-auto">
           <Text
-            className={`text-xl font-bold text-black ${theme === "dark" ? "text-white" : ""}`}
+            className={`text-xl font-bold  ${theme === "dark" ? "text-white" : "text-black"}`}
           >
             Preferências
           </Text>
           <View
-            className={`flex-row justify-between items-center bg-white mt-2 p-4 rounded-lg  ${theme === "dark" ? "bg-neutral-700/60" : ""} `}
+            className={`flex-row justify-between items-center  mt-2 p-4 rounded-lg  ${theme === "dark" ? "bg-neutral-700/60" : "bg-white"} `}
           >
             <View className="flex-row justify-between items-center gap-4">
               <Icon
@@ -201,7 +207,7 @@ const SettingsScreen = ({ route, navigation }: props) => {
                 size={24}
               ></Icon>
               <Text
-                className={`text-lg font-semibold text-black ${theme === "dark" ? "dark:text-white" : ""}`}
+                className={`text-lg font-semibold  ${theme === "dark" ? "text-white" : "text-black"}`}
               >
                 Modo Escuro/Claro
               </Text>
@@ -227,7 +233,7 @@ const SettingsScreen = ({ route, navigation }: props) => {
           </View>
 
           <View
-            className={`flex-row justify-between items-center bg-white mt-2 p-4 rounded-lg ${theme === "dark" ? "bg-neutral-700/60" : ""} `}
+            className={`flex-row justify-between items-center  mt-2 p-4 rounded-lg ${theme === "dark" ? "bg-neutral-700/60" : "bg-white"} `}
           >
             <View className="flex-row justify-between items-center gap-4">
               <Icon
@@ -236,7 +242,7 @@ const SettingsScreen = ({ route, navigation }: props) => {
                 size={24}
               ></Icon>
               <Text
-                className={`text-lg font-semibold text-black ${theme === "dark" ? "text-white bg-neutral-700/60" : ""}`}
+                className={`text-lg font-semibold  ${theme === "dark" ? "text-white " : "text-black"}`}
               >
                 Configuração de Idioma
               </Text>
@@ -251,7 +257,7 @@ const SettingsScreen = ({ route, navigation }: props) => {
         </View>
         <View className="w-[92%] rounded-lg p-4 mt-3 mx-auto">
           <Text
-            className={`text-xl font-bold text-black ${theme === "dark" ? "text-white" : ""} `}
+            className={`text-xl font-bold  ${theme === "dark" ? "text-white" : "text-black"} `}
           >
             Perfil & Conta
           </Text>
@@ -261,7 +267,7 @@ const SettingsScreen = ({ route, navigation }: props) => {
             }}
           >
             <View
-              className={`flex-row justify-between items-center bg-white mt-2 p-4 rounded-lg ${theme === "dark" ? "bg-neutral-700/60" : ""} `}
+              className={`flex-row justify-between items-center  mt-2 p-4 rounded-lg ${theme === "dark" ? "bg-neutral-700/60" : "bg-white"} `}
             >
               <View className="flex-row justify-between items-center gap-4">
                 <Icon
@@ -270,7 +276,7 @@ const SettingsScreen = ({ route, navigation }: props) => {
                   size={24}
                 ></Icon>
                 <Text
-                  className={`text-lg font-semibold text-black ${theme === "dark" ? "text-white" : ""}  `}
+                  className={`text-lg font-semibold  ${theme === "dark" ? "text-white" : "text-black"}  `}
                 >
                   Editar Perfil
                 </Text>
@@ -290,7 +296,7 @@ const SettingsScreen = ({ route, navigation }: props) => {
             }}
           >
             <View
-              className={`flex-row justify-between items-center bg-white mt-2 p-4 rounded-lg ${theme === "dark" ? "bg-neutral-700/60" : ""}  `}
+              className={`flex-row justify-between items-center  mt-2 p-4 rounded-lg ${theme === "dark" ? "bg-neutral-700/60" : "bg-white"}  `}
             >
               <View className="flex-row justify-between items-center gap-4">
                 <Icon
@@ -313,7 +319,7 @@ const SettingsScreen = ({ route, navigation }: props) => {
             </View>
             <Modal isOpen={openModalChangePassword} withInput={false}>
               <View
-                className={`flex-row justify-start items-center gap-2 mt-3 bg-white w-11/12 p-6 rounded-2xl shadow-lg ${theme === "dark" ? "bg-neutral-700/60" : ""}  `}
+                className={`flex-row justify-start items-center gap-2 mt-3  w-11/12 p-6 rounded-2xl shadow-lg ${theme === "dark" ? "bg-neutral-700/60" : "bg-white"}  `}
               >
                 <Icon
                   name="lock-open-outline"
@@ -354,12 +360,12 @@ const SettingsScreen = ({ route, navigation }: props) => {
         </View>
         <View className="w-[92%] rounded-lg p-4 mt-3 mx-auto">
           <Text
-            className={`text-xl font-bold text-black ${theme === "dark" ? "text-white" : ""} `}
+            className={`text-xl font-bold  ${theme === "dark" ? "text-white" : "text-black"} `}
           >
             Segurança & Privacidade
           </Text>
           <View
-            className={`flex-row justify-between items-center bg-white mt-2 p-4 rounded-lg ${theme === "dark" ? "bg-neutral-700/60" : ""} `}
+            className={`flex-row justify-between items-center  mt-2 p-4 rounded-lg ${theme === "dark" ? "bg-neutral-700/60" : "bg-white"} `}
           >
             <View className="flex-row justify-between items-center gap-4">
               <Icon
@@ -368,7 +374,7 @@ const SettingsScreen = ({ route, navigation }: props) => {
                 size={24}
               ></Icon>
               <Text
-                className={`text-lg font-semibold text-black ${theme === "dark" ? "text-white" : ""}`}
+                className={`text-lg font-semibold  ${theme === "dark" ? "text-white" : "text-black"}`}
               >
                 2FA Autenticação
               </Text>
@@ -405,7 +411,7 @@ const SettingsScreen = ({ route, navigation }: props) => {
         </View>
         <View className=" w-[92%] rounded-lg p-4 mt-3 mx-auto">
           <Text
-            className={`text-xl font-bold text-black ${theme === "dark" ? "text-white" : ""} `}
+            className={`text-xl font-bold  ${theme === "dark" ? "text-white" : "text-black"} `}
           >
             Ajuda & Suporte
           </Text>
@@ -415,7 +421,7 @@ const SettingsScreen = ({ route, navigation }: props) => {
             }}
           >
             <View
-              className={`flex-row justify-between items-center bg-white mt-2 p-4 rounded-lg ${theme === "dark" ? "bg-neutral-700/60" : ""} `}
+              className={`flex-row justify-between items-center  mt-2 p-4 rounded-lg ${theme === "dark" ? "bg-neutral-700/60" : "bg-white"} `}
             >
               <View className="flex-row justify-between items-center gap-4">
                 <Icon
@@ -424,7 +430,7 @@ const SettingsScreen = ({ route, navigation }: props) => {
                   size={24}
                 ></Icon>
                 <Text
-                  className={`text-lg font-semibold text-black ${theme === "dark" ? "text-white" : ""} `}
+                  className={`text-lg font-semibold  ${theme === "dark" ? "text-white" : "text-black"} `}
                 >
                   Perguntas Frequentes
                 </Text>
@@ -444,7 +450,7 @@ const SettingsScreen = ({ route, navigation }: props) => {
             }}
           >
             <View
-              className={`flex-row justify-between items-center bg-white mt-2 p-4 rounded-lg ${theme === "dark" ? "bg-neutral-700/60" : ""} `}
+              className={`flex-row justify-between items-center  mt-2 p-4 rounded-lg ${theme === "dark" ? "bg-neutral-700/60" : "bg-white"} `}
             >
               <View className="flex-row justify-between items-center gap-4">
                 <Icon
@@ -453,7 +459,7 @@ const SettingsScreen = ({ route, navigation }: props) => {
                   size={24}
                 ></Icon>
                 <Text
-                  className={`text-lg font-semibold text-black ${theme === "dark" ? "text-white" : ""} `}
+                  className={`text-lg font-semibold  ${theme === "dark" ? "text-white" : "text-black"} `}
                 >
                   Falar com Equipa de Suporte
                 </Text>
@@ -482,7 +488,7 @@ const SettingsScreen = ({ route, navigation }: props) => {
             }}
           >
             <View
-              className={`flex-row justify-between items-center bg-white mt-2 p-4 rounded-lg ${theme === "dark" ? "bg-neutral-700/60" : ""} `}
+              className={`flex-row justify-between items-center  mt-2 p-4 rounded-lg ${theme === "dark" ? "bg-neutral-700/60" : "bg-white"} `}
             >
               <View className="flex-row justify-between items-center gap-4">
                 <Icon
@@ -491,7 +497,7 @@ const SettingsScreen = ({ route, navigation }: props) => {
                   size={24}
                 ></Icon>
                 <Text
-                  className={`text-lg font-semibold text-black ${theme === "dark" ? "text-white" : ""} `}
+                  className={`text-lg font-semibold  ${theme === "dark" ? "text-white" : "text-black"} `}
                 >
                   Feedback
                 </Text>
@@ -504,18 +510,18 @@ const SettingsScreen = ({ route, navigation }: props) => {
               ></Icon>
               <Modal isOpen={openModalFeedback} withInput={false}>
                 <View
-                  className={`bg-white w-11/12 p-6 rounded-2xl shadow-lg ${theme === "dark" ? "bg-zinc-800/80" : ""} `}
+                  className={` w-11/12 p-6 rounded-2xl shadow-lg ${theme === "dark" ? "bg-zinc-800/80" : "bg-white"} `}
                 >
                   {/* Título */}
                   <Text
-                    className={`text-black text-xl font-semibold text-center mb-4 ${theme === "dark" ? "text-white" : ""} `}
+                    className={` text-xl font-semibold text-center mb-4 ${theme === "dark" ? "text-white" : "text-black"} `}
                   >
                     Deixe seu Feedback
                   </Text>
 
                   {/* Seção de Avaliação */}
                   <Text
-                    className={`text-zinc-700 text-sm mb-2 ${theme === "dark" ? "text-white" : ""} `}
+                    className={` text-sm mb-2 ${theme === "dark" ? "text-white" : "text-zinc-700"} `}
                   >
                     Avaliação:
                   </Text>
@@ -535,13 +541,13 @@ const SettingsScreen = ({ route, navigation }: props) => {
 
                   {/* Seção de Comentário */}
                   <Text
-                    className={`text-zinc-700 text-sm mb-2 ${theme === "dark" ? "text-white" : ""} `}
+                    className={` text-sm mb-2 ${theme === "dark" ? "text-white" : "text-zinc-700"} `}
                   >
                     Comentário:
                   </Text>
                   <TextInput
                     placeholder="Digite seu comentário..."
-                    className={`border border-zinc-300 rounded-lg p-3 text-black text-sm ${theme === "dark" ? "text-white" : ""} `}
+                    className={`border border-zinc-300 rounded-lg p-3  text-sm ${theme === "dark" ? "text-white" : "text-black"} `}
                     multiline
                     numberOfLines={4}
                     value={comment}
@@ -554,7 +560,7 @@ const SettingsScreen = ({ route, navigation }: props) => {
                       className="px-5 py-3 rounded-lg bg-zinc-300"
                     >
                       <Text
-                        className={`text-black font-semibold ${theme === "dark" ? "text-white" : ""} `}
+                        className={` font-semibold ${theme === "dark" ? "text-white" : "text-black"} `}
                       >
                         Cancelar
                       </Text>
@@ -577,7 +583,7 @@ const SettingsScreen = ({ route, navigation }: props) => {
             }}
           >
             <View
-              className={`flex-row justify-between items-center bg-white mt-2 p-4 rounded-lg ${theme === "dark" ? "bg-neutral-700/60" : ""} `}
+              className={`flex-row justify-between items-center  mt-2 p-4 rounded-lg ${theme === "dark" ? "bg-neutral-700/60" : "bg-white"} `}
             >
               <View className="flex-row justify-between items-center gap-4">
                 <Icon
@@ -586,7 +592,7 @@ const SettingsScreen = ({ route, navigation }: props) => {
                   size={24}
                 ></Icon>
                 <Text
-                  className={`text-lg font-semibold text-black ${theme === "dark" ? "text-white" : ""} `}
+                  className={`text-lg font-semibold  ${theme === "dark" ? "text-white" : "text-black"} `}
                 >
                   Sobre o App
                 </Text>
@@ -602,13 +608,13 @@ const SettingsScreen = ({ route, navigation }: props) => {
         </View>
         <View className=" w-[92%] rounded-lg p-4 mt-3 mx-auto">
           <Text
-            className={`text-xl font-bold text-black ${theme === "dark" ? "text-white" : ""} `}
+            className={`text-xl font-bold  ${theme === "dark" ? "text-white" : "text-black"} `}
           >
             Legal
           </Text>
           <Pressable onPress={() => navigation.navigate("Policy")}>
             <View
-              className={`flex-row justify-between items-center bg-white mt-2 p-4 rounded-lg ${theme === "dark" ? "bg-neutral-700/60" : ""} `}
+              className={`flex-row justify-between items-center  mt-2 p-4 rounded-lg ${theme === "dark" ? "bg-neutral-700/60" : "bg-white"} `}
             >
               <View className="flex-row justify-between items-center gap-4">
                 <Icon
@@ -617,7 +623,7 @@ const SettingsScreen = ({ route, navigation }: props) => {
                   size={24}
                 ></Icon>
                 <Text
-                  className={`text-lg font-semibold text-black ${theme === "dark" ? "text-white" : ""}`}
+                  className={`text-lg font-semibold  ${theme === "dark" ? "text-white" : "text-black"}`}
                 >
                   Políticas de Privacidade
                 </Text>
@@ -633,7 +639,7 @@ const SettingsScreen = ({ route, navigation }: props) => {
 
           <Pressable onPress={() => navigation.navigate("Terms")}>
             <View
-              className={`flex-row justify-between items-center bg-white mt-2 p-4 rounded-lg ${theme === "dark" ? "bg-neutral-700/60" : ""} `}
+              className={`flex-row justify-between items-center  mt-2 p-4 rounded-lg ${theme === "dark" ? "bg-neutral-700/60" : "bg-white"} `}
             >
               <View className="flex-row justify-between items-center gap-4">
                 <Icon
@@ -642,7 +648,7 @@ const SettingsScreen = ({ route, navigation }: props) => {
                   size={24}
                 ></Icon>
                 <Text
-                  className={`text-lg font-semibold text-black ${theme === "dark" ? "text-white" : ""} `}
+                  className={`text-lg font-semibold  ${theme === "dark" ? "text-white" : "text-black"} `}
                 >
                   Termos de Uso
                 </Text>

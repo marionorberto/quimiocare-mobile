@@ -227,13 +227,19 @@ const ProfileScreen = ({ route, navigation }: props) => {
       className={`flex-col justify-center items-stretch w-full pt-6 ${theme === "dark" ? "bg-neutral-900" : ""} `}
     >
       <View className="flex-row justify-start items-center gap-10 px-4">
-        <View className="border-[1px] border-zinc-200 p-[3px] rounded-md bg-white dark:bg-neutral-700/60">
+        <View
+          className={`border-[1px]  p-[3px] rounded-md ${theme === "dark" ? "bg-neutral-700/60 border-zinc-600" : "bg-white border-zinc-200"}  `}
+        >
           <Pressable onPress={() => navigation.goBack()}>
-            <Icon name="chevron-back-outline" size={20} color={"#505050"} />
+            <Icon
+              name="chevron-back-outline"
+              size={20}
+              color={theme === "dark" ? "white" : "#505050"}
+            />
           </Pressable>
         </View>
         <Text
-          className={`text-xl self-center text-center text-black font-bold  ${theme === "dark" ? "text-white" : "text-black"}`}
+          className={`text-xl self-center text-center  font-bold  ${theme === "dark" ? "text-white" : "text-black"}`}
         >
           Perfil
         </Text>
@@ -254,14 +260,18 @@ const ProfileScreen = ({ route, navigation }: props) => {
                 }}
               ></Image>
               <View
-                className={`bg-white w-8 h-8 rounded-md absolute bottom-0 right-2 flex-1 justify-center items-center ${theme === "dark" ? "bg-neutral-700/60" : ""} `}
+                className={` w-8 h-8 rounded-md absolute bottom-0 right-2 flex-1 justify-center items-center ${theme === "dark" ? "bg-neutral-700/60" : "bg-white"} `}
               >
-                <Icon name="camera-reverse-outline" color={"#fff"} size={23} />
+                <Icon
+                  name="camera-reverse-outline"
+                  color={theme === "dark" ? "white" : "#000"}
+                  size={23}
+                />
               </View>
             </View>
             {userData ? (
               <Text
-                className={`text-black font-semibold text-center text-lg mt-4 ${theme === "dark" ? "text-white" : ""}  `}
+                className={` font-semibold text-center text-lg mt-4 ${theme === "dark" ? "text-white" : "text-black"}  `}
               >
                 {userData.username}
               </Text>
@@ -270,7 +280,7 @@ const ProfileScreen = ({ route, navigation }: props) => {
             )}
             {profileData ? (
               <Text
-                className={`text-zinc-500 text-base ${theme === "dark" ? "text-zinc-300" : ""} `}
+                className={` text-base ${theme === "dark" ? "text-zinc-300" : "text-zinc-500"} `}
               >
                 {profileData.job}
               </Text>
@@ -279,7 +289,7 @@ const ProfileScreen = ({ route, navigation }: props) => {
             )}
             {profileData ? (
               <Text
-                className={`text-zinc-400 text-base ${theme === "dark" ? "text-zinc-300" : ""} `}
+                className={` text-base ${theme === "dark" ? "text-zinc-300" : "text-zinc-400"} `}
               >
                 {profileData.bio}
               </Text>
@@ -288,7 +298,7 @@ const ProfileScreen = ({ route, navigation }: props) => {
             )}
 
             <View
-              className={` w-full border-y-2 border-zinc-300 flex-row justify-around items-center py-4 mt-5 ${theme === "dark" ? "border-zinc-500" : ""} `}
+              className={` w-full border-y-2  flex-row justify-around items-center py-4 mt-5 ${theme === "dark" ? "border-zinc-500" : "border-zinc-300"} `}
             >
               <View>
                 <Text
@@ -297,7 +307,7 @@ const ProfileScreen = ({ route, navigation }: props) => {
                   {medicationCounter.count}
                 </Text>
                 <Text
-                  className={`text-zinc-300 text-center text-sm ${theme === "dark" ? "text-zinc-200" : ""} `}
+                  className={` text-center text-sm ${theme === "dark" ? "text-zinc-200" : "text-zinc-300"} `}
                 >
                   Consultas
                 </Text>
@@ -309,7 +319,7 @@ const ProfileScreen = ({ route, navigation }: props) => {
                   {symptomsCounter.count}
                 </Text>
                 <Text
-                  className={`text-zinc-300 text-center text-sm ${theme === "dark" ? "text-zinc-200" : ""} `}
+                  className={` text-center text-sm ${theme === "dark" ? "text-zinc-200" : "text-zinc-300"} `}
                 >
                   Sintomas
                 </Text>
@@ -334,37 +344,41 @@ const ProfileScreen = ({ route, navigation }: props) => {
           </View>
         </View>
         <View
-          className={`w-[92%] rounded-lg p-4 bg-white mt-6 mx-auto ${theme === "dark" ? "bg-neutral-700/60" : ""} `}
+          className={`w-[92%] rounded-lg p-4  mt-6 mx-auto ${theme === "dark" ? "bg-neutral-700/60" : "bg-white"} `}
         >
           <View className="flex-row justify-between items-center">
             <Text
-              className={`text-xl font-bold text-black ${theme === "dark" ? "text-white" : ""} `}
+              className={`text-xl font-bold  ${theme === "dark" ? "text-white" : "text-black"} `}
             >
               Informações Pessoais
             </Text>
             <Pressable onPress={() => setEditUserInfoModalVisible(true)}>
               <Text
-                className={`text-lg font-semibold text-black ${theme === "dark" ? "text-white" : ""} `}
+                className={`text-lg font-semibold  ${theme === "dark" ? "text-white" : "text-black"} `}
               >
                 Editar
               </Text>
             </Pressable>
-            {/* <EditPersonalInformationModal
+            <EditPersonalInformationModal
               isVisible={editUserInfoModalVisible}
               onClose={() => setEditUserInfoModalVisible(false)}
               userData={userData}
               profileData={profileData}
               onSave={handleSave}
-            /> */}
+            />
           </View>
           <View>
             <View className="flex-row justify-start items-center gap-2 mt-3">
-              <Icon name="person-outline" color={"black"} size={20}></Icon>
+              <Icon
+                name="person-outline"
+                color={theme === "dark" ? "white" : "black"}
+                size={20}
+              ></Icon>
               <View>
                 <Text className="text-base text-zinc-200">Username</Text>
                 {userData ? (
                   <Text
-                    className={`text-base text-zinc-800 ${theme === "dark" ? "text-zinc-300" : ""} `}
+                    className={`text-base  ${theme === "dark" ? "text-zinc-300" : "text-zinc-800"} `}
                   >
                     {userData.username}
                   </Text>
@@ -374,16 +388,20 @@ const ProfileScreen = ({ route, navigation }: props) => {
               </View>
             </View>
             <View className="flex-row justify-start items-center gap-2 mt-3">
-              <Icon name="mail-outline" color={"black"} size={20} />
+              <Icon
+                name="mail-outline"
+                color={theme === "dark" ? "white" : "black"}
+                size={20}
+              />
               <View>
                 <Text
-                  className={`text-base text-zinc-400 ${theme === "dark" ? "text-zinc-200" : ""}`}
+                  className={`text-base  ${theme === "dark" ? "text-zinc-200" : "text-zinc-400"}`}
                 >
                   Email
                 </Text>
                 {userData ? (
                   <Text
-                    className={`text-base text-zinc-800 ${theme === "dark" ? "text-zinc-300 " : ""} `}
+                    className={`text-base  ${theme === "dark" ? "text-zinc-300 " : "text-zinc-800"} `}
                   >
                     {userData.email}
                   </Text>
@@ -393,16 +411,20 @@ const ProfileScreen = ({ route, navigation }: props) => {
               </View>
             </View>
             <View className="flex-row justify-start items-center gap-2 mt-3">
-              <Icon name="call-outline" color={"black"} size={20} />
+              <Icon
+                name="call-outline"
+                color={theme === "dark" ? "white" : "black"}
+                size={20}
+              />
               <View>
                 <Text
-                  className={`text-base text-zinc-400 ${theme === "dark" ? "text-zinc-200" : ""} `}
+                  className={`text-base  ${theme === "dark" ? "text-zinc-200" : "text-zinc-400"} `}
                 >
                   Telefone
                 </Text>
                 {profileData ? (
                   <Text
-                    className={`text-base text-zinc-800 ${theme === "dark" ? "text-zinc-300" : ""} `}
+                    className={`text-base  ${theme === "dark" ? "text-zinc-300" : "text-zinc-800"} `}
                   >
                     {profileData.phoneNumber}
                   </Text>
@@ -412,16 +434,20 @@ const ProfileScreen = ({ route, navigation }: props) => {
               </View>
             </View>
             <View className="flex-row justify-start items-center gap-2 mt-3">
-              <Icon name="location-outline" color={"black"} size={20}></Icon>
+              <Icon
+                name="location-outline"
+                color={theme === "dark" ? "white" : "black"}
+                size={20}
+              ></Icon>
               <View>
                 <Text
-                  className={`text-base text-zinc-400 ${theme === "dark" ? "text-zinc-200" : ""} `}
+                  className={`text-base  ${theme === "dark" ? "text-zinc-200" : "text-zinc-400"} `}
                 >
                   Endereço
                 </Text>
                 {userData ? (
                   <Text
-                    className={`text-base text-zinc-800 ${theme === "dark" ? "text-zinc-300" : ""} `}
+                    className={`text-base  ${theme === "dark" ? "text-zinc-300" : "text-zinc-800"} `}
                   >
                     {profileData.address}
                   </Text>
@@ -433,14 +459,18 @@ const ProfileScreen = ({ route, navigation }: props) => {
           </View>
         </View>
         <View
-          className={`w-[92%] rounded-lg p-4 bg-white mt-6 mx-auto ${theme === "dark" ? "bg-neutral-700/60" : ""} `}
+          className={`w-[92%] rounded-lg p-4  mt-6 mx-auto ${theme === "dark" ? "bg-neutral-700/60" : "bg-white"} `}
         >
           <View className="flex-row justify-between items-center">
-            <Text className="text-xl font-bold text-black dark:text-white">
+            <Text
+              className={`text-xl font-bold  ${theme === "dark" ? "text-white" : "text-black"} `}
+            >
               Informações Médicas
             </Text>
             <Pressable onPress={() => setEditUserMedicalInfoModalVisible(true)}>
-              <Text className="text-lg font-semibold text-black dark:text-white">
+              <Text
+                className={`text-lg font-semibold ${theme === "dark" ? "text-white" : "text-black"} `}
+              >
                 Editar
               </Text>
             </Pressable>
@@ -453,12 +483,18 @@ const ProfileScreen = ({ route, navigation }: props) => {
           </View>
           <View>
             <View className="flex-row justify-start items-center gap-2 mt-3">
-              <Icon name="card-outline" color={"black"} size={20}></Icon>
+              <Icon
+                name="card-outline"
+                color={theme === "dark" ? "white" : "black"}
+                size={20}
+              ></Icon>
               <View>
                 <Text className="text-base text-zinc-400">Id Paciente</Text>
                 <Text className="text-base text-zinc-800 font-semibold">
                   {medicalData ? (
-                    <Text className="text-base text-zinc-800">
+                    <Text
+                      className={`text-base  ${theme === "dark" ? "text-zinc-300" : "text-zinc-800"}`}
+                    >
                       {medicalData.codHospital}
                     </Text>
                   ) : (
@@ -470,13 +506,15 @@ const ProfileScreen = ({ route, navigation }: props) => {
             <View className="flex-row justify-start items-center gap-2 mt-3">
               <Icon
                 name="calendar-clear-outline"
-                color={"black"}
+                color={theme === "dark" ? "white" : "black"}
                 size={20}
               ></Icon>
               <View>
                 <Text className="text-base text-zinc-400">Nascimento</Text>
                 {profileData ? (
-                  <Text className="text-base text-zinc-800">
+                  <Text
+                    className={`text-base ${theme === "dark" ? "text-zinc-300" : "text-zinc-800"}`}
+                  >
                     {profileData.birthday}
                   </Text>
                 ) : (
@@ -487,15 +525,19 @@ const ProfileScreen = ({ route, navigation }: props) => {
             <View className="flex-row justify-start items-center gap-2 mt-3">
               <Icon
                 name="calendar-clear-outline"
-                color={"black"}
+                color={theme === "dark" ? "white" : "black"}
                 size={20}
               ></Icon>
               <View>
-                <Text className="text-base text-zinc-400 dark:text-zinc-200">
+                <Text
+                  className={`text-base  ${theme === "dark" ? "text-zinc-200" : "text-zinc-400"} `}
+                >
                   Sexo
                 </Text>
                 {profileData ? (
-                  <Text className="text-base text-zinc-800 dark:text-zinc-300">
+                  <Text
+                    className={`text-base  ${theme === "dark" ? "text-zinc-300" : "text-zinc-800"} `}
+                  >
                     {profileData.sex.toUpperCase()}
                   </Text>
                 ) : (
@@ -504,25 +546,37 @@ const ProfileScreen = ({ route, navigation }: props) => {
               </View>
             </View>
             <View className="flex-row justify-start items-center gap-2 mt-3">
-              <Icon name="barbell-outline" color={"black"} size={20}></Icon>
+              <Icon
+                name="barbell-outline"
+                color={theme === "dark" ? "white" : "black"}
+                size={20}
+              ></Icon>
               <View>
-                <Text className="text-base text-zinc-400 dark:text-zinc-200">
+                <Text
+                  className={`text-base ${theme === "dark" ? "text-zinc-200" : "text-zinc-400"}  `}
+                >
                   Peso | Altura
                 </Text>
                 <View className="flex-row justify-start items-center">
                   {medicalData ? (
-                    <Text className="text-base text-zinc-800 dark:text-zinc-300">
+                    <Text
+                      className={`text-base  ${theme === "dark" ? "text-zinc-300" : "text-zinc-800"} `}
+                    >
                       {medicalData.height}
                     </Text>
                   ) : (
                     <Text>--</Text>
                   )}
 
-                  <Text className="text-base text-zinc-800 mx-3 dark:text-zinc-200">
+                  <Text
+                    className={`text-base ${theme === "dark" ? "text-zinc-200" : "text-zinc-800"}  mx-3 `}
+                  >
                     |
                   </Text>
                   {medicalData ? (
-                    <Text className="text-base text-zinc-800 dark:text-zinc-300">
+                    <Text
+                      className={`text-base ${theme === "dark" ? "text-zinc-300" : "text-zinc-800"}  `}
+                    >
                       {medicalData.weight}
                     </Text>
                   ) : (
@@ -533,13 +587,21 @@ const ProfileScreen = ({ route, navigation }: props) => {
             </View>
 
             <View className="flex-row justify-start items-center gap-2 mt-3">
-              <Icon name="bandage-outline" color={"black"} size={20}></Icon>
+              <Icon
+                name="bandage-outline"
+                color={theme === "dark" ? "white" : "black"}
+                size={20}
+              ></Icon>
               <View>
-                <Text className="text-base text-zinc-400 dark:text-zinc-200">
+                <Text
+                  className={`text-base  ${theme === "dark" ? "text-zinc-200" : "text-zinc-400"} `}
+                >
                   Tipo Sanguíneo
                 </Text>
                 {medicalData ? (
-                  <Text className="text-base text-zinc-800 dark:text-zinc-300">
+                  <Text
+                    className={`text-base ${theme === "dark" ? "text-zinc-300" : "text-zinc-800"}  `}
+                  >
                     {medicalData.bloodGroup}
                   </Text>
                 ) : (
@@ -548,14 +610,24 @@ const ProfileScreen = ({ route, navigation }: props) => {
               </View>
             </View>
             <View className="flex-row justify-start items-center gap-2 mt-3">
-              <Icon name="fitness-outline" color={"black"} size={20}></Icon>
+              <Icon
+                name="fitness-outline"
+                color={theme === "dark" ? "white" : "black"}
+                size={20}
+              ></Icon>
               <View>
-                <Text className="text-base text-zinc-400 dark:text-zinc-300">
+                <Text
+                  className={`text-base ${theme === "dark" ? "text-zinc-300" : "text-zinc-400"}  `}
+                >
                   Cancer
                 </Text>
-                <Text className="text-base font-semibold py-2 px-3 rounded-lg bg-blue-300/20 text-blue-400 dark:text-zinc-300">
+                <Text
+                  className={`text-base font-semibold py-2 px-3 rounded-lg bg-blue-300/20 ${theme === "dark" ? "text-zinc-300" : "text-blue-400"}  `}
+                >
                   {profileData ? (
-                    <Text className="text-base font-semibold py-2 px-3 rounded-lg bg-blue-300/20 text-blue-400">
+                    <Text
+                      className={`text-base font-semibold py-2 px-3 rounded-lg bg-blue-300/20 text-blue-400`}
+                    >
                       {profileData.tags[0].description}
                     </Text>
                   ) : (
@@ -565,7 +637,7 @@ const ProfileScreen = ({ route, navigation }: props) => {
               </View>
             </View>
             {/* <View className="flex-row justify-start items-center gap-2 mt-3">
-              <Icon name="fitness-outline" color={"black"} size={20} />
+              <Icon name="fitness-outline" color={theme === 'dark' ? 'white':"black"} size={20} />
               <View>
                 <Text className="text-base text-zinc-400">Tipo de Cancer</Text>
                 <Text className="text-base font-semibold py-2 px-3 rounded-lg bg-blue-300/20 text-blue-400">
@@ -574,13 +646,19 @@ const ProfileScreen = ({ route, navigation }: props) => {
               </View>
             </View> */}
             <View className="flex-row justify-start items-center gap-2 mt-3">
-              <Icon name="fitness-outline" color={"black"} size={20} />
+              <Icon
+                name="fitness-outline"
+                color={theme === "dark" ? "white" : "black"}
+                size={20}
+              />
               <View>
                 <Text className="text-base text-zinc-400 dark:text-zinc-200">
                   Estadiamento
                 </Text>
                 {medicalData ? (
-                  <Text className="text-base font-semibold py-2 px-3 rounded-lg bg-blue-300/20 text-blue-400 dark:text-zinc-300">
+                  <Text
+                    className={`text-base font-semibold py-2 px-3 rounded-lg bg-blue-300/20 text-blue-400 dark:text-zinc-300`}
+                  >
                     {medicalData.stage}
                   </Text>
                 ) : (
@@ -589,13 +667,21 @@ const ProfileScreen = ({ route, navigation }: props) => {
               </View>
             </View>
             <View className="flex-row justify-start items-center gap-2 mt-3">
-              <Icon name="fitness-outline" color={"black"} size={20} />
+              <Icon
+                name="fitness-outline"
+                color={theme === "dark" ? "white" : "black"}
+                size={20}
+              />
               <View>
-                <Text className="text-base text-zinc-400 dark:text-zinc-200">
+                <Text
+                  className={`text-base ${theme === "dark" ? "text-zinc-200" : "text-zinc-400"}  `}
+                >
                   Unidade Hospitar
                 </Text>
                 {medicalData ? (
-                  <Text className="text-base font-semibold py-2 px-3 rounded-lg bg-blue-300/20 text-blue-400 dark:text-zinc-300">
+                  <Text
+                    className={`text-base font-semibold py-2 px-3 rounded-lg bg-blue-300/20   ${theme === "dark" ? "text-zinc-300" : "text-blue-400"} `}
+                  >
                     {medicalData.hospital}
                   </Text>
                 ) : (
@@ -606,11 +692,11 @@ const ProfileScreen = ({ route, navigation }: props) => {
           </View>
         </View>
         <View
-          className={`w-[92%] rounded-lg p-4 bg-white mt-6 mx-auto ${theme === "dark" ? "bg-neutral-700/60" : ""} `}
+          className={`w-[92%] rounded-lg p-4  mt-6 mx-auto ${theme === "dark" ? "bg-neutral-700/60" : "bg-white"} `}
         >
           <View className="flex-row justify-start items-center">
             <Text
-              className={`text-xl font-bold text-black ${theme === "dark" ? "text-white" : ""} `}
+              className={`text-xl font-bold  ${theme === "dark" ? "text-white" : "text-black"} `}
             >
               Preferências
             </Text>
@@ -619,18 +705,17 @@ const ProfileScreen = ({ route, navigation }: props) => {
             <View className="flex-row justify-start items-center gap-2 mt-3">
               <Icon
                 name="notifications-circle-outline"
-                // color={"black"}
-
+                color={theme === "dark" ? "white" : "black"}
                 size={20}
-              ></Icon>
+              />
               <View>
                 <Text
-                  className={`text-base text-zinc-400 ${theme === "dark" ? "text-zinc-200" : ""} `}
+                  className={`text-base  ${theme === "dark" ? "text-zinc-200" : "text-zinc-400"} `}
                 >
                   Ativar Notificações
                 </Text>
                 <Text
-                  className={`text-base text-zinc-800 ${theme === "dark" ? "text-zinc-300" : ""} `}
+                  className={`text-base  ${theme === "dark" ? "text-zinc-300" : "text-zinc-800"} `}
                 >
                   On/Off lembretes de medicação
                 </Text>
@@ -652,21 +737,25 @@ const ProfileScreen = ({ route, navigation }: props) => {
           </View>
         </View>
         <View
-          className={`w-[92%] rounded-lg p-4 bg-white mt-6 mx-auto ${theme === "dark" ? "bg-neutral-700/60" : ""} `}
+          className={`w-[92%] rounded-lg p-4  mt-6 mx-auto ${theme === "dark" ? "bg-neutral-700/60" : "bg-white"} `}
         >
           <View className="flex-row justify-start items-center">
             <Text
-              className={`text-xl font-bold text-black ${theme === "dark" ? "text-white" : ""} `}
+              className={`text-xl font-bold  ${theme === "dark" ? "text-white" : "text-black"} `}
             >
               Segurança & Conta
             </Text>
           </View>
           <View>
             <View className="flex-row justify-start items-center gap-2 mt-3">
-              <Icon name="lock-open-outline" color={"black"} size={20}></Icon>
+              <Icon
+                name="lock-open-outline"
+                color={theme === "dark" ? "white" : "black"}
+                size={20}
+              ></Icon>
               <View>
                 <Text
-                  className={`text-base text-zinc-400 ${theme === "dark" ? "text-zinc-200" : ""} `}
+                  className={`text-base  ${theme === "dark" ? "text-zinc-200" : "text-zinc-400"} `}
                 >
                   Alterar Palavra-Passe
                 </Text>
@@ -687,7 +776,9 @@ const ProfileScreen = ({ route, navigation }: props) => {
               </View>
 
               <Modal isOpen={openModalChangePassword} withInput={true}>
-                <View className="p-6 bg-white rounded-2xl w-full max-w-md shadow-lg dark:bg-neutral-700/80">
+                <View
+                  className={`p-6  rounded-2xl w-full max-w-md shadow-lg ${theme === "dark" ? "bg-neutral-700/80" : "bg-white"} `}
+                >
                   <View className="flex-row justify-between items-center mb-4">
                     <Text className="text-lg font-bold text-black dark:text-white">
                       Atualizar Password
@@ -700,7 +791,9 @@ const ProfileScreen = ({ route, navigation }: props) => {
                       <Icon name="close" size={24} color="#4A4A4A" />
                     </TouchableOpacity>
                   </View>
-                  <Text className="text-zinc-700 mb-1 dark:text-zinc-300">
+                  <Text
+                    className={` mb-1 ${theme === "dark" ? "text-zinc-300" : "text-zinc-700"}  `}
+                  >
                     Atual Password
                   </Text>
                   <TextInput
@@ -709,7 +802,9 @@ const ProfileScreen = ({ route, navigation }: props) => {
                     value={atualPassword}
                     onChangeText={setAtualPassword}
                   />
-                  <Text className="text-zinc-700 mb-1 dark:text-zinc-300">
+                  <Text
+                    className={` mb-1 ${theme === "dark" ? "text-zinc-300" : "text-zinc-700"} `}
+                  >
                     Nova Password
                   </Text>
                   <TextInput

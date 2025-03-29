@@ -8,6 +8,7 @@ import {
   Button,
   Platform,
   Alert,
+  ToastAndroid,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import ScreenNames from "../constants/ScreenName";
@@ -25,6 +26,7 @@ import DateTimePicker, {
 import { createPersonalInformations } from "../services/personalInformationService";
 import axios from "axios";
 import api from "../services/api";
+import { API_URL } from "../constants/data";
 
 type props = NativeStackScreenProps<RootStackParamsList, ScreenNames>;
 
@@ -82,17 +84,66 @@ const GatherProfileFirstScreen = ({ route, navigation }: props) => {
     } = event;
   };
 
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ["images"],
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
+  const uploadImage = async (urlImg: string) => {
+    try {
+      const formData = new FormData();
+      const filename = urlImg.substring(
+        urlImg.lastIndexOf("/") + 1,
+        urlImg.length
+      );
+      const extension = filename.split(".")[1];
+      console.log(filename, extension);
+      formData.append(
+        "file",
+        JSON.parse(
+          JSON.stringify({
+            name: filename,
+            uri: urlImg,
+            type: "image/" + extension,
+          })
+        )
+      );
+      const response = await axios.post(`${API_URL}/upload/file`, formData, {
+        headers: {
+          Accept: "Application/json",
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
-    if (!result.canceled) {
-      seturlImg(result.assets[0].uri);
-      console.log(urlImg);
+      if (response.data.error) {
+        alert("não foi possivel enviar imagem");
+        return false;
+      } else {
+        return true;
+      }
+    } catch (error: any) {
+      alert("error ao enviar imagem");
+      return false;
+    }
+  };
+
+  const pickImage = async () => {
+    const { granted } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (!granted) {
+      Alert.alert(
+        "Permissão necessária",
+        "Deve permitir que a sua aplicação acesse as images!"
+      );
+    } else {
+      let { assets, canceled } = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ["images"],
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
+
+      if (canceled) {
+        ToastAndroid.show("Operação cancelada", ToastAndroid.SHORT);
+      } else {
+        if (!assets) return;
+        seturlImg(assets[0].uri);
+      }
     }
   };
 
@@ -117,6 +168,17 @@ const GatherProfileFirstScreen = ({ route, navigation }: props) => {
       return alert("Todos os campos são obrigatórias!");
 
     try {
+      const imageUploaded: boolean = await uploadImage(urlImg);
+
+      if (!imageUploaded) {
+        ToastAndroid.show(
+          "Não foi possivel cadastrar a imagem",
+          ToastAndroid.SHORT
+        );
+      } else {
+        ToastAndroid.show("Imagem cadastrada com sucesso", ToastAndroid.SHORT);
+      }
+
       await createPersonalInformations(
         countryName,
         birthday.toISOString().split("T")[0],
@@ -139,7 +201,7 @@ const GatherProfileFirstScreen = ({ route, navigation }: props) => {
   useEffect(() => {
     const fetchCancerTypes = async () => {
       try {
-        const { data: response } = await api.get("/tags/all");
+        const { data: response } = await axios.get(`${API_URL}/tags/all`);
         setCancerTypes(response.data[1]);
       } catch (error: any) {
         console.error("Erro ao buscar os tipos de câncer:", error);

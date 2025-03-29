@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, View, Text, TextInput, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import api from "../services/api";
-import axios from "axios";
 import { API_URL } from "../constants/data";
 
 type props = {
@@ -20,10 +19,38 @@ const EditPersonalInformationModal = ({
   profileData,
   onSave,
 }: props) => {
-  const [user, setUserData] = useState(userData);
-  const [profile, setProfile] = useState(profileData);
-
-  const onSave = (userData) => {};
+  const [user, setUserData] = useState({
+    id: "",
+    username: "",
+    email: "",
+    typeUser: "",
+    createdAt: "",
+    updatedAt: "",
+    notifications: [],
+    tags: [],
+  });
+  const [profile, setProfile] = useState({
+    birthday: "",
+    bio: "",
+    address: "",
+    country_name: "",
+    phoneNumber: "",
+    created_at: "",
+    updated_at: "",
+    url_img: "",
+    sex: "",
+    userId: "",
+    job: "",
+    user_profile_id: "",
+    tags: [
+      {
+        id: "",
+        description: "",
+        createdAt: "",
+        updatedAt: "",
+      },
+    ],
+  });
 
   const handleSave = async () => {
     try {
@@ -37,6 +64,11 @@ const EditPersonalInformationModal = ({
       throw error.response.data || "Erro tentando cadastrar o perfil!";
     }
   };
+
+  useEffect(() => {
+    setUserData(userData);
+    setProfile(profileData);
+  }, [user, profile]);
 
   return (
     <Modal
@@ -56,8 +88,10 @@ const EditPersonalInformationModal = ({
             <View className="flex-1">
               <Text className="text-base text-zinc-400">username</Text>
               <TextInput
-                value={dataUser.username}
-                onChangeText={setUserData}
+                value={user.username}
+                onChangeText={(text) =>
+                  setUserData({ ...user, username: text })
+                }
                 className="text-base text-zinc-800 border-b-2 border-zinc-400 p-2"
               />
             </View>
@@ -68,10 +102,8 @@ const EditPersonalInformationModal = ({
             <View className="flex-1">
               <Text className="text-base text-zinc-400">Email</Text>
               <TextInput
-                value={dataUser.email}
-                onChangeText={(text) =>
-                  setUserData({ ...dataUser, email: text })
-                }
+                value={user.email}
+                onChangeText={(text) => setUserData({ ...user, email: text })}
                 className="text-base text-zinc-800 border-b-2 border-zinc-400 p-2"
               />
             </View>
@@ -82,9 +114,9 @@ const EditPersonalInformationModal = ({
             <View className="flex-1">
               <Text className="text-base text-zinc-400">Telefone</Text>
               <TextInput
-                value={dataProfile.phoneNumber}
+                value={profile.phoneNumber}
                 onChangeText={(text) =>
-                  setUserData({ ...dataProfile, phoneNumber: text })
+                  setProfile({ ...profile, phoneNumber: text })
                 }
                 className="text-base text-zinc-800 border-b-2 border-zinc-400 p-2"
               />
@@ -96,9 +128,9 @@ const EditPersonalInformationModal = ({
             <View className="flex-1">
               <Text className="text-base text-zinc-400">Endereço</Text>
               <TextInput
-                value={dataProfile.address}
+                value={profile.address}
                 onChangeText={(text) =>
-                  setUserData({ ...dataProfile, address: text })
+                  setProfile({ ...profile, address: text })
                 }
                 className="text-base text-zinc-800 border-b-2 border-zinc-400 p-2"
               />

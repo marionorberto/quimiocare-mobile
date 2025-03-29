@@ -114,10 +114,6 @@ const SymptomsScreen = ({ route, navigation }: props) => {
                       </Text>
                     </View>
                   </View>
-                  <View className="flex-row justify-end items-center gap-3">
-                    <Icon name="trash-outline" color={"white"} size={23} />
-                    <Icon name="create-outline" color={"white"} size={23} />
-                  </View>
                 </View>
               </View>
             ))

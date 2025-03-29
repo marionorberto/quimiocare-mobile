@@ -35,14 +35,15 @@ import { SettingsContext } from "react-native-paper/lib/typescript/core/settings
 import SettingsScreen from "../screens/settingsScreen";
 import MedicalScreen from "../screens/MedicalScreen";
 import MainScreen from "../screens/MainScreen";
+import CommunityScreen from "../screens/CommunityScreen";
 
 const StackRoutes = () => {
   const Stack = createNativeStackNavigator<RootStackParamsList>();
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name={ScreenNames.Main}
-        component={MainScreen}
+        name={ScreenNames.Welcome}
+        component={WelcomeScreen}
         options={{ headerShown: false }}
       />
       <Stack.Screen
@@ -171,11 +172,11 @@ const StackRoutes = () => {
         component={CreateAppointmentScreen}
         options={{ headerShown: false }}
       />
-      {/* <Stack.Screen
+      <Stack.Screen
         name={ScreenNames.Main}
         component={TabRoutes}
         options={{ headerShown: false }}
-      /> */}
+      />
     </Stack.Navigator>
   );
 };
