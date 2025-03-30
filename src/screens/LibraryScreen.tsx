@@ -19,8 +19,6 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useTheme } from "../helpers/theme-context";
 // import YoutubeIframe from "react-native-youtube-iframe";
 
-// bg-neutral-700/60 bg-neutral-900
-
 type props = NativeStackScreenProps<RootStackParamsList, ScreenNames>;
 
 const LibraryScreen = ({ route, navigation }: props) => {

@@ -27,7 +27,7 @@ import {
   handleSaveSymptom,
 } from "../services/mainService";
 import { useTheme } from "../helpers/theme-context";
-import { API_URL } from "../constants/data";
+import { API_URL, API_URL_UPLOAD } from "../constants/data";
 
 type props = NativeStackScreenProps<RootStackParamsList, ScreenNames>;
 
@@ -106,7 +106,7 @@ const MainScreen = ({ navigation, route }: props) => {
       api
         .get(`${API_URL}/profiles/single`)
         .then(({ data: response }) => {
-          setUserImg(response.data.urlImg);
+          setUserImg(`http://${API_URL_UPLOAD}:3000/${response.data.urlImg}`);
         })
         .catch((error) => {
           console.log(error);

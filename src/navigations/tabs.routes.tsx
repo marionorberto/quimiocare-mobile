@@ -12,7 +12,7 @@ import SettingsScreen from "../screens/settingsScreen";
 import { Image } from "expo-image";
 import LibraryScreen from "../screens/LibraryScreen";
 import api from "../services/api";
-import { API_URL } from "../constants/data";
+import { API_URL, API_URL_UPLOAD } from "../constants/data";
 
 const Tab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -48,7 +48,7 @@ const TabRoutes = () => {
       api
         .get(`${API_URL}/profiles/single`)
         .then(({ data: response }) => {
-          setUserImg(response.data.urlImg);
+          setUserImg(`http://${API_URL_UPLOAD}:3000/${response.data.urlImg}`);
         })
         .catch((error) => {
           console.log(error);

@@ -22,7 +22,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import EditUserMedicalInformationModal from "../components/EditUserMedicalInfoModa";
 import api from "../services/api";
 import { handleLogout } from "../services/authService";
-import { API_URL } from "../constants/data";
+import { API_URL, API_URL_UPLOAD } from "../constants/data";
 import ModalChangePassword from "../components/ModalChangePassword";
 import Modal from "../components/Modal";
 import { handleUpdatePassword } from "../services/updatePasswordService";
@@ -252,7 +252,7 @@ const ProfileScreen = ({ route, navigation }: props) => {
             <View className="relative">
               <Image
                 source={{
-                  uri: profileData.urlImg,
+                  uri: `http://${API_URL_UPLOAD}:3000/${profileData.urlImg}`,
                 }}
                 style={{
                   borderRadius: 50,
@@ -262,7 +262,7 @@ const ProfileScreen = ({ route, navigation }: props) => {
                   height: 110,
                 }}
               ></Image>
-              <View
+              {/* <View
                 className={`w-8 h-8 rounded-md absolute bottom-0 right-2 flex-1 justify-center items-center ${theme === "dark" ? "bg-neutral-700/60" : "bg-white"}`}
               >
                 <Icon
@@ -270,7 +270,7 @@ const ProfileScreen = ({ route, navigation }: props) => {
                   color={theme === "dark" ? "white" : "#000"}
                   size={23}
                 />
-              </View>
+              </View> */}
             </View>
             {userData ? (
               <Text

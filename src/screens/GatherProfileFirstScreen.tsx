@@ -185,7 +185,7 @@ const GatherProfileFirstScreen = ({ route, navigation }: props) => {
         phoneNumber,
         sex,
         address,
-        `http://${API_URL_UPLOAD}:3000/uploads/${filename}`,
+        `uploads/${filename}`,
         tag
       );
       navigation.navigate("GatherProfileSecondScreen", { title: "SECOND" });
