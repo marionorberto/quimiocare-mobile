@@ -20,7 +20,6 @@ import Modal from "../components/Modal";
 import DateTimePicker, {
   DateTimePickerEvent,
 } from "@react-native-community/datetimepicker";
-import api from "../services/api";
 import {
   handleSaveAppointment,
   handleSaveMedication,
@@ -47,9 +46,12 @@ const MedicalScreen = ({ route, navigation }: props) => {
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [showTimePickerAppointment, setShowTimePickerAppointment] =
     useState(false);
+  const [showTimePickerAppointmentHour, setShowTimePickerAppointmentHour] =
+    useState(false);
   const [nameAppointment, setNameAppointment] = useState("");
   const [descriptionAppointment, setDescriptionAppointment] = useState("");
   const [dateAppointment, setDateAppointment] = useState(new Date());
+  const [dateAppointmentHour, setDateAppointmentHour] = useState(new Date());
   const [type, setType] = useState("");
   const [noteAppointment, setNoteAppointment] = useState("");
   const appointments = [
@@ -104,6 +106,7 @@ const MedicalScreen = ({ route, navigation }: props) => {
       alert(`${error.message}`);
     }
   };
+
   const handleTimeChange = (
     event: DateTimePickerEvent,
     date: Date | undefined
@@ -112,6 +115,26 @@ const MedicalScreen = ({ route, navigation }: props) => {
       setReminderTime(date);
     }
     setShowTimePicker(false);
+  };
+
+  const handleDateAppointmentChangeHour = (
+    event: DateTimePickerEvent,
+    date: Date | undefined
+  ) => {
+    if (date) {
+      setDateAppointmentHour(date);
+    }
+    setShowTimePickerAppointmentHour(false);
+  };
+
+  const handleDateAppointmentChange = (
+    event: DateTimePickerEvent,
+    date: Date | undefined
+  ) => {
+    if (date) {
+      setDateAppointment(date);
+    }
+    setShowTimePickerAppointment(false);
   };
 
   const onSaveSymptoms = async () => {
@@ -134,6 +157,7 @@ const MedicalScreen = ({ route, navigation }: props) => {
     if (
       !nameAppointment ||
       !descriptionAppointment ||
+      !dateAppointmentHour ||
       !dateAppointment ||
       !type ||
       !noteAppointment
@@ -145,6 +169,7 @@ const MedicalScreen = ({ route, navigation }: props) => {
       await handleSaveAppointment(
         nameAppointment,
         descriptionAppointment,
+        dateAppointmentHour,
         dateAppointment,
         type,
         noteAppointment
@@ -535,7 +560,7 @@ const MedicalScreen = ({ route, navigation }: props) => {
               </View>
             </Pressable>
 
-            <Pressable
+            {/* <Pressable
               onPress={() => {
                 setOpenModalAddAppointment(true);
               }}
@@ -588,19 +613,52 @@ const MedicalScreen = ({ route, navigation }: props) => {
                       value={descriptionAppointment}
                       onChangeText={setDescriptionAppointment}
                     />
+
+                    <Text className="text-zinc-700 mb-1">Hora da Consulta</Text>
+
+                    <TouchableOpacity
+                      className="border border-zinc-300 rounded-lg px-4 py-3 flex-row items-center justify-between mb-3"
+                      onPress={() => setShowTimePickerAppointmentHour(true)}
+                    >
+                      <Text>
+                        {dateAppointmentHour
+                          ? dateAppointmentHour.toLocaleTimeString()
+                          : "selecionar hora"}
+                      </Text>
+
+                      <Icon name="time-outline" size={20} color="#3B82F6" />
+                      {showTimePickerAppointmentHour && (
+                        <DateTimePicker
+                          value={dateAppointmentHour}
+                          mode="time"
+                          display="spinner"
+                          is24Hour={true}
+                          onChange={handleDateAppointmentChangeHour}
+                        />
+                      )}
+                    </TouchableOpacity>
+
                     <Text className="text-zinc-700 mb-1">Data da Consulta</Text>
 
                     <TouchableOpacity
                       className="border border-zinc-300 rounded-lg px-4 py-3 flex-row items-center justify-between mb-3"
-                      onPress={() => setShowTimePicker(true)}
+                      onPress={() => setShowTimePickerAppointment(true)}
                     >
                       <Text>
                         {dateAppointment
-                          ? dateAppointment.toLocaleString()
+                          ? dateAppointment.toLocaleDateString()
                           : "selecionar data"}
                       </Text>
 
                       <Icon name="time-outline" size={20} color="#3B82F6" />
+                      {showTimePickerAppointment && (
+                        <DateTimePicker
+                          value={dateAppointment}
+                          mode="date"
+                          display="inline"
+                          onChange={handleDateAppointmentChange}
+                        />
+                      )}
                     </TouchableOpacity>
 
                     <Text className="text-zinc-700 mb-1">Tipo de consulta</Text>
@@ -617,14 +675,6 @@ const MedicalScreen = ({ route, navigation }: props) => {
                       ))}
                     </Picker>
 
-                    {showTimePickerAppointment && (
-                      <DateTimePicker
-                        value={dateAppointment}
-                        mode="datetime"
-                        display="spinner"
-                        onChange={handleTimeChange}
-                      />
-                    )}
                     <Text className="text-zinc-700 mb-1">Nota</Text>
                     <TextInput
                       className="border border-zinc-300 rounded-lg px-4 py-2 mb-3"
@@ -653,12 +703,12 @@ const MedicalScreen = ({ route, navigation }: props) => {
                   </View>
                 </Modal>
               </View>
-            </Pressable>
+            </Pressable> */}
           </View>
         </View>
 
         <View className="mt-4">
-          <Pressable
+          {/* <Pressable
             onPress={() =>
               navigation.navigate("Booking", { title: "Consultas" })
             }
@@ -677,7 +727,7 @@ const MedicalScreen = ({ route, navigation }: props) => {
                 size={30}
               ></Icon>
             </View>
-          </Pressable>
+          </Pressable> */}
 
           <Pressable
             onPress={() =>

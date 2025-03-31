@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, Button, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { Image } from "expo-image";
 import React from "react";
 import i18n from "../localization/i18n";
@@ -9,16 +9,18 @@ import { RootStackParamsList } from "../navigations/RootStackParamsList";
 import ScreenNames from "../constants/ScreenName";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
+import { useTheme } from "../helpers/theme-context";
 
 type props = NativeStackScreenProps<RootStackParamsList, ScreenNames>;
 
 const WelcomeScreen = ({ route, navigation }: props) => {
   const navigationScreen = useNavigation();
   const { t } = useTranslation();
+  const { theme } = useTheme();
   return (
     <View
       style={styles.container}
-      className="h-full w-full relative dar:bg-neutral-800/80 "
+      className={`h-full w-full relative dar:bg-neutral-800/80 ${theme === "dark" ? "bg-neutral-900" : ""}`}
     >
       {/* <LinearGradient colors={["#48c6ef", "#6f86d6"]} /> */}
       <Image

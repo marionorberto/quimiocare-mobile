@@ -778,14 +778,14 @@ const ProfileScreen = ({ route, navigation }: props) => {
                     setOpenModalChangePassword(true);
                   }}
                   placeholder="Password Atual"
-                  className="py-4 px-4 bg-zinc-200/50 rounded-lg placeholder:text-zinc-400"
+                  className={`py-4 px-4  rounded-lg  ${theme === "dark" ? "bg-zinc-500/50" : "bg-zinc-200/50 placeholder:text-zinc-400"}`}
                 ></TextInput>
                 <TextInput
                   onPress={() => {
                     setOpenModalChangePassword(true);
                   }}
                   placeholder="Password Nova"
-                  className="py-4 px-4 bg-zinc-200/50 rounded-lg placeholder:text-zinc-400 mt-3"
+                  className={`py-4 px-4  rounded-lg  mt-3 ${theme === "dark" ? "bg-zinc-500/50" : "bg-zinc-200/50 placeholder:text-zinc-400"}`}
                 ></TextInput>
               </View>
 

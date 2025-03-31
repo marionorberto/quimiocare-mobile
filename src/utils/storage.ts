@@ -4,18 +4,19 @@ const MEDICATION_KEY = "@medications";
 const DOSE_HISTORY_KEY = "@dose_history";
 
 export interface Medication  {
-  id: string;
+  // id: string;
   name: string;
   dosage: string;
-  duration: string,
-  startDate: string;
-  times: string[];
-  totalSupply: number;
-  refillAt: Date;
-  refillReminder: Date;
-  lastRefillDate: Date
+  // duration: string,
+  // startDate: string;
+  // times: string[];
+  times: "";
+  // totalSupply: number;
+  // refillAt: Date;
+  // refillReminder: Date;
+  // lastRefillDate: Date
   timeRemider: Date;
-  reminderEnable: boolean;
+  // reminderEnable: boolean;
 }
 
 export async function getMedication() :Promise<Medication[]>{

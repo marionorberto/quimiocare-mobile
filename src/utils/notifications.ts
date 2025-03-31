@@ -66,7 +66,7 @@ export async function scheduleMedicationReminder(medication:  Medication): Promi
         trigger: {
           hour: hour,
           minute: minute,
-          repeats: true,
+          type: Notifications.SchedulableTriggerInputTypes.DAILY,
         }
       });
 

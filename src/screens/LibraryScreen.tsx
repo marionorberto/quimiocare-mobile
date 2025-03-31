@@ -354,6 +354,71 @@ const LibraryScreen = ({ route, navigation }: props) => {
               Assista os melhores videos para te inspirares!
             </Text>
           </View>
+          {/* <View className="mt-4 relative border-2 p-2 border-zinc-300 rounded-xl">
+            <YoutubeIframe
+              videoId="F1VlqUJlCko"
+              height={180}
+              onReady={() => setVideoReady(true)}
+            />
+            {!videoReady && (
+              <ActivityIndicator
+                className="absolute right-[50%] top-[50%]"
+                color={theme === "dark" ? "white" : "black"}
+              />
+            )}
+          </View>
+          <View className="mt-4 relative border-2 p-2 border-zinc-300 rounded-xl">
+            <YoutubeIframe
+              videoId="FGSqYPrJDak"
+              height={180}
+              onReady={() => setVideoReady(true)}
+            />
+            {!videoReady && (
+              <ActivityIndicator
+                className="absolute right-[50%] top-[50%]"
+                color={theme === "dark" ? "white" : "black"}
+              />
+            )}
+          </View>
+          <View className="mt-4 relative border-2 p-2 border-zinc-300 rounded-xl">
+            <YoutubeIframe
+              videoId="HuXbsrBYbKg"
+              height={180}
+              onReady={() => setVideoReady(true)}
+            />
+            {!videoReady && (
+              <ActivityIndicator
+                className="absolute right-[50%] top-[50%]"
+                color={theme === "dark" ? "white" : "black"}
+              />
+            )}
+          </View>
+          <View className="mt-4 relative border-2 p-2 border-zinc-300 rounded-xl">
+            <YoutubeIframe
+              videoId="AhwSBUwevP0"
+              height={180}
+              onReady={() => setVideoReady(true)}
+            />
+            {!videoReady && (
+              <ActivityIndicator
+                className="absolute right-[50%] top-[50%]"
+                color={theme === "dark" ? "white" : "black"}
+              />
+            )}
+          </View>
+          <View className="mt-4 relative border-2 p-2 border-zinc-300 rounded-xl">
+            <YoutubeIframe
+              videoId="Ep5MWBVd3xg"
+              height={180}
+              onReady={() => setVideoReady(true)}
+            />
+            {!videoReady && (
+              <ActivityIndicator
+                className="absolute right-[50%] top-[50%]"
+                color={theme === "dark" ? "white" : "black"}
+              />
+            )}
+          </View> */}
 
           <TouchableOpacity
             onPress={() => {

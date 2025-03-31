@@ -44,11 +44,15 @@ export const handleSaveSymptom= async (
 export const handleSaveAppointment = async (
   nameAppointment: string,
   descriptionAppointment: string,
+  dateAppointmentHour: Date,
   dateAppointment: Date,
   type: string,
   noteAppointment: string
   ): Promise<any> => {
   try {
+    // const dateForSaving = 
+    // console.log('ver', dateAppointment.toLocaleDateString().slice(0, 11)., dateAppointmentHour.toLocaleTimeString());
+    return;
     const response = await api.post(`${API_URL}/appointments/create/appointment`, {
       name: nameAppointment,
       description: descriptionAppointment,
