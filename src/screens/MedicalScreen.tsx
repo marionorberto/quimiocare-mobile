@@ -4,7 +4,6 @@ import {
   Pressable,
   ScrollView,
   TextInput,
-  StyleSheet,
   TouchableOpacity,
 } from "react-native";
 import React, { useEffect, useState } from "react";
@@ -27,6 +26,12 @@ import {
 } from "../services/mainService";
 import { Picker } from "@react-native-picker/picker";
 import { useTheme } from "../helpers/theme-context";
+import {
+  registerForPushNotificationAsync,
+  scheduleMedicationReminder,
+} from "../utils/notifications";
+import { addMedication } from "../utils/storage";
+import * as Notifications from "expo-notifications";
 
 type props = NativeStackScreenProps<RootStackParamsList, ScreenNames>;
 
@@ -92,13 +97,25 @@ const MedicalScreen = ({ route, navigation }: props) => {
   const moodFeeling = moodDayFeeling;
 
   const onSaveMedication = async () => {
+    await scheduleMedicationReminder({
+      medicationName,
+      dosage,
+      reminderTime,
+    });
+    await addMedication({
+      medicationName,
+      dosage,
+      reminderTime,
+    });
     if (!medicationName || !dosage || !reminderTime) {
       alert("Todos os campos não opcionais são obrigatórios!");
       return;
     }
     try {
       await handleSaveMedication(medicationName, dosage, notes, reminderTime);
+
       alert("Medicação cadastrada com sucesso!");
+      setOpenModalAddMedication(false);
     } catch (error: any) {
       if (error.data) {
         alert(`${error.message.map((error: string) => error)}`);
@@ -190,6 +207,10 @@ const MedicalScreen = ({ route, navigation }: props) => {
     } = event;
   };
   const { theme, toggleTheme } = useTheme();
+
+  useEffect(() => {
+    registerForPushNotificationAsync();
+  }, []);
   return (
     <View
       style={{ marginTop: Contants.statusBarHeight }}
@@ -521,7 +542,7 @@ const MedicalScreen = ({ route, navigation }: props) => {
                     >
                       <Text>
                         {reminderTime
-                          ? reminderTime.toLocaleTimeString()
+                          ? reminderTime.toLocaleTimeString().slice(0, 5)
                           : "selecionar time"}
                       </Text>
 
@@ -542,7 +563,6 @@ const MedicalScreen = ({ route, navigation }: props) => {
                       className="bg-blue-500 rounded-lg py-3 mt-2 flex-row items-center justify-center"
                       onPress={() => {
                         onSaveMedication();
-                        setOpenModalAddMedication(false);
                       }}
                     >
                       <Icon

@@ -5,17 +5,17 @@ const DOSE_HISTORY_KEY = "@dose_history";
 
 export interface Medication  {
   // id: string;
-  name: string;
+  medicationName: string;
   dosage: string;
   // duration: string,
   // startDate: string;
   // times: string[];
-  times: "";
+  // times: "";
   // totalSupply: number;
   // refillAt: Date;
   // refillReminder: Date;
   // lastRefillDate: Date
-  timeRemider: Date;
+  reminderTime: Date;
   // reminderEnable: boolean;
 }
 
@@ -31,9 +31,9 @@ export async function getMedication() :Promise<Medication[]>{
 
 export async function addMedication(medication: Medication): Promise<void> {
   try {
-    const medication = await getMedication();
-    medication.push(medication);
-    await AsyncStorage.setItem(MEDICATION_KEY, medication);
+    const medicationFromStorage = await getMedication();
+    medicationFromStorage.push(medication);
+    await AsyncStorage.setItem(MEDICATION_KEY, JSON.stringify(medicationFromStorage));
   } catch(error: any) {
     console.error('it was not able to add medication');
     throw error;

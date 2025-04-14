@@ -2,7 +2,6 @@ import {
   View,
   Text,
   TouchableOpacity,
-  Pressable,
   ScrollView,
   TextInput,
   Button,
@@ -23,8 +22,8 @@ import DateTimePicker, {
 } from "@react-native-community/datetimepicker";
 import { createPersonalInformations } from "../services/personalInformationService";
 import axios from "axios";
-import api from "../services/api";
-import { API_URL, API_URL_UPLOAD } from "../constants/data";
+import { API_URL } from "../constants/data";
+import { countries } from "../constants/data";
 
 type props = NativeStackScreenProps<RootStackParamsList, ScreenNames>;
 
@@ -40,40 +39,8 @@ const GatherProfileFirstScreen = ({ route, navigation }: props) => {
   const [urlImg, seturlImg] = useState<string>();
   const [tag, setTags] = useState<string>("");
   const [cancerTypes, setCancerTypes] = useState([]);
-  const [selectedCancerType, setSelectedCancerType] = useState("");
   const [loading, setLoading] = useState(true);
   const [showDateTimePicker, setShowDateTimePicker] = useState(false);
-
-  const coutries = [
-    {
-      label: "Angola",
-      value: "ao",
-    },
-    {
-      label: "Portugal",
-      value: "pt",
-    },
-    {
-      label: "Brasil",
-      value: "br",
-    },
-    {
-      label: "EUA",
-      value: "US",
-    },
-    {
-      label: "França",
-      value: "fr",
-    },
-    {
-      label: "Cabo Verde",
-      value: "cv",
-    },
-    {
-      label: "Inglatera",
-      value: "EN",
-    },
-  ];
 
   const setDate = (event: DateTimePickerEvent, date: Date) => {
     const {
@@ -215,15 +182,6 @@ const GatherProfileFirstScreen = ({ route, navigation }: props) => {
       className="flex-col justify-center items-stretch w-full pt-8 pb-14"
     >
       <View className="flex-row justify-start items-center gap-10 px-4">
-        {/* <View className="border-[1px] border-zinc-200 p-[3px] rounded-md bg-white">
-          <Pressable onPress={() => navigation.}>
-            <Icon
-              name="chevron-back-outline"
-              size={20}
-              color={"#505050"}
-            ></Icon>
-          </Pressable>
-        </View> */}
         <Text className=" ps-5 text-xl self-center text-center text-black font-bold">
           Informações Pessoais
         </Text>
@@ -290,6 +248,7 @@ const GatherProfileFirstScreen = ({ route, navigation }: props) => {
                 selectedValue={sex}
                 onValueChange={(itemValue) => setSex(itemValue)}
               >
+                <Picker.Item label="Escolha o sexo" value="" />
                 <Picker.Item label="Masculino" value="m" />
                 <Picker.Item label="feminino" value="f" />
               </Picker>
@@ -315,7 +274,7 @@ const GatherProfileFirstScreen = ({ route, navigation }: props) => {
                 onValueChange={(itemValue) => setcountryName(itemValue)}
               >
                 <Picker.Item label="Selecione o país" value="" />
-                {coutries.map((country) => (
+                {countries.map((country) => (
                   <Picker.Item
                     key={country.label}
                     label={country.label}
@@ -369,7 +328,6 @@ const GatherProfileFirstScreen = ({ route, navigation }: props) => {
             <TouchableOpacity
               onPress={() => {
                 handleCreatePersonalInformation();
-                // alert(birthday.toLocaleDateString());
               }}
               className="text-white bg-blue-500 px-5 py-5 rounded-lg ring-1 ring-blue-400/25"
             >

@@ -11,7 +11,6 @@ import {
   ToastAndroid,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { useColorScheme } from "nativewind";
 import Contants from "expo-constants";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { BottomTabParamList } from "../constants/types";
@@ -23,16 +22,15 @@ import EditUserMedicalInformationModal from "../components/EditUserMedicalInfoMo
 import api from "../services/api";
 import { handleLogout } from "../services/authService";
 import { API_URL, API_URL_UPLOAD } from "../constants/data";
-import ModalChangePassword from "../components/ModalChangePassword";
 import Modal from "../components/Modal";
 import { handleUpdatePassword } from "../services/updatePasswordService";
 import { useTheme } from "../helpers/theme-context";
+import { updateUserPersonalInformation } from "../services/profile/updateUserPersonalInformation";
+import { updateMedicalPersonalInformation } from "../services/profile/updateMedicalPersonalInformation";
 
 type props = NativeStackScreenProps<BottomTabParamList>;
 
 const ProfileScreen = ({ route, navigation }: props) => {
-  const { colorScheme, toggleColorScheme } = useColorScheme();
-  const [isEnabledLayoutMode, setIsEnabledLayoutMode] = useState(false);
   const [isEnabledMedicationReminder, setIsEnabledMedicationReminder] =
     useState(true);
   let isModalEditVisible: boolean = false;
@@ -46,10 +44,8 @@ const ProfileScreen = ({ route, navigation }: props) => {
     username: "",
     email: "",
     typeUser: "",
-    createdAt: "",
-    updatedAt: "",
-    notifications: [],
-    tags: [],
+    createdAt: new Date(),
+    updatedAt: new Date(),
   });
   const [profileData, setProfileData] = useState({
     birthday: "",
@@ -57,8 +53,8 @@ const ProfileScreen = ({ route, navigation }: props) => {
     address: "",
     country_name: "",
     phoneNumber: "",
-    created_at: "",
-    updated_at: "",
+    created_at: new Date(),
+    updated_at: new Date(),
     urlImg: "",
     sex: "",
     userId: "",
@@ -68,23 +64,23 @@ const ProfileScreen = ({ route, navigation }: props) => {
       {
         id: "",
         description: "",
-        createdAt: "",
-        updatedAt: "",
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
     ],
   });
   const [medicalData, setMedicalData] = useState({
-    bloodGroup: "",
+    id: "",
     codHospital: "",
-    created_at: "",
+    bloodGroup: "",
     height: "",
+    weight: "",
     hospital: "",
     stage: "",
-    target_support: "",
-    updated_at: "",
-    userId: "",
-    user_id: "",
-    weight: "",
+    targetSupport: "",
+    user: "",
+    createdAt: new Date(),
+    updatedAt: new Date(),
   });
 
   const [symptomsCounter, setSymptomCounter] = useState({ count: 0 });
@@ -122,7 +118,6 @@ const ProfileScreen = ({ route, navigation }: props) => {
       .get("/symptoms/all")
       .then(({ data: res }) => {
         setSymptomCounter(res.data[0]);
-        // console.log(res.data[0]);
       })
       .catch((error) => {
         console.log(error);
@@ -134,7 +129,6 @@ const ProfileScreen = ({ route, navigation }: props) => {
       .get("/appointments/all")
       .then(({ data: res }) => {
         setAppontmentCounter(res.data[0]);
-        // console.log("apsso", res.data[0]);
       })
       .catch((error) => {
         console.log(error);
@@ -145,7 +139,6 @@ const ProfileScreen = ({ route, navigation }: props) => {
       .get("/medications/all")
       .then(({ data: res }) => {
         setMedicationCounter(res.data[0]);
-        // console.log(res.data[0]);
       })
       .catch((error) => {
         console.log(error);
@@ -172,23 +165,95 @@ const ProfileScreen = ({ route, navigation }: props) => {
           console.log(error);
         });
     } catch (error: any) {
-      Alert.alert("Erro", "erro tentando pegar os dados de usuários");
+      if (error.data) {
+        alert(`${error.message.map((error: string) => error)}`);
+      }
+      alert(`${error.message}`);
     }
   };
 
-  const handleSave = (updatedData: {
-    id: string;
-    username: string;
-    email: string;
-    typeUser: string;
-    createdAt: string;
-    updatedAt: string;
-    notifications: [];
-    tags: [];
-  }) => {
-    setUserData(updatedData);
-    setEditUserInfoModalVisible(false);
+  const handleSaveUserPersonalInformationFromModal = async (
+    updatedUserData: {
+      id: string;
+      username: string;
+      email: string;
+      typeUser: string;
+      createdAt: Date;
+      updatedAt: Date;
+    },
+    updatedProfileData: {
+      birthday: string;
+      bio: string;
+      address: string;
+      country_name: string;
+      phoneNumber: string;
+      created_at: Date;
+      updated_at: Date;
+      urlImg: string;
+      sex: string;
+      userId: string;
+      job: string;
+      user_profile_id: string;
+      tags: [
+        {
+          id: string;
+          description: string;
+          createdAt: Date;
+          updatedAt: Date;
+        },
+      ];
+    }
+  ) => {
+    try {
+      await updateUserPersonalInformation(updatedUserData, updatedProfileData);
+
+      setUserData(updatedUserData);
+      setProfileData(updatedProfileData);
+      setEditUserInfoModalVisible(false);
+      Alert.alert("Atualização de perfil", "Perfil atualizado com sucesso!");
+    } catch (error: any) {
+      if (error.data) {
+        alert(`${error.message.map((error: string) => error)}`);
+      }
+      alert(`${error.message}`);
+    }
   };
+  const handleSaveMedicalPersonalInformationFromModal =
+    async (updatedProfileData: {
+      birthday: string;
+      bio: string;
+      address: string;
+      country_name: string;
+      phoneNumber: string;
+      created_at: Date;
+      updated_at: Date;
+      urlImg: string;
+      sex: string;
+      userId: string;
+      job: string;
+      user_profile_id: string;
+      tags: [
+        {
+          id: string;
+          description: string;
+          createdAt: Date;
+          updatedAt: Date;
+        },
+      ];
+    }) => {
+      try {
+        await updateMedicalPersonalInformation(updatedProfileData);
+
+        setProfileData(updatedProfileData);
+        setEditUserMedicalInfoModalVisible(false);
+        Alert.alert("Atualização de perfil", "Perfil atualizado com sucesso!");
+      } catch (error: any) {
+        if (error.data) {
+          alert(`${error.message.map((error: string) => error)}`);
+        }
+        alert(`${error.message}`);
+      }
+    };
 
   const fetchProfileData = () => {
     try {
@@ -220,7 +285,7 @@ const ProfileScreen = ({ route, navigation }: props) => {
     }
   };
 
-  const { theme, toggleTheme } = useTheme();
+  const { theme } = useTheme();
 
   return (
     <View
@@ -310,9 +375,9 @@ const ProfileScreen = ({ route, navigation }: props) => {
                   {medicationCounter.count}
                 </Text>
                 <Text
-                  className={` text-center text-sm ${theme === "dark" ? "text-zinc-200" : "text-zinc-300"} `}
+                  className={` text-center text-sm ${theme === "dark" ? "text-zinc-200" : "text-zinc-400"} `}
                 >
-                  Consultas
+                  Remédios
                 </Text>
               </View>
               <View>
@@ -322,7 +387,7 @@ const ProfileScreen = ({ route, navigation }: props) => {
                   {symptomsCounter.count}
                 </Text>
                 <Text
-                  className={` text-center text-sm ${theme === "dark" ? "text-zinc-200" : "text-zinc-300"} `}
+                  className={` text-center text-sm ${theme === "dark" ? "text-zinc-200" : "text-zinc-400"} `}
                 >
                   Sintomas
                 </Text>
@@ -364,10 +429,10 @@ const ProfileScreen = ({ route, navigation }: props) => {
             </Pressable>
             <EditPersonalInformationModal
               isVisible={editUserInfoModalVisible}
-              onClose={() => setEditUserInfoModalVisible(false)}
               userData={userData}
               profileData={profileData}
-              onSave={handleSave}
+              onSave={handleSaveUserPersonalInformationFromModal}
+              onClose={() => setEditUserInfoModalVisible(false)}
             />
           </View>
           <View>
@@ -378,8 +443,12 @@ const ProfileScreen = ({ route, navigation }: props) => {
                 size={20}
               ></Icon>
               <View>
-                <Text className="text-base text-zinc-200">Username</Text>
-                {userData ? (
+                <Text
+                  className={`text-base  ${theme === "dark" ? "text-zinc-200" : "text-zinc-400"}`}
+                >
+                  Username
+                </Text>
+                {userData.username ? (
                   <Text
                     className={`text-base  ${theme === "dark" ? "text-zinc-300" : "text-zinc-800"} `}
                   >
@@ -402,7 +471,7 @@ const ProfileScreen = ({ route, navigation }: props) => {
                 >
                   Email
                 </Text>
-                {userData ? (
+                {userData.email ? (
                   <Text
                     className={`text-base  ${theme === "dark" ? "text-zinc-300 " : "text-zinc-800"} `}
                   >
@@ -425,7 +494,7 @@ const ProfileScreen = ({ route, navigation }: props) => {
                 >
                   Telefone
                 </Text>
-                {profileData ? (
+                {profileData.phoneNumber ? (
                   <Text
                     className={`text-base  ${theme === "dark" ? "text-zinc-300" : "text-zinc-800"} `}
                   >
@@ -448,7 +517,7 @@ const ProfileScreen = ({ route, navigation }: props) => {
                 >
                   Endereço
                 </Text>
-                {userData ? (
+                {profileData.address ? (
                   <Text
                     className={`text-base  ${theme === "dark" ? "text-zinc-300" : "text-zinc-800"} `}
                   >
@@ -479,9 +548,10 @@ const ProfileScreen = ({ route, navigation }: props) => {
             </Pressable>
             <EditUserMedicalInformationModal
               isVisible={editUserMedicalInfoModalVisible}
-              onClose={() => setEditUserMedicalInfoModalVisible(false)}
               dataProfile={profileData}
               dataMedical={medicalData}
+              onSave={handleSaveMedicalPersonalInformationFromModal}
+              onClose={() => setEditUserMedicalInfoModalVisible(false)}
             />
           </View>
           <View>
@@ -494,14 +564,14 @@ const ProfileScreen = ({ route, navigation }: props) => {
               <View>
                 <Text className="text-base text-zinc-400">Id Paciente</Text>
                 <Text className="text-base text-zinc-800 font-semibold">
-                  {medicalData ? (
+                  {medicalData.codHospital ? (
                     <Text
                       className={`text-base  ${theme === "dark" ? "text-zinc-300" : "text-zinc-800"}`}
                     >
                       {medicalData.codHospital}
                     </Text>
                   ) : (
-                    <Text>--</Text>
+                    <Text className="">--</Text>
                   )}
                 </Text>
               </View>
@@ -514,7 +584,7 @@ const ProfileScreen = ({ route, navigation }: props) => {
               ></Icon>
               <View>
                 <Text className="text-base text-zinc-400">Nascimento</Text>
-                {profileData ? (
+                {profileData.birthday ? (
                   <Text
                     className={`text-base ${theme === "dark" ? "text-zinc-300" : "text-zinc-800"}`}
                   >
@@ -537,7 +607,7 @@ const ProfileScreen = ({ route, navigation }: props) => {
                 >
                   Sexo
                 </Text>
-                {profileData ? (
+                {profileData.sex ? (
                   <Text
                     className={`text-base  ${theme === "dark" ? "text-zinc-300" : "text-zinc-800"} `}
                   >
@@ -561,7 +631,7 @@ const ProfileScreen = ({ route, navigation }: props) => {
                   Peso | Altura
                 </Text>
                 <View className="flex-row justify-start items-center">
-                  {medicalData ? (
+                  {medicalData.height ? (
                     <Text
                       className={`text-base  ${theme === "dark" ? "text-zinc-300" : "text-zinc-800"} `}
                     >
@@ -576,7 +646,7 @@ const ProfileScreen = ({ route, navigation }: props) => {
                   >
                     |
                   </Text>
-                  {medicalData ? (
+                  {medicalData.weight ? (
                     <Text
                       className={`text-base ${theme === "dark" ? "text-zinc-300" : "text-zinc-800"}  `}
                     >
@@ -601,7 +671,7 @@ const ProfileScreen = ({ route, navigation }: props) => {
                 >
                   Tipo Sanguíneo
                 </Text>
-                {medicalData ? (
+                {medicalData.bloodGroup ? (
                   <Text
                     className={`text-base ${theme === "dark" ? "text-zinc-300" : "text-zinc-800"}  `}
                   >
@@ -627,7 +697,7 @@ const ProfileScreen = ({ route, navigation }: props) => {
                 <Text
                   className={`text-base font-semibold py-2 px-3 rounded-lg bg-blue-300/20 ${theme === "dark" ? "text-zinc-300" : "text-blue-400"}  `}
                 >
-                  {profileData ? (
+                  {profileData.tags[0].description ? (
                     <Text
                       className={`text-base font-semibold py-2 px-3 rounded-lg bg-blue-300/20 text-blue-400`}
                     >
@@ -660,7 +730,7 @@ const ProfileScreen = ({ route, navigation }: props) => {
                 >
                   Estadiamento
                 </Text>
-                {medicalData ? (
+                {medicalData.stage ? (
                   <Text
                     className={`text-base font-semibold py-2 px-3 rounded-lg ${theme === "dark" ? "text-zinc-300 " : "bg-blue-300/20 text-blue-400"}    `}
                   >
@@ -683,7 +753,7 @@ const ProfileScreen = ({ route, navigation }: props) => {
                 >
                   Unidade Hospitar
                 </Text>
-                {medicalData ? (
+                {medicalData.hospital ? (
                   <Text
                     className={`text-base font-semibold py-2 px-3 rounded-lg bg-blue-300/20   ${theme === "dark" ? "text-zinc-300" : "text-blue-400"} `}
                   >

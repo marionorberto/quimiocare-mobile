@@ -84,6 +84,36 @@ export const moodDayFeeling: MoodDayFeelingType[]=  [
   },                                                                                                                                                                                                                                                                                                                                                                                      
 ];
 
-export const API_URL = 'http://192.168.153.106:3000/api/v1/quimiocare';
-export const API_URL_UPLOAD = '192.168.153.106';
+export const API_URL = 'http://192.168.215.106:3000/api/v1/quimiocare';
+export const API_URL_UPLOAD = '192.168.215.106';
 
+export  const countries = [
+    {
+      label: "Angola",
+      value: "ao",
+    },
+    {
+      label: "Portugal",
+      value: "pt",
+    },
+    {
+      label: "Brasil",
+      value: "br",
+    },
+    {
+      label: "EUA",
+      value: "US",
+    },
+    {
+      label: "França",
+      value: "fr",
+    },
+    {
+      label: "Cabo Verde",
+      value: "cv",
+    },
+    {
+      label: "Inglatera",
+      value: "EN",
+    },
+  ];

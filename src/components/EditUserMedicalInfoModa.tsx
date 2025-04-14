@@ -1,3 +1,4 @@
+import { Picker } from "@react-native-picker/picker";
 import React, { useEffect, useState } from "react";
 import {
   Modal,
@@ -7,27 +8,110 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
+import { tags } from "react-native-svg/lib/typescript/xmlTags";
 import Icon from "react-native-vector-icons/Ionicons";
 
 type props = {
   isVisible: boolean;
+  dataProfile: {
+    birthday: string;
+    bio: string;
+    address: string;
+    country_name: string;
+    phoneNumber: string;
+    created_at: Date;
+    updated_at: Date;
+    urlImg: string;
+    sex: string;
+    userId: string;
+    job: string;
+    user_profile_id: string;
+    tags: {
+      id: string;
+      description: string;
+      createdAt: Date;
+      updatedAt: Date;
+    }[];
+  };
+  dataMedical: {
+    id: string;
+    codHospital: string;
+    bloodGroup: string;
+    height: string;
+    weight: string;
+    hospital: string;
+    stage: string;
+    targetSupport: string;
+    user: string;
+    createdAt: Date;
+    updatedAt: Date;
+  };
+  onSave: any;
   onClose: any;
-  dataProfile: any;
-  dataMedical: any;
 };
 
 const EditUserMedicalInformationModal = ({
   isVisible,
-  onClose,
   dataProfile,
   dataMedical,
+  onSave,
+  onClose,
 }: props) => {
-  const [profile, setProfileData] = useState(dataProfile);
-  const [medical, setdataMedical] = useState(dataMedical);
+  const [formDataProfile, setFormDataProfile] = useState<{
+    birthday: string;
+    bio: string;
+    address: string;
+    country_name: string;
+    phoneNumber: string;
+    created_at: Date;
+    updated_at: Date;
+    urlImg: string;
+    sex: string;
+    userId: string;
+    job: string;
+    user_profile_id: string;
+    tags: {
+      id: string;
+      description: string;
+      createdAt: Date;
+      updatedAt: Date;
+    }[];
+  }>(dataProfile);
+  const [formDataMedical, setFormDataMedical] = useState<{
+    id: string;
+    codHospital: string;
+    bloodGroup: string;
+    height: string;
+    weight: string;
+    hospital: string;
+    stage: string;
+    targetSupport: string;
+    user: string;
+    createdAt: Date;
+    updatedAt: Date;
+  }>(dataMedical);
 
-  const handleSave = () => {
-    alert("alert");
-  };
+  const bloodGroupList = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
+  const hospitals = [
+    "Intituto IACC",
+    "Hospital Américo Boa Vida",
+    "Lucréci Paim",
+    "Instituto - IPO PORTO(Lubango)",
+    "Clínica Sagrada Esperança",
+    "Clínica Girassol",
+  ];
+  const stageList = [
+    "estágio 0",
+    "estágio I",
+    "estágio II",
+    "estágio III",
+    "estágio IV",
+  ];
+
+  useEffect(() => {
+    setFormDataProfile(dataProfile);
+    setFormDataMedical(dataMedical);
+  }, [dataProfile, dataMedical]);
 
   return (
     <Modal
@@ -48,9 +132,12 @@ const EditUserMedicalInformationModal = ({
               <View className="flex-1">
                 <Text className="text-base text-zinc-400">Id Paciente</Text>
                 <TextInput
-                  value={dataMedical.codHospital}
+                  value={formDataMedical?.codHospital}
                   onChangeText={(text) =>
-                    setdataMedical({ ...dataMedical, idPacient: text })
+                    setFormDataMedical({
+                      ...formDataMedical,
+                      codHospital: text,
+                    })
                   }
                   className="text-base text-zinc-800 border-b-2 border-zinc-400 p-2"
                 />
@@ -64,9 +151,9 @@ const EditUserMedicalInformationModal = ({
                   Data de Nascimento
                 </Text>
                 <TextInput
-                  value={dataProfile.birthday}
+                  value={formDataProfile.birthday}
                   onChangeText={(text) =>
-                    setProfileData({ ...dataProfile, birthday: text })
+                    setFormDataProfile({ ...formDataProfile, birthday: text })
                   }
                   className="text-base text-zinc-800 border-b-2 border-zinc-400 p-2"
                 />
@@ -76,13 +163,28 @@ const EditUserMedicalInformationModal = ({
               <Icon name="bandage-outline" color={"black"} size={20} />
               <View className="flex-1">
                 <Text className="text-base text-zinc-400">Sexo</Text>
-                <TextInput
-                  value={dataProfile.sex.toUpperCase()}
+                <Picker
+                  style={{ color: "#999" }}
+                  selectedValue={formDataProfile.sex.toUpperCase()}
+                  onValueChange={(text) =>
+                    setFormDataProfile({ ...formDataProfile, sex: text })
+                  }
+                  className="border border-zinc-300 rounded-lg px-4 py-3"
+                >
+                  <Picker.Item
+                    label={formDataProfile.sex.toUpperCase()}
+                    value={formDataProfile.sex.toUpperCase()}
+                  />
+                  <Picker.Item label="M" value="M" />
+                  <Picker.Item label="F" value="F" />
+                </Picker>
+                {/* <TextInput
+                  value={formDataProfile.sex.toUpperCase()}
                   onChangeText={(text) =>
-                    setdataMedical({ ...dataProfile, sex: text })
+                    setFormDataProfile({ ...formDataProfile, sex: text })
                   }
                   className="text-base text-zinc-800 border-b-2 border-zinc-400 p-2"
-                />
+                /> */}
               </View>
             </View>
 
@@ -91,9 +193,12 @@ const EditUserMedicalInformationModal = ({
               <View className="flex-1">
                 <Text className="text-base text-zinc-400">Peso</Text>
                 <TextInput
-                  value={dataMedical.weight}
+                  value={formDataMedical.weight}
                   onChangeText={(text) =>
-                    setdataMedical({ ...dataMedical, weight: text })
+                    setFormDataMedical({
+                      ...formDataMedical,
+                      weight: text.replace(/[^0-9.]/g, ""),
+                    })
                   }
                   className="text-base text-zinc-800 border-b-2 border-zinc-400 p-2"
                 />
@@ -105,9 +210,12 @@ const EditUserMedicalInformationModal = ({
               <View className="flex-1">
                 <Text className="text-base text-zinc-400">Altura</Text>
                 <TextInput
-                  value={dataMedical.height}
+                  value={formDataMedical.height}
                   onChangeText={(text) =>
-                    setdataMedical({ ...dataMedical, height: text })
+                    setFormDataMedical({
+                      ...formDataMedical,
+                      height: text.replace(/[^0-9.]/g, ""),
+                    })
                   }
                   className="text-base text-zinc-800 border-b-2 border-zinc-400 p-2"
                 />
@@ -118,13 +226,26 @@ const EditUserMedicalInformationModal = ({
               <Icon name="bandage-outline" color={"black"} size={20} />
               <View className="flex-1">
                 <Text className="text-base text-zinc-400">Tipo Sanguíneo</Text>
-                <TextInput
+                <Picker
+                  style={{ color: "#999" }}
+                  selectedValue={formDataMedical.bloodGroup}
+                  onValueChange={(text) =>
+                    setFormDataMedical({ ...formDataMedical, bloodGroup: text })
+                  }
+                  className="border border-zinc-300 rounded-lg px-4 py-3"
+                >
+                  <Picker.Item label="Selecione o grupo" value="" />
+                  {bloodGroupList.map((group) => (
+                    <Picker.Item key={group} label={group} value={group} />
+                  ))}
+                </Picker>
+                {/* <TextInput
                   value={dataMedical.bloodGroup}
                   onChangeText={(text) =>
-                    setdataMedical({ ...dataMedical, bloodGroup: text })
+                    setFormDataMedical({ ...dataMedical, bloodGroup: text })
                   }
                   className="text-base text-zinc-800 border-b-2 border-zinc-400 p-2"
-                />
+                /> */}
               </View>
             </View>
 
@@ -135,7 +256,17 @@ const EditUserMedicalInformationModal = ({
                 <TextInput
                   value={dataProfile.tags[0].description}
                   onChangeText={(text) =>
-                    setProfileData({ ...dataProfile, tags: text })
+                    setFormDataProfile({
+                      ...dataProfile,
+                      tags: [
+                        {
+                          id: formDataProfile.tags[0].id,
+                          description: text,
+                          createdAt: formDataProfile.tags[0].createdAt,
+                          updatedAt: formDataProfile.tags[0].updatedAt,
+                        },
+                      ],
+                    })
                   }
                   className="text-base text-zinc-800 border-b-2 border-zinc-400 p-2"
                 />
@@ -160,13 +291,19 @@ const EditUserMedicalInformationModal = ({
               <Icon name="fitness-outline" color={"black"} size={20} />
               <View className="flex-1">
                 <Text className="text-base text-zinc-400">Estadiamento</Text>
-                <TextInput
-                  value={dataMedical.stage}
-                  onChangeText={(text) =>
-                    setdataMedical({ ...dataMedical, stage: text })
+                <Picker
+                  className="border border-zinc-300 rounded-lg px-4 py-3"
+                  style={{ color: "#999" }}
+                  selectedValue={formDataMedical.stage}
+                  onValueChange={(text) =>
+                    setFormDataMedical({ ...formDataMedical, stage: text })
                   }
-                  className="text-base text-zinc-800 border-b-2 border-zinc-400 p-2"
-                />
+                >
+                  <Picker.Item label="Selecione o Estágio" value="" />
+                  {stageList.map((stage) => (
+                    <Picker.Item key={stage} label={stage} value={stage} />
+                  ))}
+                </Picker>
               </View>
             </View>
 
@@ -176,13 +313,19 @@ const EditUserMedicalInformationModal = ({
                 <Text className="text-base text-zinc-400">
                   Unidade Hospitalar
                 </Text>
-                <TextInput
-                  value={dataMedical.hospital}
-                  onChangeText={(text) =>
-                    setdataMedical({ ...dataMedical, hospital: text })
+                <Picker
+                  style={{ color: "#999" }}
+                  selectedValue={formDataMedical.hospital}
+                  onValueChange={(text) =>
+                    setFormDataMedical({ ...formDataMedical, hospital: text })
                   }
-                  className="text-base text-zinc-800 border-b-2 border-zinc-400 p-2"
-                />
+                  className="border border-zinc-300 rounded-lg px-4 py-3"
+                >
+                  <Picker.Item label="Selecione o desejado" value="" />
+                  {hospitals.map((type) => (
+                    <Picker.Item key={type} label={type} value={type} />
+                  ))}
+                </Picker>
               </View>
             </View>
 
@@ -194,7 +337,7 @@ const EditUserMedicalInformationModal = ({
                 <Text className="text-zinc-900">Cancelar</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={handleSave}
+                onPress={() => onSave(formDataMedical, formDataProfile)}
                 className="bg-blue-500 p-2 rounded-lg"
               >
                 <Text className="text-white">Salvar</Text>

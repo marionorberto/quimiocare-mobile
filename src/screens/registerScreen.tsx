@@ -162,15 +162,6 @@ const RegisterScreen = ({ route, navigation }: props) => {
                 <Text className="text-zinc-400">Google</Text>
               </Pressable>
             </View>
-            <View>
-              <Pressable
-                onPress={() => alert("redirecionar para Facebook provider")}
-                className="py-4 px-5 bg-zinc-300/50 rounded-lg flex-row justify-center items-center gap-2"
-              >
-                <Icon name="logo-facebook"></Icon>
-                <Text className="text-zinc-400">Facebook</Text>
-              </Pressable>
-            </View>
           </View>
           <View className="flex-row justify-center items-center">
             <Text className=" text-zinc-400 text-center flex-row justify-center items-center">

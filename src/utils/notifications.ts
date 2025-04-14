@@ -45,11 +45,11 @@ export async function registerForPushNotificationAsync() : Promise<string|null> 
 }
 
 export async function scheduleMedicationReminder(medication:  Medication): Promise<string | undefined> {
-  if (!medication.reminderEnable) return;
+  // if (!medication.reminderEnable) return;
 
   try {
-    for (const time of medication.times) {
-      const [hour, minute] = time.split(":").map(Number);
+  
+      const [hour, minute] = medication.reminderTime.toLocaleTimeString().split(":").map(Number);
       const today = new Date();
       today.setHours(hour, minute, 0, 0);
        
@@ -59,19 +59,23 @@ export async function scheduleMedicationReminder(medication:  Medication): Promi
 
       const identifier = await Notifications.scheduleNotificationAsync({
         content: {
-          title: "Lembrete de Medicação",
-          body: `Horário ${medication.name} ${medication.dosage}`,
-          data: { medicationId: medication.id },
+          title: "Lembrete de Remédio",
+          subtitle: 'Hora para tomar a sua remédio',
+          body: `Horário ${medication.medicationName} ${medication.dosage}`,
+          data: { medicationId: medication.medicationName },
         },
         trigger: {
-          hour: hour,
-          minute: minute,
-          type: Notifications.SchedulableTriggerInputTypes.DAILY,
+          // hour: hour,
+          // minute: minute,
+          // type: Notifications,
+          // se
+          type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
+          seconds: 2
         }
       });
 
       return identifier;
-    }
+    
   } catch (error) {
     console.error(" error agendando lembrete de medicaco", error);
     return undefined;
@@ -102,7 +106,7 @@ export async function cancelScheduleMedicationReminder(medicationId:  string): P
 
 export async function updateScheduleMedicationReminder(medication:  Medication): Promise<void> {
   try {
-    await cancelScheduleMedicationReminder(medication.id);  
+    await cancelScheduleMedicationReminder(medication.medicationName);  
 
     await scheduleMedicationReminder(medication);
   } catch (error) { 

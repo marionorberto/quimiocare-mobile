@@ -1,74 +1,81 @@
 import React, { useEffect, useState } from "react";
 import { Modal, View, Text, TextInput, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-import api from "../services/api";
-import { API_URL } from "../constants/data";
 
 type props = {
   isVisible: boolean;
-  onClose: any;
-  userData: any;
-  profileData: any;
+  userData: {
+    id: string;
+    username: string;
+    email: string;
+    typeUser: string;
+    createdAt: Date;
+    updatedAt: Date;
+  };
+  profileData: {
+    birthday: string;
+    bio: string;
+    address: string;
+    country_name: string;
+    phoneNumber: string;
+    created_at: Date;
+    updated_at: Date;
+    urlImg: string;
+    sex: string;
+    userId: string;
+    job: string;
+    user_profile_id: string;
+    tags: {
+      id: string;
+      description: string;
+      createdAt: Date;
+      updatedAt: Date;
+    }[];
+  };
   onSave: any;
+  onClose: any;
 };
 
 const EditPersonalInformationModal = ({
   isVisible,
-  onClose,
   userData,
   profileData,
   onSave,
+  onClose,
 }: props) => {
-  const [user, setUserData] = useState({
-    id: "",
-    username: "",
-    email: "",
-    typeUser: "",
-    createdAt: "",
-    updatedAt: "",
-    notifications: [],
-    tags: [],
-  });
-  const [profile, setProfile] = useState({
-    birthday: "",
-    bio: "",
-    address: "",
-    country_name: "",
-    phoneNumber: "",
-    created_at: "",
-    updated_at: "",
-    url_img: "",
-    sex: "",
-    userId: "",
-    job: "",
-    user_profile_id: "",
-    tags: [
-      {
-        id: "",
-        description: "",
-        createdAt: "",
-        updatedAt: "",
-      },
-    ],
-  });
-
-  const handleSave = async () => {
-    try {
-      const response = await api.post(`${API_URL}/update/user`, {
-        email: user.email,
-        username: user.username,
-      });
-
-      return response.data;
-    } catch (error: any) {
-      throw error.response.data || "Erro tentando cadastrar o perfil!";
-    }
-  };
+  const [formDataUser, setFormDataUser] = useState<{
+    id: string;
+    username: string;
+    email: string;
+    typeUser: string;
+    createdAt: Date;
+    updatedAt: Date;
+  }>(userData);
+  const [formDataProfile, setFormDataProfile] = useState<{
+    birthday: string;
+    bio: string;
+    address: string;
+    country_name: string;
+    phoneNumber: string;
+    created_at: Date;
+    updated_at: Date;
+    urlImg: string;
+    sex: string;
+    userId: string;
+    job: string;
+    user_profile_id: string;
+    tags: {
+      id: string;
+      description: string;
+      createdAt: Date;
+      updatedAt: Date;
+    }[];
+  }>(profileData);
 
   useEffect(() => {
-    setUserData(userData);
-    setProfile(profileData);
-  }, [user, profile]);
+    setFormDataUser(userData);
+    setFormDataProfile(profileData);
+  }, [userData, profileData]);
 
   return (
     <Modal
@@ -82,61 +89,58 @@ const EditPersonalInformationModal = ({
           <Text className="text-2xl font-semibold text-zinc-900 mb-4">
             Editar Dados
           </Text>
-
           <View className="flex-row justify-start items-center gap-2 mt-3">
             <Icon name="person-outline" color={"black"} size={20} />
             <View className="flex-1">
               <Text className="text-base text-zinc-400">username</Text>
               <TextInput
-                value={user.username}
+                value={formDataUser?.username}
                 onChangeText={(text) =>
-                  setUserData({ ...user, username: text })
+                  setFormDataUser({ ...formDataUser, username: text })
                 }
                 className="text-base text-zinc-800 border-b-2 border-zinc-400 p-2"
               />
             </View>
           </View>
-
           <View className="flex-row justify-start items-center gap-2 mt-3">
             <Icon name="mail-outline" color={"black"} size={20} />
             <View className="flex-1">
               <Text className="text-base text-zinc-400">Email</Text>
               <TextInput
-                value={user.email}
-                onChangeText={(text) => setUserData({ ...user, email: text })}
+                value={formDataUser.email}
+                onChangeText={(text) =>
+                  setFormDataUser({ ...formDataUser, email: text })
+                }
                 className="text-base text-zinc-800 border-b-2 border-zinc-400 p-2"
               />
             </View>
           </View>
-
           <View className="flex-row justify-start items-center gap-2 mt-3">
             <Icon name="call-outline" color={"black"} size={20} />
             <View className="flex-1">
               <Text className="text-base text-zinc-400">Telefone</Text>
               <TextInput
-                value={profile.phoneNumber}
+                value={formDataProfile.phoneNumber}
                 onChangeText={(text) =>
-                  setProfile({ ...profile, phoneNumber: text })
+                  setFormDataProfile({ ...formDataProfile, phoneNumber: text })
                 }
                 className="text-base text-zinc-800 border-b-2 border-zinc-400 p-2"
               />
             </View>
           </View>
-
           <View className="flex-row justify-start items-center gap-2 mt-3">
             <Icon name="location-outline" color={"black"} size={20} />
             <View className="flex-1">
               <Text className="text-base text-zinc-400">Endereço</Text>
               <TextInput
-                value={profile.address}
+                value={formDataProfile.address}
                 onChangeText={(text) =>
-                  setProfile({ ...profile, address: text })
+                  setFormDataProfile({ ...formDataProfile, address: text })
                 }
                 className="text-base text-zinc-800 border-b-2 border-zinc-400 p-2"
               />
             </View>
           </View>
-
           <View className="flex-row justify-end gap-4 mt-6">
             <TouchableOpacity
               onPress={onClose}
@@ -145,7 +149,7 @@ const EditPersonalInformationModal = ({
               <Text className="text-zinc-900">Cancelar</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => handleSave()}
+              onPress={() => onSave(formDataUser, formDataProfile)}
               className="bg-blue-500 p-2 rounded-lg"
             >
               <Text className="text-white">Salvar</Text>
