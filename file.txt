@@ -1,0 +1,21 @@
+post = {
+  title: string;
+  linkPosterFile: string;
+  tags: [
+    {
+      description: string
+    }
+  ];
+  subtitle: string;
+  linkFileSection: string;
+  sectionOrder: number;
+  contents: [
+    {
+      content: string;
+    }
+  ]
+}
+
+
+
+
