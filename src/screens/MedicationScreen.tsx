@@ -102,25 +102,7 @@ const MedicationsScreen = ({ route, navigation }: props) => {
               {medicationCounter.count})
             </Text>
           </View>
-          <TouchableOpacity className="p-4 bg-white rounded-lg flex-row items-center mb-3 relative">
-            <Text>
-              <Icon
-                name={"bandage-outline"}
-                size={24}
-                color="#2563EB"
-                className="mr-4"
-              />
-            </Text>
 
-            <View className="absolute top-3 right-6 rounded-full h-7 w-6 flex-row gap-2">
-              <Text>
-                <Icon name={"create-outline"} size={14} color="#2563EB" />
-              </Text>
-              <Text>
-                <Icon name={"trash-outline"} size={14} color="#2563EB" />
-              </Text>
-            </View>
-          </TouchableOpacity>
           {medicationCounter.count ? (
             medications.map((item) => (
               <TouchableOpacity

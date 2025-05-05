@@ -317,7 +317,9 @@ const ProfileScreen = ({ route, navigation }: props) => {
             <View className="relative">
               <Image
                 source={{
-                  uri: `http://${API_URL_UPLOAD}:3000/${profileData.urlImg}`,
+                  uri:
+                    `http://${API_URL_UPLOAD}:3000/${profileData.urlImg}` ||
+                    require("../../assets/user.png"),
                 }}
                 style={{
                   borderRadius: 50,

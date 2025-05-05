@@ -36,7 +36,7 @@ const GatherProfileFirstScreen = ({ route, navigation }: props) => {
     "Clínica Sagrada Esperança",
     "Clínica Girassol",
   ];
-  const supportWishLevel = ["EMOCIONAL", "MEDICO", "ESPIRITUAL"];
+  const supportWishLevel = ["EMOCIONAL", "MEDICO"];
   const stageList = [
     "estágio 0",
     "estágio I",

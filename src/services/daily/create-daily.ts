@@ -1,24 +1,24 @@
-import axios from 'axios';
 import { API_URL } from '../../constants/data';
+import api from '../api';
 
 export const handleSaveDaily = async ( 
       painLevel: string,
       collateralEffect: string,
       sleepWell: boolean,
-      emotionalState: string,
-      hydratedToday: boolean,
+      emoccioanlState: string,
+      hidratedToday: boolean,
       feedToday: boolean,
       exercicesToday: boolean,
       tiredLevelToday: string,
       note: string
     ): Promise<any> => {
   try {
-    const response = (await axios.post(`${API_URL}/dailys/create/daily`, {
+    const response = (await api.post(`${API_URL}/dailys/create/daily`, {
       painLevel,
       collateralEffect,
       sleepWell,
-      emotionalState,
-      hydratedToday,
+      emoccioanlState,
+      hidratedToday,
       feedToday,
       exercicesToday,
       tiredLevelToday,
@@ -34,3 +34,5 @@ export const handleSaveDaily = async (
     throw error.response.data || 'Erro tentando cadastrar daily!';
   } 
 };
+
+

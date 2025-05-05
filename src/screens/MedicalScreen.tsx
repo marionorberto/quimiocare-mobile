@@ -200,6 +200,7 @@ const MedicalScreen = ({ route, navigation }: props) => {
         type,
         noteAppointment
       );
+      setOpenModalAddAppointment(true);
       alert("Consulta cadastrado com sucesso!");
     } catch (error: any) {
       if (error.data) {
@@ -245,7 +246,7 @@ const MedicalScreen = ({ route, navigation }: props) => {
   return (
     <View
       style={{ marginTop: Contants.statusBarHeight }}
-      className={`flex-col justify-center items-stretch w-full px-4 pt-8 pb-10 ${theme === "dark" ? "bg-neutral-900" : ""}`}
+      className={`flex-col justify-center items-stretch w-full px-4  pb-10 ${theme === "dark" ? "bg-neutral-900" : ""}`}
     >
       <ScrollView showsVerticalScrollIndicator={false}>
         <View className="flex-row justify-start items-center gap-10">
@@ -381,12 +382,45 @@ const MedicalScreen = ({ route, navigation }: props) => {
                       </TouchableOpacity>
                     </View>
                     <Text className="text-zinc-700 mb-1">Nome do sintoma</Text>
-                    <TextInput
+                    {/* <TextInput
                       className="border border-zinc-300 rounded-lg px-4 py-2 mb-3"
                       placeholder="Ex: Náusea, Fadiga..."
                       value={name}
                       onChangeText={setName}
-                    />
+                    /> */}
+                    <Picker
+                      className="border border-zinc-300 rounded-lg px-4 py-3"
+                      style={{ color: "#999" }}
+                      selectedValue={name}
+                      onValueChange={(itemValue) => setName(itemValue)}
+                    >
+                      <Picker.Item
+                        label="Teve algum efeito colateral hoje?"
+                        value=""
+                      />
+                      <Picker.Item label="Náusea" value="nausea" />
+                      <Picker.Item label="Vômito" value="vomito" />
+                      <Picker.Item label="Fadiga" value="fadiga" />
+                      <Picker.Item
+                        label="Perda de apetite"
+                        value="perdaApetite"
+                      />
+                      <Picker.Item
+                        label="Queda de cabelo"
+                        value="quedaCabelo"
+                      />
+                      <Picker.Item
+                        label="Feridas na boca"
+                        value="feridasBoca"
+                      />
+                      <Picker.Item label="Constipação" value="constipacao" />
+                      <Picker.Item label="Diarreia" value="diarreia" />
+                      <Picker.Item label="Febre" value="febre" />
+                      <Picker.Item label="Tontura" value="tontura" />
+                      <Picker.Item label="Nenhum" value="nenhum" />
+                      <Picker.Item label="Outro" value="outro" />
+                    </Picker>
+
                     <Text className="text-zinc-700 mb-1">Descrição</Text>
                     <TextInput
                       className="border border-zinc-300 rounded-lg px-4 py-2 mb-3 h-20"
@@ -478,12 +512,27 @@ const MedicalScreen = ({ route, navigation }: props) => {
                       onChangeText={setMedicationName}
                     />
                     <Text className="text-zinc-700 mb-1">Dosagem</Text>
-                    <TextInput
-                      className="border border-zinc-300 rounded-lg px-4 py-2 mb-3"
-                      placeholder="Ex: 500mg, 1 comprimido..."
-                      value={dosage}
-                      onChangeText={setDosage}
-                    />
+
+                    <Picker
+                      className="border border-zinc-300 rounded-lg px-4 py-3"
+                      style={{ color: "#999" }}
+                      selectedValue={dosage}
+                      onValueChange={(itemValue) => setDosage(itemValue)}
+                    >
+                      <Picker.Item
+                        label="Escolha a dosagem da medicação"
+                        value=""
+                      />
+                      <Picker.Item label="5 mg" value="5mg" />
+                      <Picker.Item label="10 mg" value="10mg" />
+                      <Picker.Item label="25 mg" value="25mg" />
+                      <Picker.Item label="50 mg" value="50mg" />
+                      <Picker.Item label="75 mg" value="75mg" />
+                      <Picker.Item label="100 mg" value="100mg" />
+                      <Picker.Item label="150 mg" value="150mg" />
+                      <Picker.Item label="200 mg" value="200mg" />
+                      <Picker.Item label="Outro" value="outro" />
+                    </Picker>
                     <Text className="text-zinc-700 mb-1">Notas (Opcional)</Text>
                     <TextInput
                       className="border border-zinc-300 rounded-lg px-4 py-2 mb-3 h-20"
@@ -539,7 +588,7 @@ const MedicalScreen = ({ route, navigation }: props) => {
               </View>
             </Pressable>
 
-            {/* <Pressable
+            <Pressable
               onPress={() => {
                 setOpenModalAddAppointment(true);
               }}
@@ -666,7 +715,6 @@ const MedicalScreen = ({ route, navigation }: props) => {
                       className="bg-blue-500 rounded-lg py-3 mt-2 flex-row items-center justify-center"
                       onPress={() => {
                         onSaveAppointment();
-                        setOpenModalAddAppointment(false);
                       }}
                     >
                       <Icon
@@ -682,12 +730,12 @@ const MedicalScreen = ({ route, navigation }: props) => {
                   </View>
                 </Modal>
               </View>
-            </Pressable> */}
+            </Pressable>
           </View>
         </View>
 
         <View className="mt-4">
-          {/* <Pressable
+          <Pressable
             onPress={() =>
               navigation.navigate("Booking", { title: "Consultas" })
             }
@@ -706,7 +754,7 @@ const MedicalScreen = ({ route, navigation }: props) => {
                 size={30}
               ></Icon>
             </View>
-          </Pressable> */}
+          </Pressable>
 
           <Pressable
             onPress={() =>

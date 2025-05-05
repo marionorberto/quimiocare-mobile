@@ -50,13 +50,14 @@ export const handleSaveAppointment = async (
   noteAppointment: string
   ): Promise<any> => {
   try {
-    // const dateForSaving = 
-    // console.log('ver', dateAppointment.toLocaleDateString().slice(0, 11)., dateAppointmentHour.toLocaleTimeString());
-    return;
+    const [dia, mes, ano] = dateAppointment.toLocaleDateString().split('/');
+    const dataHoraString = `${ano}-${mes}-${dia}T${dateAppointmentHour.toLocaleTimeString()}`; // YYYY-MM-DDTHH:mm:ss
+
+    const dataHoraFinal = new Date(dataHoraString);
     const response = await api.post(`${API_URL}/appointments/create/appointment`, {
       name: nameAppointment,
       description: descriptionAppointment,
-      dateAppointment: dateAppointment.toLocaleString(),
+      dateAppointment: dataHoraFinal,
       type,
       note: noteAppointment
      });

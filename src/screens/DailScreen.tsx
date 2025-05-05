@@ -16,6 +16,7 @@ import { useTheme } from "../helpers/theme-context";
 import { moodDayFeeling } from "../constants/data";
 import { handleIsUserLoggedIn } from "../services/authService";
 import { handleSaveDaily } from "../services/daily/create-daily";
+import { Picker } from "@react-native-picker/picker";
 
 type props = NativeStackScreenProps<RootStackParamsList, ScreenNames>;
 
@@ -23,8 +24,8 @@ const DailScreen = ({ route, navigation }: props) => {
   const [painLevel, setPainLevel] = useState("");
   const [collateralEffect, setCollateralEffect] = useState("");
   const [sleepWell, setSleepWell] = useState(false);
-  const [emotionalState, setEmotionalState] = useState("");
-  const [hydratedToday, setHydratedToday] = useState(false);
+  const [emoccioanlState, setemoccioanlState] = useState("");
+  const [hidratedToday, sethidratedToday] = useState(false);
   const [feedToday, setFeedToday] = useState(false);
   const [exercicesToday, setExercicesToday] = useState(false);
   const [tiredLevelToday, setTiredLevelToday] = useState("");
@@ -36,15 +37,15 @@ const DailScreen = ({ route, navigation }: props) => {
       painLevel,
       collateralEffect,
       sleepWell,
-      emotionalState,
-      hydratedToday,
+      emoccioanlState,
+      hidratedToday,
       feedToday,
       exercicesToday,
       tiredLevelToday,
       note
     );
 
-    navigation.navigate("Medical", { title: "" });
+    navigation.navigate("Main", { title: "" });
     alert("Registo diário registrado com sucesso ✨!");
   };
 
@@ -128,13 +129,26 @@ const DailScreen = ({ route, navigation }: props) => {
         >
           Efeitos colaterais💊
         </Text>
-        <TextInput
-          className={`bg-white text-zinc-900 px-4 py-5 rounded-lg mb-4 ${theme === "dark" ? "bg-zinc-800 text-white" : ""}`}
-          value={collateralEffect}
-          onChangeText={setCollateralEffect}
-          placeholder="Ex: Náuseas"
-          placeholderTextColor={theme === "dark" ? "#9ca3af" : "#6b7280"}
-        />
+        <Picker
+          className="border border-zinc-300 rounded-lg px-4 py-3"
+          style={{ color: "#999" }}
+          selectedValue={collateralEffect}
+          onValueChange={(itemValue) => setCollateralEffect(itemValue)}
+        >
+          <Picker.Item label="Teve algum efeito colateral hoje?" value="" />
+          <Picker.Item label="Náusea" value="nausea" />
+          <Picker.Item label="Vômito" value="vomito" />
+          <Picker.Item label="Fadiga" value="fadiga" />
+          <Picker.Item label="Perda de apetite" value="perdaApetite" />
+          <Picker.Item label="Queda de cabelo" value="quedaCabelo" />
+          <Picker.Item label="Feridas na boca" value="feridasBoca" />
+          <Picker.Item label="Constipação" value="constipacao" />
+          <Picker.Item label="Diarreia" value="diarreia" />
+          <Picker.Item label="Febre" value="febre" />
+          <Picker.Item label="Tontura" value="tontura" />
+          <Picker.Item label="Nenhum" value="nenhum" />
+          <Picker.Item label="Outro" value="outro" />
+        </Picker>
 
         <View
           className={`flex-row items-center justify-between mb-4 border border-zinc-300 px-4 py-3 rounded-lg ${theme === "dark" ? "border-zinc-700" : ""}`}
@@ -152,14 +166,27 @@ const DailScreen = ({ route, navigation }: props) => {
         >
           Estado emocional
         </Text>
-        <TextInput
-          className={`bg-white text-zinc-900 px-4 py-5 rounded-lg mb-4 ${theme === "dark" ? "bg-zinc-800 text-white" : ""}`}
-          value={emotionalState}
-          onChangeText={setEmotionalState}
-          placeholder="Ex: Ansioso, calmo..."
-          placeholderTextColor={theme === "dark" ? "#9ca3af" : "#6b7280"}
-        />
 
+        <Picker
+          className="border border-zinc-300 rounded-lg px-4 py-3"
+          style={{ color: "#999" }}
+          selectedValue={emoccioanlState}
+          onValueChange={(itemValue) => setemoccioanlState(itemValue)}
+        >
+          <Picker.Item label="Como o paciente está se sentindo?" value="" />
+          <Picker.Item label="Calmo(a)" value="calmo" />
+          <Picker.Item label="Ansioso(a)" value="ansioso" />
+          <Picker.Item label="Triste" value="triste" />
+          <Picker.Item label="Esperançoso(a)" value="esperancoso" />
+          <Picker.Item label="Irritado(a)" value="irritado" />
+          <Picker.Item label="Com medo" value="comMedo" />
+          <Picker.Item label="Motivado(a)" value="motivado" />
+          <Picker.Item label="Desmotivado(a)" value="desmotivado" />
+          <Picker.Item label="Confuso(a)" value="confuso" />
+          <Picker.Item label="Indiferente" value="indiferente" />
+          <Picker.Item label="Grato(a)" value="grato" />
+          <Picker.Item label="Preocupado(a)" value="preocupado" />
+        </Picker>
         <View
           className={`flex-row items-center justify-between mb-4 border border-zinc-300 px-4 py-3 rounded-lg ${theme === "dark" ? "border-zinc-700" : ""}`}
         >
@@ -168,7 +195,7 @@ const DailScreen = ({ route, navigation }: props) => {
           >
             Hidratou-se hoje?💧
           </Text>
-          <Switch value={hydratedToday} onValueChange={setHydratedToday} />
+          <Switch value={hidratedToday} onValueChange={sethidratedToday} />
         </View>
 
         <View
@@ -198,13 +225,26 @@ const DailScreen = ({ route, navigation }: props) => {
         >
           Nível de cansaço🥱
         </Text>
-        <TextInput
-          className={`bg-white text-zinc-900 px-4 py-5 rounded-lg mb-4 ${theme === "dark" ? "bg-zinc-800 text-white" : ""}`}
-          value={tiredLevelToday}
-          onChangeText={setTiredLevelToday}
-          placeholder="Ex: Muito cansado"
-          placeholderTextColor={theme === "dark" ? "#9ca3af" : "#6b7280"}
-        />
+
+        <Picker
+          className="border border-zinc-300 rounded-lg px-4 py-3"
+          style={{ color: "#999" }}
+          selectedValue={tiredLevelToday}
+          onValueChange={(itemValue) => setTiredLevelToday(itemValue)}
+        >
+          <Picker.Item label="Qual o nível de cansaço hoje?" value="" />
+          <Picker.Item label="Nada cansado(a)" value="nadaCansado" />
+          <Picker.Item label="Levemente cansado(a)" value="levementeCansado" />
+          <Picker.Item
+            label="Moderadamente cansado(a)"
+            value="moderadamenteCansado"
+          />
+          <Picker.Item label="Muito cansado(a)" value="muitoCansado" />
+          <Picker.Item
+            label="Extremamente cansado(a)"
+            value="extremamenteCansado"
+          />
+        </Picker>
 
         <Text
           className={`text-zinc-900 mb-1 ${theme === "dark" ? "text-white" : ""}`}

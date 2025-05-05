@@ -28,6 +28,8 @@ type props = NativeStackScreenProps<RootStackParamsList, ScreenNames>;
 
 const AdminMainScreen = ({ navigation, route }: props) => {
   const [userImg, setUserImg] = useState("");
+  const [doctorCount, setDoctorCount] = useState(0);
+  const [patientCount, setPatientCount] = useState(0);
   const [tipsData, setTipsData] = useState({
     id: "",
     description: "",
@@ -52,6 +54,7 @@ const AdminMainScreen = ({ navigation, route }: props) => {
     fetchMedications();
     fetchAppointment();
     fetchImgUser();
+    fetchUsers();
   }, []);
 
   const fetchImgUser = async () => {
@@ -74,6 +77,18 @@ const AdminMainScreen = ({ navigation, route }: props) => {
       .get("/tips/tip")
       .then(({ data: res }) => {
         setTipsData(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const fetchUsers = async () => {
+    await api
+      .get("/users/all")
+      .then(({ data: res }) => {
+        setPatientCount(res.data[2].patients.length);
+        setDoctorCount(res.data[3].doctors.length);
       })
       .catch((err) => {
         console.log(err);
@@ -161,10 +176,10 @@ const AdminMainScreen = ({ navigation, route }: props) => {
             </View>
           </View>
 
-          <View className="mt-10 flex-row  justify-end items-stretch gap-3">
+          <View className="mt-10 flex-col  justify-center items-center gap-3">
             <View className="shadow-black shadow-lg rounded-lg bg-white p-4 w-72 h-36 mb-3">
               <Text className="text-zinc-500 text-4xl mt-4 text-center">
-                14
+                {patientCount}
               </Text>
               <Text className="text-black text-lg font-semibold">
                 Total Pacientes
@@ -178,7 +193,7 @@ const AdminMainScreen = ({ navigation, route }: props) => {
             </View>
             <View className="rounded-lg bg-white p-4 w-72 h-36  shadow-lg">
               <Text className="text-zinc-500 text-4xl mt-4 text-center">
-                13
+                {doctorCount}
               </Text>
               <Text className="text-black text-lg font-semibold">
                 Total Médicos
