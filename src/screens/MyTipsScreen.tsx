@@ -79,7 +79,7 @@ const MyTipsScreen = ({ navigation, route }: props) => {
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View className="rounded-lg border-2 bg-white border-zinc-100 p-3 py-2 mx-4 w-72 mt-5">
+        {/* <View className="rounded-lg border-2 bg-white border-zinc-100 p-3 py-2 mx-4 w-72 mt-5">
           <View className="flex-row justify-between items-center">
             <View className="flex-row justify-start items-center gap-2">
               <Text className="text-black font-semibold">
@@ -90,7 +90,7 @@ const MyTipsScreen = ({ navigation, route }: props) => {
               <Icon name="add-circle-outline" color={"black"} size={23} />
             </TouchableOpacity>
           </View>
-        </View>
+        </View> */}
 
         <View className="mx-4 mt-4 p-3">
           <View className="flex-row justify-start items-center mb-3">

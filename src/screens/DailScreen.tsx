@@ -82,7 +82,7 @@ const DailScreen = ({ route, navigation }: props) => {
         className={` bg-[#f1f1f1] px-4 py-6 ${theme === "dark" ? "bg-neutral-900" : ""}`}
       >
         <Text
-          className={`text-2xl font-bold text-zinc-900 mb-6 ${theme === "dark" ? "text-white" : ""}`}
+          className={`text-2xl  text-zinc-900 font-bold  mb-6 ${theme === "dark" ? "text-white" : ""}`}
         >
           Como se sente hoje? ☺️
         </Text>
@@ -116,7 +116,7 @@ const DailScreen = ({ route, navigation }: props) => {
         </ScrollView>
 
         {/* <TextInput
-          className={`bg-zinc-100 text-zinc-900 px-4 py-2 rounded-lg mb-4 ${theme === "dark" ? "bg-zinc-800 text-white" : ""}`}
+          className={`bg-zinc-100 text-zinc-900 font-bold px-4 py-2 rounded-lg mb-4 ${theme === "dark" ? "bg-zinc-800 text-white" : ""}`}
           keyboardType="numeric"
           value={painLevel}
           onChangeText={setPainLevel}
@@ -125,13 +125,13 @@ const DailScreen = ({ route, navigation }: props) => {
         /> */}
 
         <Text
-          className={`text-zinc-900 mt-4 mb-1 ${theme === "dark" ? "text-white" : ""}`}
+          className={`text-zinc-900 font-bold mt-4 mb-1 ${theme === "dark" ? "text-white" : ""}`}
         >
           Efeitos colaterais💊
         </Text>
         <Picker
-          className="border border-zinc-300 rounded-lg px-4 py-3"
-          style={{ color: "#999" }}
+          className="border border-zinc-300 rounded-lg px-4 py-3 bg-white "
+          style={{ color: "#27272a", backgroundColor: "white" }}
           selectedValue={collateralEffect}
           onValueChange={(itemValue) => setCollateralEffect(itemValue)}
         >
@@ -151,10 +151,10 @@ const DailScreen = ({ route, navigation }: props) => {
         </Picker>
 
         <View
-          className={`flex-row items-center justify-between mb-4 border border-zinc-300 px-4 py-3 rounded-lg ${theme === "dark" ? "border-zinc-700" : ""}`}
+          className={`flex-row items-center justify-between mb-4 mt-4 border bg-white border-zinc-300 px-4 py-3 rounded-lg ${theme === "dark" ? "border-zinc-700" : ""}`}
         >
           <Text
-            className={`text-zinc-900 ${theme === "dark" ? "text-white" : ""}`}
+            className={`text-zinc-900 font-bold ${theme === "dark" ? "text-white" : ""}`}
           >
             Dormiu bem? 😴
           </Text>
@@ -162,14 +162,14 @@ const DailScreen = ({ route, navigation }: props) => {
         </View>
 
         <Text
-          className={`text-zinc-900 mb-1 ${theme === "dark" ? "text-white" : ""}`}
+          className={`text-zinc-900 font-bold mb-1 ${theme === "dark" ? "text-white" : ""}`}
         >
           Estado emocional
         </Text>
 
         <Picker
           className="border border-zinc-300 rounded-lg px-4 py-3"
-          style={{ color: "#999" }}
+          style={{ color: "#27272a", backgroundColor: "white" }}
           selectedValue={emoccioanlState}
           onValueChange={(itemValue) => setemoccioanlState(itemValue)}
         >
@@ -188,10 +188,10 @@ const DailScreen = ({ route, navigation }: props) => {
           <Picker.Item label="Preocupado(a)" value="preocupado" />
         </Picker>
         <View
-          className={`flex-row items-center justify-between mb-4 border border-zinc-300 px-4 py-3 rounded-lg ${theme === "dark" ? "border-zinc-700" : ""}`}
+          className={`flex-row items-center justify-between mb-4 border bg-white mt-4 border-zinc-300 px-4 py-3 rounded-lg ${theme === "dark" ? "border-zinc-700" : ""}`}
         >
           <Text
-            className={`text-zinc-900 ${theme === "dark" ? "text-white" : ""}`}
+            className={`text-zinc-900 font-bold ${theme === "dark" ? "text-white" : ""}`}
           >
             Hidratou-se hoje?💧
           </Text>
@@ -199,10 +199,10 @@ const DailScreen = ({ route, navigation }: props) => {
         </View>
 
         <View
-          className={`flex-row items-center justify-between mb-4 border border-zinc-300 px-4 py-3 rounded-lg ${theme === "dark" ? "border-zinc-700" : ""}`}
+          className={`flex-row items-center justify-between mb-4  bg-white border border-zinc-300 px-4 py-3 rounded-lg ${theme === "dark" ? "border-zinc-700" : ""}`}
         >
           <Text
-            className={`text-zinc-900 ${theme === "dark" ? "text-white" : ""}`}
+            className={`text-zinc-900 font-bold ${theme === "dark" ? "text-white" : ""}`}
           >
             Alimentou-se bem?☕
           </Text>
@@ -210,10 +210,10 @@ const DailScreen = ({ route, navigation }: props) => {
         </View>
 
         <View
-          className={`flex-row items-center justify-between mb-4 border border-zinc-300 px-4 py-3 rounded-lg ${theme === "dark" ? "border-zinc-700" : ""}`}
+          className={`flex-row items-center bg-white justify-between mb-4 border border-zinc-300 px-4 py-3 rounded-lg ${theme === "dark" ? "border-zinc-700" : ""}`}
         >
           <Text
-            className={`text-zinc-900 ${theme === "dark" ? "text-white" : ""}`}
+            className={`text-zinc-900 font-bold ${theme === "dark" ? "text-white" : ""}`}
           >
             Fez exercícios hoje?🏃🏿
           </Text>
@@ -221,14 +221,14 @@ const DailScreen = ({ route, navigation }: props) => {
         </View>
 
         <Text
-          className={`text-zinc-900 mb-1 ${theme === "dark" ? "text-white" : ""}`}
+          className={`text-zinc-900 font-bold mb-1 ${theme === "dark" ? "text-white" : ""}`}
         >
           Nível de cansaço🥱
         </Text>
 
         <Picker
           className="border border-zinc-300 rounded-lg px-4 py-3"
-          style={{ color: "#999" }}
+          style={{ color: "#27272a", backgroundColor: "white" }}
           selectedValue={tiredLevelToday}
           onValueChange={(itemValue) => setTiredLevelToday(itemValue)}
         >
@@ -247,12 +247,12 @@ const DailScreen = ({ route, navigation }: props) => {
         </Picker>
 
         <Text
-          className={`text-zinc-900 mb-1 ${theme === "dark" ? "text-white" : ""}`}
+          className={`text-zinc-900 font-bold mb-1 mt-2 ${theme === "dark" ? "text-white" : ""}`}
         >
           Observações
         </Text>
         <TextInput
-          className={`bg-white text-zinc-900 px-4 py-5 h-24 rounded-lg text-base mb-6 ${theme === "dark" ? "bg-zinc-800 text-white" : ""}`}
+          className={`bg-white text-zinc-900 font-bold px-4 py-5 h-24 rounded-lg text-base mb-6 ${theme === "dark" ? "bg-zinc-800 text-white" : ""}`}
           multiline
           textAlignVertical="top"
           value={note}

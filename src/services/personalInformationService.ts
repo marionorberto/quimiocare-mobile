@@ -45,6 +45,7 @@ export const createProfileDoctorInformation = async (
         phoneNumber: string,
         sex: string,
         address: string,
+        speciality: string,
         urlImg: string
 
   ): Promise<any> => {
@@ -57,6 +58,7 @@ export const createProfileDoctorInformation = async (
         phoneNumber,
         sex,
         address,
+        speciality,
         urlImg
      }  );
 

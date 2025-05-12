@@ -7,6 +7,8 @@ import {
   Image,
   Pressable,
   TextInput,
+  Alert,
+  ToastAndroid,
 } from "react-native";
 import * as DocumentPicker from "expo-document-picker";
 import Icon from "react-native-vector-icons/Ionicons";
@@ -14,6 +16,9 @@ import Constants from "expo-constants";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamsList } from "../navigations/RootStackParamsList";
 import ScreenNames from "../constants/ScreenName";
+import Modal from "../components/Modal";
+import axios from "axios";
+import { API_URL } from "../constants/data";
 
 type props = NativeStackScreenProps<RootStackParamsList, ScreenNames>;
 
@@ -22,6 +27,8 @@ const ReportsScreen = ({ route, navigation }: props) => {
   const [reportCounter, setReportCount] = useState({
     count: 0,
   });
+
+  const [receit, setReceit] = useState(false);
 
   type fileIconsType = {
     pdf: string;
@@ -37,32 +44,75 @@ const ReportsScreen = ({ route, navigation }: props) => {
     image: "image-outline",
   };
 
-  // const handleUpload = async () => {
-  //   const result = await DocumentPicker.getDocumentAsync({
-  //     type: [
-  //       "image/*",
-  //       "application/pdf",
-  //       "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-  //       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-  //     ],
-  //   });
+  const uploadReceitas = () => {
+    alert("adadaasa");
+  };
 
-  //   if (!result.canceled) {
-  //     const newReport = {
-  //       id: reports.length + 1,
-  //       name: result.assets[0].name,
-  //       type: result.assets?[0].mimeType.includes("image")
-  //         ? "image"
-  //         : result.assets?[0].mimeType.includes("pdf")
-  //           ? "pdf"
-  //           : result.assets?[0].mimeType.includes("word")
-  //             ? "word"
-  //             : "excel",
-  //       uri: result.assets[0].uri,
-  //     };
-  //     setReports([...reports, newReport]);
-  //   }
-  // };
+
+   const uploadImage = async (urlImg: string) => {
+     try {
+       const formData = new FormData();
+       const filename = urlImg.substring(
+         urlImg.lastIndexOf("/") + 1,
+         urlImg.length
+       );
+       const extension = filename.split(".")[1];
+       console.log("peguei da phone e troquei o filename", filename, extension);
+       formData.append(
+         "file",
+         JSON.parse(
+           JSON.stringify({
+             name: filename,
+             uri: urlImg,
+             type: "image/" + extension,
+           })
+         )
+       );
+       const response = await axios.post(`${API_URL}/upload/file`, formData, {
+         headers: {
+           Accept: "Application/json",
+           "Content-Type": "multipart/form-data",
+         },
+       });
+
+       if (response.data.error) {
+         alert("não foi possivel enviar imagem");
+         return { imageUploaded: false, filename: "" };
+       } else {
+         return { imageUploaded: true, filename: response.data.filename };
+       }
+     } catch (error: any) {
+       alert("error ao enviar imagem");
+       return { imageUploaded: false, filename: "" };
+     }
+   };
+
+  //  const pickImage = async () => {
+  //    const { granted } =
+  //      await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+  //    if (!granted) {
+  //      Alert.alert(
+  //        "Permissão necessária",
+  //        "Deve permitir que a sua aplicação acesse as images!"
+  //      );
+  //    } else {
+  //      let { assets, canceled } = await ImagePicker.launchImageLibraryAsync({
+  //        mediaTypes: ["images"],
+  //        allowsEditing: true,
+  //        aspect: [4, 3],
+  //        quality: 1,
+  //      });
+
+  //      if (canceled) {
+  //        ToastAndroid.show("Operação cancelada", ToastAndroid.SHORT);
+  //      } else {
+  //        if (!assets) return;
+  //        seturlImg(assets[0].uri);
+  //      }
+  //    }
+  //  };
+
 
   type ReportType = string[];
 
@@ -80,7 +130,7 @@ const ReportsScreen = ({ route, navigation }: props) => {
           </Pressable>
         </View>
         <Text className="text-xl self-center text-center text-black font-bold">
-          Relatórios Médicos
+          Receitas Médicas
         </Text>
       </View>
 
@@ -94,25 +144,84 @@ const ReportsScreen = ({ route, navigation }: props) => {
         </View>
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View className="rounded-lg border-2 bg-white border-zinc-100 p-3 py-2 mx-4 w-72">
-          <View className="flex-row justify-between items-center">
-            <View className="flex-row justify-start items-center gap-2">
-              <Text>
-                <Icon name="menu-outline" color={"black"} size={24} />
-              </Text>
-              <Text className="text-black font-semibold">
-                Adicionar novo relatório
-              </Text>
+        <Pressable
+          onPress={() => {
+            setReceit(true);
+          }}
+        >
+          <View className="rounded-lg border-2 bg-white border-zinc-100 p-3 py-3 mx-4 w-72">
+            <View className="flex-row justify-between items-center">
+              <View className="flex-row justify-start items-center gap-2">
+                <Text>
+                  <Icon name="download-outline" color={"black"} size={20} />
+                </Text>
+                <Text className="text-black font-semibold">
+                  Upload Nova Receita
+                </Text>
+              </View>
             </View>
-            <Text className="border-zinc-100 border-2 rounded-lg">
-              <Icon name="add-outline" color={"black"} size={23} />
-            </Text>
           </View>
-        </View>
+          <Modal isOpen={receit} withInput={false}>
+            <View className="p-7 bg-white rounded-2xl w-full max-w-md shadow-lg">
+              <View className="flex-row justify-between items-center mb-4">
+                <Text className="text-base font-bold text-black ">
+                  Arquivar uma nova receita
+                </Text>
+                <TouchableOpacity
+                  onPress={() => {
+                    setReceit(false);
+                  }}
+                >
+                  <Icon name="close" size={24} color="#4A4A4A" />
+                </TouchableOpacity>
+              </View>
+              <Text className="text-zinc-700 mb-1">Nome da Receita</Text>
+              <TextInput
+                placeholder="Ex: Receita para a perda do cabelo..."
+                // value={}
+                className="border border-zinc-400 rounded-md px-3 py-2 text-black mb-4"
+              />
+              <Text className="text-zinc-700 mb-1">Descrição da Receita</Text>
+              <TextInput
+                placeholder="Receita paralela feita pra..."
+                // value={"asas"}
+                className="border border-zinc-400 rounded-md px-3 py-2 text-black mb-4"
+              />
+              <TouchableOpacity
+                className="border-2 border-zinc-300 border-dashed rounded-lg py-3 mt-2 flex-row items-center justify-center"
+                onPress={() => {
+                  alert("Fazer upload");
+                }}
+              >
+                <Icon
+                  name="download-outline"
+                  size={20}
+                  color="white"
+                  className="mr-2"
+                />
+                <Text className="text-black text-center font-semibold">
+                  Upload Ficheiro
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                className="bg-blue-500 border-dashed rounded-lg py-3 mt-2 flex-row items-center justify-center"
+                onPress={() => {
+                  uploadReceitas();
+                  setReceit(false);
+                }}
+              >
+                <Icon name="save" size={20} color="white" className="mr-2" />
+                <Text className="text-white text-center font-semibold">
+                  Salvar
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
+        </Pressable>
         <View className="mx-4 mt-4 p-3">
           <View className="flex-row justify-between items-center mb-3">
-            <Text className="text-zinc-400 text-lg">
-              Todos Selatórios(
+            <Text className="text-zinc-500 text-lg">
+              Receitas Guardadas(
               {reportCounter.count})
             </Text>
             <Text className="text-zinc-400 text-lg">
@@ -133,15 +242,12 @@ const ReportsScreen = ({ route, navigation }: props) => {
               </View>
             ))
           ) : (
-            <View className="bg-yellow-400/35 w-full p-4 rounded-lg">
-              <Text className="text-yellow-600 font-semibold text-sm text-center flex-row justify-center items-center gap-3">
-                <Icon
-                  name="alert-circle-outline"
-                  color={"#ca8a04;"}
-                  size={24}
-                />
-                Adicione um <Text className="font-bold">relatórios</Text> para
-                poder vê-los!
+            <View className="bg-yellow-500/50 w-full p-4 rounded-lg mt-1">
+              <Text className="text-yellow-600 font-semibold text-sm text-center flex-row justify-center items-center gap-3 py-2">
+                <Text>
+                  Adicione um <Text className="font-bold">Receitas</Text> para
+                  poder vê-los!
+                </Text>
               </Text>
             </View>
           )}

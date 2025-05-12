@@ -31,6 +31,7 @@ type props = NativeStackScreenProps<RootStackParamsList, ScreenNames>;
 
 const MainMedicoScreen = ({ navigation, route }: props) => {
   const [userImg, setUserImg] = useState("");
+  const [tipsCategory, setTipsCategory] = useState([]);
   const [tipsData, setTipsData] = useState({
     id: "",
     description: "",
@@ -57,6 +58,7 @@ const MainMedicoScreen = ({ navigation, route }: props) => {
   useEffect(() => {
     fetchTips();
     fetchImgUser();
+    fetchTipsCategory();
   }, []);
 
   const fetchImgUser = async () => {
@@ -79,6 +81,17 @@ const MainMedicoScreen = ({ navigation, route }: props) => {
       .get("/tips/tip")
       .then(({ data: res }) => {
         setTipsData(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const fetchTipsCategory = async () => {
+    await api
+      .get("/tips-category/all")
+      .then(({ data: { data } }) => {
+        setTipsCategory(data[1]);
       })
       .catch((err) => {
         console.log(err);
@@ -241,8 +254,8 @@ const MainMedicoScreen = ({ navigation, route }: props) => {
                 <Text
                   className={`font-bold text-center  text-lg ps-2 ${theme === "dark" ? "text-white" : "text-zinc-600"}`}
                 >
-                  Cria algumas dicas para ajudar os paciente com cancelar a
-                  melhor se cuidarem e melhorarem
+                  Cria algumas dicas para ajudar os paciente com cancer a melhor
+                  se cuidarem e melhorarem
                 </Text>
               </View>
               <View className="flex-row justify-center items-center gap-3 mt-3">
@@ -285,19 +298,14 @@ const MainMedicoScreen = ({ navigation, route }: props) => {
                       selectedValue={tipCategory}
                       onValueChange={(itemValue) => setTipCategory(itemValue)}
                     >
-                      <Picker.Item label="Escolha a categoria" value="" />
-                      <Picker.Item label="Exercício" value="exercicio" />
-                      <Picker.Item label="Saúde" value="saude" />
-                      <Picker.Item label="Alimentação" value="alimentacao" />
-                      <Picker.Item label="Hidratação" value="hidratacao" />
-                      <Picker.Item
-                        label="Sono e Descanso"
-                        value="sonoDescanso"
-                      />
-                      <Picker.Item
-                        label="Bem-estar emocional"
-                        value="bemEstarEmocional"
-                      />
+                      <Picker.Item label="Selecione a categoria" value="" />
+                      {tipsCategory.map(({ description, id }) => (
+                        <Picker.Item
+                          key={description}
+                          label={description}
+                          value={id}
+                        />
+                      ))}
                     </Picker>
 
                     <TouchableOpacity

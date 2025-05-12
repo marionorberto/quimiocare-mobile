@@ -60,6 +60,7 @@ const MainScreen = ({ navigation, route }: props) => {
         .get(`${API_URL}/profiles/single`)
         .then(({ data: response }) => {
           setUserImg(`http://${API_URL_UPLOAD}:3000/${response.data.urlImg}`);
+          console.log(response.data);
         })
         .catch((error) => {
           console.log(error);
@@ -295,7 +296,7 @@ const MainScreen = ({ navigation, route }: props) => {
             >
               <View className="bg-slate-300 rounded-3xl  w-48 h-32 p-3 flex-col justify-between">
                 <View className="p-1 flex-row justify-between items-center">
-                  <Text className="font-bold text-lg">Relatórios</Text>
+                  <Text className="font-bold text-lg">Receitas</Text>
                   <View className="bg-white rounded-full p-2">
                     <Icon
                       name="receipt-outline"
@@ -353,14 +354,25 @@ const MainScreen = ({ navigation, route }: props) => {
             Registe como estás se sentindo hoje, a tua disposição, ânimo,
             sintomas, melhorias.
           </Text>
-          <TouchableOpacity className="bg-blue-500 rounded-full py-1 mt-2 flex-row items-center justify-center w-56 h-14">
-            <Text
-              onPress={() => {
-                navigation.navigate("DailyScreen", { title: "hello" });
-              }}
-              className="text-white text-center font-semibold text-lg"
-            >
-              Registro Agora
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("DailyScreen", { title: "hello" });
+            }}
+            className="bg-blue-500 rounded-full py-1 mt-2 flex-row items-center justify-center w-56 h-14"
+          >
+            <Text className="text-white text-center font-semibold text-lg">
+              Registro Diário
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("DailyScreen", { title: "hello" });
+            }}
+            className=" border-[1px] border-blue-500 bg-white rounded-full py-1 mt-2 flex-row items-center justify-center w-56 h-14"
+          >
+            <Text className="text-blue-500 text-center font-semibold text-lg">
+              Registar Actividades
             </Text>
           </TouchableOpacity>
         </View>

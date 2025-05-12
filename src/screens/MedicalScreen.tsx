@@ -11,7 +11,6 @@ import Contants from "expo-constants";
 import Icon from "react-native-vector-icons/Ionicons";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { List } from "react-native-paper";
-import { LineChart } from "react-native-chart-kit";
 import { API_URL, moodDayFeeling } from "../constants/data";
 import { RootStackParamsList } from "../navigations/RootStackParamsList";
 import ScreenNames from "../constants/ScreenName";
@@ -31,7 +30,6 @@ import {
   scheduleMedicationReminder,
 } from "../utils/notifications";
 import { addMedication } from "../utils/storage";
-import * as Notifications from "expo-notifications";
 import api from "../services/api";
 
 type props = NativeStackScreenProps<RootStackParamsList, ScreenNames.Medical>;
@@ -264,33 +262,42 @@ const MedicalScreen = ({ route, navigation }: props) => {
           </Text>
         </View>
 
-        <View className="flex-col justify-center items-center pt-6 relative rounded-2xl bg-blue-500 p-4 px-6 my-4 mt-8 overflow-x-hidden">
-          <View className="self-start"></View>
-
-          <View className="self-start mt-1 mb-2">
-            <View className="flex-row justify-start items-center gap-4">
-              <View className="flex-col justify-center items-start gap-1 inline"></View>
-            </View>
-          </View>
-          <View className="pe-3"></View>
-        </View>
         <View className="mt-6">
-          <Text className="text-black text-lg font-semibold">Sumário</Text>
+          <Text className="text-black text-xl font-semibold">Sumário</Text>
           <View>
-            <View className="border-b-2 border-zinc-300/35 py-3 flex-row justify-between items-center pb-5 mb-1">
-              <Text className="text-black text-base opacity-50">
-                Seu próximo Remédio
-              </Text>
-              <View className="flex-row justify-center items-center gap-2 bg-blue-300/30 rounded-lg py-[3px] px-2">
-                <Text className="text-blue-400 text text-sm">08:30</Text>
+            <View className="border-b-2 border-zinc-300/35 py-3 flex-row justify-between items-center pb-5 mb-1 w-full">
+              <View className="text-black text-base opacity-60 bg-zinc-400/50 rounded-md p-3 flex-row justify-between items-center w-full">
+                <Text className="flex-row justify-start items-center">
+                  <Icon
+                    className="font-bold"
+                    name="alarm-outline"
+                    size={20}
+                    color={"#505050"}
+                  />
+                  <Text>
+                    Seu próximo <Text className="font-bold">Remédio</Text>
+                  </Text>
+                </Text>
+
+                <View className="flex-row justify-end items-center gap-2 bg-blue-300/40 rounded-lg py-[3px] px-3">
+                  <Text className="text-blue-600 text-lg  text-end font-semibold">
+                    08:30
+                  </Text>
+                </View>
               </View>
             </View>
-            <View className="border-b-2 border-zinc-300/35 py-3 flex-row justify-between items-center pb-5">
-              <Text className="text-black text-base  opacity-50">
-                Sua Próxima Consulta Marcada
-              </Text>
-              <View className="flex-row justify-center items-center gap-2 bg-red-300/40 rounded-lg py-[3px] px-2 mb-2">
-                <Text className="text-red-400 text-sm ">7 Mar, 2025</Text>
+            <View className="border-b-2 border-zinc-300/35 py-3 flex-row justify-between items-center pb-5 mb-1 w-full">
+              <View className="text-black text-base opacity-60 bg-zinc-400/50 rounded-md p-3 flex-row justify-between items-center w-full">
+                <Text>
+                  <Icon name="alarm-outline" size={20} color={"#505050"} />
+                  Sua próxima <Text className="font-bold"> Consulta</Text>
+                </Text>
+
+                <View className="flex-row justify-end items-center gap-2 bg-green-300/40 rounded-lg py-[3px] px-3">
+                  <Text className="text-green-600  text-lg text-end font-semibold">
+                    08:30
+                  </Text>
+                </View>
               </View>
             </View>
           </View>
@@ -357,14 +364,14 @@ const MedicalScreen = ({ route, navigation }: props) => {
                 <View className="flex-row justify-between items-center">
                   <View className="flex-row justify-start items-center gap-2">
                     <View className="rounded-full h-14 w-14 bg-zinc-300/30 flex-col justify-center items-center">
-                      <Icon name="sad-outline" color={"#a1a1aa"} size={24} />
+                      <Icon name="sad-outline" color={"black"} size={24} />
                     </View>
-                    <Text className="font-semibold text-lg text-zinc-400">
+                    <Text className=" text-lg text-black">
                       Adicionar Novo Sintoma
                     </Text>
                   </View>
                   <Text className="rounded-lg ps-4">
-                    <Icon name="add-outline" color={"#d4d4d8"} size={23} />
+                    <Icon name="add-outline" color={"black"} size={23} />
                   </Text>
                 </View>
                 <Modal isOpen={openModalAddSymptom} withInput={false}>
@@ -476,16 +483,16 @@ const MedicalScreen = ({ route, navigation }: props) => {
                     <View className="rounded-full h-14 w-14 bg-zinc-300/30 flex-col justify-center items-center">
                       <Icon
                         name="thermometer-outline"
-                        color={"#a1a1aa"}
+                        color={"black"}
                         size={24}
                       />
                     </View>
-                    <Text className="font-semibold text-lg text-zinc-400">
+                    <Text className=" text-lg text-black">
                       Adicionar Novo Remédio
                     </Text>
                   </View>
                   <Text className="rounded-lg ps-4">
-                    <Icon name="add-outline" color={"#d4d4d8"} size={23} />
+                    <Icon name="add-outline" color={"black"} size={23} />
                   </Text>
                 </View>
                 <Modal isOpen={openModalAddMedication} withInput={false}>
@@ -593,30 +600,24 @@ const MedicalScreen = ({ route, navigation }: props) => {
                 setOpenModalAddAppointment(true);
               }}
             >
-              <View
-                style={{
-                  backgroundColor:
-                    "linear-gradient(90deg, rgba(160,126,251,1) 0%, rgba(188,126,254,1) 41%, rgba(120,193,100,1) 100%);",
-                }}
-                className="rounded-lg  bg-slate-500 p-4 mx-2 mt-3 h-24 flex-row justify-start items-center"
-              >
+              <View className="rounded-lg  bg-zinc-50 border-[1px] border-zinc-300 p-4 mx-2 mt-3 h-16 flex-row justify-start items-center">
                 <View className="flex-row justify-between items-center">
                   <View className="flex-row justify-start items-center gap-2">
-                    <View className="rounded-full h-14 w-14 bg-white/30 flex-col justify-center items-center">
-                      <Icon name="bandage-outline" color={"white"} size={24} />
+                    <View className="rounded-full h-14 w-14 bg-zinc-300/30 flex-col justify-center items-center">
+                      <Icon name="bandage-outline" color={"black"} size={24} />
                     </View>
-                    <Text className="text-white font-semibold text-lg">
+                    <Text className="text-black  text-lg">
                       Adicionar Nova Consulta
                     </Text>
                   </View>
                   <Text className="rounded-lg ps-4">
-                    <Icon name="add-outline" color={"white"} size={23} />
+                    <Icon name="add-outline" color={"black"} size={23} />
                   </Text>
                 </View>
                 <Modal isOpen={openModalAddAppointment} withInput={false}>
                   <View className="p-6 bg-white rounded-2xl w-full max-w-md shadow-lg">
                     <View className="flex-row justify-between items-center mb-4">
-                      <Text className="text-lg font-semibold text-zinc-900">
+                      <Text className="font-semibold text-lg text-zinc-400">
                         Adicionar Consulta
                       </Text>
                       <TouchableOpacity
@@ -803,12 +804,11 @@ const MedicalScreen = ({ route, navigation }: props) => {
 
           <List.Section title="">
             <List.Accordion
-              title="Histórico De Saúde"
+              title="Históricos"
               left={(props) => <List.Icon {...props} icon="folder" />}
             >
               <List.Item title="Histórico De Consultas" />
-              <List.Item title="Histórico de  Sintomas" />
-              <List.Item title="Históricos Médicos" />
+              <List.Item title="Histórico de  Receitas" />
             </List.Accordion>
           </List.Section>
         </View>

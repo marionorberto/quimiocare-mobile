@@ -27,6 +27,7 @@ import {
 import axios from "axios";
 import { API_URL } from "../constants/data";
 import { countries } from "../constants/data";
+import api from "../services/api";
 
 type props = NativeStackScreenProps<RootStackParamsList, ScreenNames>;
 const GatherDoctorProfileFirstScreen = ({ route, navigation }: props) => {
@@ -38,6 +39,8 @@ const GatherDoctorProfileFirstScreen = ({ route, navigation }: props) => {
   const [job, setJob] = useState<string>("");
   const [urlImg, seturlImg] = useState<string>();
   const [hospital, setHospital] = useState<string>("");
+  const [cancerTypes, setCancerTypes] = useState([]);
+  const [speciality, setSpeciality] = useState("");
 
   const setDate = (event: DateTimePickerEvent, date: Date) => {
     const {
@@ -54,6 +57,21 @@ const GatherDoctorProfileFirstScreen = ({ route, navigation }: props) => {
     "Clínica Girassol",
     "Outro",
   ];
+
+  useEffect(() => {
+    fetchCancerTips();
+  }, []);
+
+  const fetchCancerTips = async () => {
+    await api
+      .get("/cancer-types/all")
+      .then(({ data: res }) => {
+        setCancerTypes(res.data[1]);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const uploadImage = async (urlImg: string) => {
     try {
@@ -126,6 +144,7 @@ const GatherDoctorProfileFirstScreen = ({ route, navigation }: props) => {
       !job ||
       !urlImg ||
       !address ||
+      !speciality ||
       !phoneNumber
     )
       return alert("Todos os campos são obrigatórias!");
@@ -149,6 +168,7 @@ const GatherDoctorProfileFirstScreen = ({ route, navigation }: props) => {
         phoneNumber,
         sex,
         address,
+        speciality,
         `uploads/${filename}`
       );
       navigation.navigate("Login", { title: "SECOND" });
@@ -319,6 +339,23 @@ const GatherDoctorProfileFirstScreen = ({ route, navigation }: props) => {
                 value={job}
                 onChangeText={setJob}
               /> */}
+            </View>
+
+            <View className="mt-1">
+              <Text className="text-zinc-700 mb-1">
+                Especialista Em que tratamento de cancer?
+              </Text>
+              <Picker
+                className="border border-zinc-300 rounded-lg px-4 py-3"
+                style={{ color: "#999" }}
+                selectedValue={speciality}
+                onValueChange={(itemValue) => setSpeciality(itemValue)}
+              >
+                <Picker.Item label="Escolha a Especialidade" value="" />
+                {cancerTypes.map(({ description, id }) => (
+                  <Picker.Item key={id} label={description} value={id} />
+                ))}
+              </Picker>
             </View>
             <View className="mt-1">
               <Text className="text-zinc-700 mb-1">
