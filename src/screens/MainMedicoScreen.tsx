@@ -26,30 +26,41 @@ import { useTheme } from "../helpers/theme-context";
 import { API_URL, API_URL_UPLOAD } from "../constants/data";
 import { Picker } from "@react-native-picker/picker";
 import Modal from "../components/Modal";
+import { saveTip } from "../services/tips/create-tips";
 
 type props = NativeStackScreenProps<RootStackParamsList, ScreenNames>;
 
 const MainMedicoScreen = ({ navigation, route }: props) => {
   const [userImg, setUserImg] = useState("");
   const [tipsCategory, setTipsCategory] = useState([]);
-  const [tipsData, setTipsData] = useState({
-    id: "",
-    description: "",
-    category: {
-      id: "",
-      description: "",
-      createdAt: "",
-      updateAt: "",
-    },
-    createdAt: "",
-    updatedAt: "",
-  });
+
+  const [myTips, setMyTips] = useState();
+
+  const [tipsCount, setTipsCount] = useState(0);
+
+  const [tipsData, setTipsData] = useState([
+    { count: 0 },
+    [
+      {
+        id: "",
+        description: "",
+        category: {
+          id: "",
+          description: "",
+          createdAt: "",
+          updateAt: "",
+        },
+        createdAt: "",
+        updatedAt: "",
+      },
+    ],
+  ]);
   const [symptomsCounter, setSymptomCounter] = useState({ count: 0 });
   const [medicationCounter, setMedicationCounter] = useState({
     count: 0,
   });
   const [appointmentCounter, setAppontmentCounter] = useState({ count: 0 });
-  const [tipCategory, setTipCategory] = useState({ count: 0 });
+  const [tipCategory, setTipCategory] = useState("");
 
   const [tipDescription, setTipDescription] = useState("");
 
@@ -78,9 +89,11 @@ const MainMedicoScreen = ({ navigation, route }: props) => {
 
   const fetchTips = async () => {
     await api
-      .get("/tips/tip")
+      .get("/tips/my-tips")
       .then(({ data: res }) => {
         setTipsData(res.data);
+        setTipsCount(res.data[0].count);
+        console.log(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -98,7 +111,10 @@ const MainMedicoScreen = ({ navigation, route }: props) => {
       });
   };
 
-  const onSaveTip = () => {};
+  const onSaveTip = async () => {
+    await saveTip(tipDescription, tipCategory);
+    alert("Dica CriaDa com sucesso!");
+  };
 
   const openWhatsApp = () => {
     const url = `https://chat.whatsapp.com/KlSrANYmVuHK8pk2v4UBWp`;
@@ -222,7 +238,9 @@ const MainMedicoScreen = ({ navigation, route }: props) => {
           <View className="grid-cols-2 grid-row-2  gap-2 mt-3 ">
             <TouchableHighlight
               onPress={() => {
-                navigation.navigate("MyTipsScreen", { title: "" });
+                navigation.navigate("MyTipsScreen", {
+                  title: "",
+                });
               }}
             >
               <View className="bg-black rounded-3xl  w-48 h-32 p-3 flex-col justify-between">
@@ -238,7 +256,9 @@ const MainMedicoScreen = ({ navigation, route }: props) => {
                   </View>
                 </View>
                 <View className="flex-row justify-start items-center gap-1">
-                  <Text className="text-white text-3xl font-bold">0</Text>
+                  <Text className="text-white text-3xl font-bold">
+                    {tipsCount}
+                  </Text>
                   <Text className="text-white"></Text>
                 </View>
               </View>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -22,45 +22,63 @@ import CheckBox from "expo-checkbox";
 
 type props = NativeStackScreenProps<RootStackParamsList, ScreenNames>;
 
-const MyTipsScreen = ({ navigation, route }: props) => {
+const MyTipsScreen = ({ route, navigation }: props) => {
+  const [tips, setTips] = useState();
+
+  const fetchTips = async () => {
+    await api
+      .get("/tips/my-tips")
+      .then(({ data: res }) => {
+        setTips(res.data);
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    fetchTips();
+  }, []);
+
   const [openModalAddTip, setOpenModalAddTip] = useState(false);
 
   const handleEditTip = async (tip: string) => {};
 
   const handleDeleteTip = async (tip: string) => {};
 
-  const tips = [
-    {
-      id: "1",
-      category: "alimentação",
-      description:
-        "Mantenha uma alimentação equilibrada com frutas, legumes e proteínas magras diariamente.",
-    },
-    {
-      id: "2",
-      category: "hidratação",
-      description:
-        "Beba pelo menos 2 litros de água por dia para manter o corpo hidratado.",
-    },
-    {
-      id: "3",
-      category: "sono",
-      description:
-        "Durma entre 7 e 9 horas por noite para melhorar sua saúde física e mental.",
-    },
-    {
-      id: "4",
-      category: "exercício",
-      description:
-        "Pratique atividades físicas por pelo menos 30 minutos, 5 vezes por semana.",
-    },
-    {
-      id: "5",
-      category: "meditação",
-      description:
-        "Reserve alguns minutos do dia para respirar fundo, meditar ou relaxar a mente.",
-    },
-  ];
+  // const tips = [
+  //   {
+  //     id: "1",
+  //     category: "alimentação",
+  //     description:
+  //       "Mantenha uma alimentação equilibrada com frutas, legumes e proteínas magras diariamente.",
+  //   },
+  //   {
+  //     id: "2",
+  //     category: "hidratação",
+  //     description:
+  //       "Beba pelo menos 2 litros de água por dia para manter o corpo hidratado.",
+  //   },
+  //   {
+  //     id: "3",
+  //     category: "sono",
+  //     description:
+  //       "Durma entre 7 e 9 horas por noite para melhorar sua saúde física e mental.",
+  //   },
+  //   {
+  //     id: "4",
+  //     category: "exercício",
+  //     description:
+  //       "Pratique atividades físicas por pelo menos 30 minutos, 5 vezes por semana.",
+  //   },
+  //   {
+  //     id: "5",
+  //     category: "meditação",
+  //     description:
+  //       "Reserve alguns minutos do dia para respirar fundo, meditar ou relaxar a mente.",
+  //   },
+  // ];
 
   return (
     <View
@@ -95,7 +113,7 @@ const MyTipsScreen = ({ navigation, route }: props) => {
         <View className="mx-4 mt-4 p-3">
           <View className="flex-row justify-start items-center mb-3">
             <Text className="text-zinc-500 text-base">
-              Total de Dicas ({tips.length})
+              Total de Dicas ({tips[0].count})
             </Text>
           </View>
 

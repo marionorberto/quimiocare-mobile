@@ -37,6 +37,9 @@ const MainScreen = ({ navigation, route }: props) => {
       createdAt: "",
       updateAt: "",
     },
+    userDoctor: {
+      username: "",
+    },
     createdAt: "",
     updatedAt: "",
   });
@@ -60,7 +63,7 @@ const MainScreen = ({ navigation, route }: props) => {
         .get(`${API_URL}/profiles/single`)
         .then(({ data: response }) => {
           setUserImg(`http://${API_URL_UPLOAD}:3000/${response.data.urlImg}`);
-          console.log(response.data);
+          // console.log(response.data);
         })
         .catch((error) => {
           console.log(error);
@@ -75,6 +78,7 @@ const MainScreen = ({ navigation, route }: props) => {
       .get("/tips/tip")
       .then(({ data: res }) => {
         setTipsData(res.data);
+        console.log(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -103,6 +107,7 @@ const MainScreen = ({ navigation, route }: props) => {
         console.log(error);
       });
   };
+
   const fetchMedications = () => {
     api
       .get("/medications/all")
@@ -329,6 +334,9 @@ const MainScreen = ({ navigation, route }: props) => {
                 {tipsData.category.description ?? ""}
               </Text>
             </View>
+            <Text className="rounded-xl  text-zinc-500 font-semibold ">
+              {tipsData.userDoctor.username && tipsData.userDoctor.username}
+            </Text>
             <Text
               className={`p-3 text-base ${theme === "dark" ? "text-white" : "text-black"}`}
             >

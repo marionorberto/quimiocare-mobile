@@ -31,6 +31,7 @@ import {
 } from "../utils/notifications";
 import { addMedication } from "../utils/storage";
 import api from "../services/api";
+import { Image } from "expo-image";
 
 type props = NativeStackScreenProps<RootStackParamsList, ScreenNames.Medical>;
 
@@ -263,7 +264,21 @@ const MedicalScreen = ({ route, navigation }: props) => {
         </View>
 
         <View className="mt-6">
-          <Text className="text-black text-xl font-semibold">Sumário</Text>
+          <Text className="text-black text-xl font-semibold mb-4">Sumário</Text>
+
+          <Image
+            style={{
+              width: 320,
+              height: 160,
+              borderRadius: 10,
+              alignContent: "center",
+              borderWidth: 2,
+              borderColor: "#fff",
+              backgroundColor: "#ccc",
+            }}
+            source={require("../../assets/cm.webp")}
+          />
+
           <View>
             <View className="border-b-2 border-zinc-300/35 py-3 flex-row justify-between items-center pb-5 mb-1 w-full">
               <View className="text-black text-base opacity-60 bg-zinc-400/50 rounded-md p-3 flex-row justify-between items-center w-full">

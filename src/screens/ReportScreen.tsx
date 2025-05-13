@@ -19,16 +19,22 @@ import ScreenNames from "../constants/ScreenName";
 import Modal from "../components/Modal";
 import axios from "axios";
 import { API_URL } from "../constants/data";
+import { createReceita } from "../services/receitas";
+// import * as DocumentPicker from "expo-document-picker";
 
 type props = NativeStackScreenProps<RootStackParamsList, ScreenNames>;
 
 const ReportsScreen = ({ route, navigation }: props) => {
   const [report, setReports] = useState([{ id: "", name: "", type: "" }]);
+  const [file, setFile] = useState();
   const [reportCounter, setReportCount] = useState({
     count: 0,
   });
 
   const [receit, setReceit] = useState(false);
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [url, setUrl] = useState("");
 
   type fileIconsType = {
     pdf: string;
@@ -37,82 +43,99 @@ const ReportsScreen = ({ route, navigation }: props) => {
     image: string;
   };
 
-  const fileIcons: fileIconsType = {
-    pdf: "document-text-outline",
-    word: "document-text-outline",
-    excel: "document-text-outline",
-    image: "image-outline",
+  const uploadReceitas = async () => {
+    // const { fileUploaded, filename } = await uploadFile(url);
+
+    // if (!fileUploaded) {
+    //   ToastAndroid.show(
+    //     "Não foi possivel cadastrar a arquivo",
+    //     ToastAndroid.SHORT
+    //   );
+    //   return;
+    // } else {
+    //   ToastAndroid.show("Arquivo cadastrado com sucesso", ToastAndroid.SHORT);
+    // }
+
+    // console.log(url);
+
+    alert(name);
+    await createReceita(name, description, `uploads/${url}`);
   };
 
-  const uploadReceitas = () => {
-    alert("adadaasa");
+  const uploadFile = async (fileUri: string) => {
+    try {
+      const filename = fileUri.substring(fileUri.lastIndexOf("/") + 1);
+      const extension = filename.split(".").pop()?.toLowerCase();
+
+      let mimeType = "";
+      if (extension === "pdf") {
+        mimeType = "application/pdf";
+      } else {
+        mimeType = `image/${extension}`;
+      }
+
+      const formData = new FormData();
+      formData.append(
+        "file",
+        JSON.parse(
+          JSON.stringify({
+            name: filename,
+            uri: fileUri,
+            type: mimeType,
+          })
+        )
+      );
+
+      const response = await axios.post(`${API_URL}/upload/file`, formData, {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      if (response.data.error) {
+        alert("Não foi possível enviar o arquivo");
+        return { fileUploaded: false, filename: "" };
+      } else {
+        setUrl(response.data.filename);
+        return { fileUploaded: true, filename: response.data.filename };
+      }
+    } catch (error: any) {
+      console.error(error);
+      alert("Erro ao enviar arquivo");
+      return { fileUploaded: false, filename: "" };
+    }
   };
 
+  const pickFile = async () => {
+    try {
+      const result = await DocumentPicker.getDocumentAsync({
+        type: ["application/pdf", "image/*"],
+        copyToCacheDirectory: true,
+        multiple: false,
+      });
 
-   const uploadImage = async (urlImg: string) => {
-     try {
-       const formData = new FormData();
-       const filename = urlImg.substring(
-         urlImg.lastIndexOf("/") + 1,
-         urlImg.length
-       );
-       const extension = filename.split(".")[1];
-       console.log("peguei da phone e troquei o filename", filename, extension);
-       formData.append(
-         "file",
-         JSON.parse(
-           JSON.stringify({
-             name: filename,
-             uri: urlImg,
-             type: "image/" + extension,
-           })
-         )
-       );
-       const response = await axios.post(`${API_URL}/upload/file`, formData, {
-         headers: {
-           Accept: "Application/json",
-           "Content-Type": "multipart/form-data",
-         },
-       });
+      if (result.canceled) {
+        ToastAndroid.show("Operação cancelada", ToastAndroid.SHORT);
+        return;
+      }
 
-       if (response.data.error) {
-         alert("não foi possivel enviar imagem");
-         return { imageUploaded: false, filename: "" };
-       } else {
-         return { imageUploaded: true, filename: response.data.filename };
-       }
-     } catch (error: any) {
-       alert("error ao enviar imagem");
-       return { imageUploaded: false, filename: "" };
-     }
-   };
+      const file = result.assets[0];
+      console.log("Arquivo selecionado:", file);
 
-  //  const pickImage = async () => {
-  //    const { granted } =
-  //      await ImagePicker.requestMediaLibraryPermissionsAsync();
+      // Se quiser, exibir preview se for imagem
+      // if (file.mimeType?.includes("image")) {
+      //   setFile(file.uri); // exibir no preview, por exemplo
+      // }
 
-  //    if (!granted) {
-  //      Alert.alert(
-  //        "Permissão necessária",
-  //        "Deve permitir que a sua aplicação acesse as images!"
-  //      );
-  //    } else {
-  //      let { assets, canceled } = await ImagePicker.launchImageLibraryAsync({
-  //        mediaTypes: ["images"],
-  //        allowsEditing: true,
-  //        aspect: [4, 3],
-  //        quality: 1,
-  //      });
-
-  //      if (canceled) {
-  //        ToastAndroid.show("Operação cancelada", ToastAndroid.SHORT);
-  //      } else {
-  //        if (!assets) return;
-  //        seturlImg(assets[0].uri);
-  //      }
-  //    }
-  //  };
-
+      const uploadResult = await uploadFile(file.uri);
+      if (uploadResult.fileUploaded) {
+        console.log("Arquivo enviado com sucesso:", uploadResult.filename);
+      }
+    } catch (error) {
+      console.error("Erro ao escolher arquivo:", error);
+    }
+  };
 
   type ReportType = string[];
 
@@ -178,19 +201,21 @@ const ReportsScreen = ({ route, navigation }: props) => {
               <Text className="text-zinc-700 mb-1">Nome da Receita</Text>
               <TextInput
                 placeholder="Ex: Receita para a perda do cabelo..."
-                // value={}
+                value={name}
+                onChangeText={setName}
                 className="border border-zinc-400 rounded-md px-3 py-2 text-black mb-4"
               />
               <Text className="text-zinc-700 mb-1">Descrição da Receita</Text>
               <TextInput
                 placeholder="Receita paralela feita pra..."
-                // value={"asas"}
+                value={description}
+                onChangeText={setDescription}
                 className="border border-zinc-400 rounded-md px-3 py-2 text-black mb-4"
               />
               <TouchableOpacity
                 className="border-2 border-zinc-300 border-dashed rounded-lg py-3 mt-2 flex-row items-center justify-center"
                 onPress={() => {
-                  alert("Fazer upload");
+                  pickFile();
                 }}
               >
                 <Icon
