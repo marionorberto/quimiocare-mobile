@@ -21,39 +21,39 @@ const NotificationScreen = ({ navigation, route }: props) => {
   const [filter, setFilter] = useState("todas");
 
   // Notificações separadas por categoria
-  const notifications = {
-    lembretes: [
-      {
-        id: 1,
-        title: "Tomar medicamento",
-        message: "Lembre-se de tomar sua medicação às 08h00.",
-        icon: "medkit-outline",
-      },
-      {
-        id: 2,
-        title: "Exame agendado",
-        message: "Você tem um exame marcado para sexta-feira às 10h00.",
-        icon: "flask-outline",
-      },
-    ],
+  // const notifications = {
+  //   lembretes: [
+  //     {
+  //       id: 1,
+  //       title: "Tomar medicamento",
+  //       message: "Lembre-se de tomar sua medicação às 08h00.",
+  //       icon: "medkit-outline",
+  //     },
+  //     {
+  //       id: 2,
+  //       title: "Exame agendado",
+  //       message: "Você tem um exame marcado para sexta-feira às 10h00.",
+  //       icon: "flask-outline",
+  //     },
+  //   ],
 
-    alertas: [
-      {
-        id: 4,
-        title: "Consulta marcada!",
-        message: "Sua consulta com Dr. João está agendada para amanhã às 14h.",
-        icon: "calendar-outline",
-      },
-    ],
-    emails: [
-      {
-        id: 5,
-        title: "Novo email recebido",
-        message: "O hospital enviou um novo relatório sobre seu tratamento.",
-        icon: "mail-outline",
-      },
-    ],
-  };
+  //   alertas: [
+  //     {
+  //       id: 4,
+  //       title: "Consulta marcada!",
+  //       message: "Sua consulta com Dr. João está agendada para amanhã às 14h.",
+  //       icon: "calendar-outline",
+  //     },
+  //   ],
+  //   emails: [
+  //     {
+  //       id: 5,
+  //       title: "Novo email recebido",
+  //       message: "O hospital enviou um novo relatório sobre seu tratamento.",
+  //       icon: "mail-outline",
+  //     },
+  //   ],
+  // };
 
   const [isEnabledReadNotification, setIsEnabledReadNotification] =
     useState(false);
@@ -97,7 +97,6 @@ const NotificationScreen = ({ navigation, route }: props) => {
 
       {/* Lista de Notificações */}
       <ScrollView showsVerticalScrollIndicator={false}>
-        return (
         <View className="mb-6 px-4">
           <View className="mt-3 flex-row justify-between items-center my-4">
             <Text className="text-lg font-semibold text-zinc-900 mb-2">
@@ -121,7 +120,12 @@ const NotificationScreen = ({ navigation, route }: props) => {
             </View>
           </View>
 
-          <TouchableOpacity className="p-4 bg-white rounded-lg flex-row items-center mb-3 relative">
+          <TouchableOpacity className="p-4 bg-zinc-50 shadow-lg rounded-lg flex-row  justify-center items-center mb-3 ">
+            <Text className="text-yellow-600  text-base text-center">
+              Sem nova notificações disponível!
+            </Text>
+          </TouchableOpacity>
+          {/* <TouchableOpacity className="p-4 bg-white rounded-lg flex-row items-center mb-3 relative">
             <Text>
               <Icon
                 name={"balloon-outline"}
@@ -145,8 +149,8 @@ const NotificationScreen = ({ navigation, route }: props) => {
                 <Icon name={"trash-outline"} size={14} color="#2563EB" />
               </Text>
             </View>
-          </TouchableOpacity>
-          <TouchableOpacity className="p-4 bg-white rounded-lg flex-row items-center mb-3 relative">
+          </TouchableOpacity> */}
+          {/* <TouchableOpacity className="p-4 bg-white rounded-lg flex-row items-center mb-3 relative">
             <Text>
               <Icon
                 name={"balloon-outline"}
@@ -170,34 +174,8 @@ const NotificationScreen = ({ navigation, route }: props) => {
                 <Icon name={"trash-outline"} size={14} color="#2563EB" />
               </Text>
             </View>
-          </TouchableOpacity>
-          <TouchableOpacity className="p-4 bg-white rounded-lg flex-row items-center mb-3 relative">
-            <Text>
-              <Icon
-                name={"balloon-outline"}
-                size={24}
-                color="#2563EB"
-                className="mr-4"
-              />
-            </Text>
-            <View className="overflow-hidden text-wrap ps-3">
-              <Text className="text-zinc-900 font-medium">
-                Atualização de conta
-              </Text>
-              <Text className="text-zinc-600 overflow-x-hidden text-wrap text-sm">
-                troque sempre a sua senha se verificar alguma actividade
-                suspeita
-              </Text>
-            </View>
-
-            <View className="absolute top-3 right-1 shadow-sm shadow-zinc-300 rounded-full h-7 w-6">
-              <Text>
-                <Icon name={"trash-outline"} size={14} color="#2563EB" />
-              </Text>
-            </View>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
-        );
       </ScrollView>
     </View>
   );

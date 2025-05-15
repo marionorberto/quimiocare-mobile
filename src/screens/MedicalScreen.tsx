@@ -32,6 +32,7 @@ import {
 import { addMedication } from "../utils/storage";
 import api from "../services/api";
 import { Image } from "expo-image";
+import { lastAppointment, lastMedication } from "../services/last";
 
 type props = NativeStackScreenProps<RootStackParamsList, ScreenNames.Medical>;
 
@@ -67,6 +68,27 @@ const MedicalScreen = ({ route, navigation }: props) => {
   const [dateAppointmentHour, setDateAppointmentHour] = useState(new Date());
   const [type, setType] = useState("");
   const [noteAppointment, setNoteAppointment] = useState("");
+  const [lastAppointmentdata, setLastAppointment] = useState({
+    id: "",
+    name: "",
+    description: "",
+    dateAppointment: "",
+    type: "",
+    statusAppointment: "",
+    note: "",
+    createdAt: "",
+    updatedAt: "",
+  });
+  const [lastMedicationdata, setLastMedication] = useState({
+    id: "",
+    name: "",
+    dosage: "",
+    note: "",
+    timeReminder: "",
+    createdAt: "",
+    updatedAt: "",
+  });
+
   const appointments = [
     "Consulta Médica Geral",
     "Consulta Oncológica",
@@ -208,10 +230,37 @@ const MedicalScreen = ({ route, navigation }: props) => {
       alert(`${error.message}`);
     }
   };
+  const fetchLastMedication = async () => {
+    try {
+      const res = await lastMedication();
 
-  useEffect(() => {
-    fetchUserData();
-  }, []);
+      setLastMedication(res.data[0]);
+
+      console.log("ok1", res.data[0]);
+
+      // console.log(prescriptions.data);
+    } catch (error: any) {
+      if (error.data) {
+        alert(`${error.message.map((error: string) => error)}`);
+      }
+      alert(`${error.message}`);
+    }
+  };
+
+  const fetchLastAppointment = async () => {
+    try {
+      const res = await lastAppointment();
+
+      setLastAppointment(res.data[0]);
+
+      console.log("ok2", res.data[0]);
+    } catch (error: any) {
+      if (error.data) {
+        alert(`${error.message.map((error: string) => error)}`);
+      }
+      alert(`${error.message}`);
+    }
+  };
 
   const fetchUserData = () => {
     try {
@@ -240,7 +289,10 @@ const MedicalScreen = ({ route, navigation }: props) => {
   const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
+    fetchUserData();
     registerForPushNotificationAsync();
+    fetchLastAppointment();
+    fetchLastMedication();
   }, []);
   return (
     <View
@@ -280,41 +332,87 @@ const MedicalScreen = ({ route, navigation }: props) => {
           />
 
           <View>
-            <View className="border-b-2 border-zinc-300/35 py-3 flex-row justify-between items-center pb-5 mb-1 w-full">
-              <View className="text-black text-base opacity-60 bg-zinc-400/50 rounded-md p-3 flex-row justify-between items-center w-full">
-                <Text className="flex-row justify-start items-center">
-                  <Icon
-                    className="font-bold"
-                    name="alarm-outline"
-                    size={20}
-                    color={"#505050"}
-                  />
+            {lastMedicationdata ? (
+              <View className="border-b-2 border-zinc-300/35 py-3 flex-row justify-between items-center pb-5 mb-1 w-full">
+                <View className="text-black text-base opacity-60 bg-zinc-400/50 rounded-md p-3 flex-row justify-between items-center w-full">
+                  <Text className="flex-row justify-start items-center">
+                    <Icon
+                      className="font-bold"
+                      name="alarm-outline"
+                      size={20}
+                      color={"#505050"}
+                    />
+                    <Text>
+                      Seu próximo{" "}
+                      <Text className="font-bold">
+                        Remédio{" "}
+                        {lastMedicationdata.name +
+                          " " +
+                          lastMedicationdata.dosage}
+                      </Text>
+                    </Text>
+                  </Text>
+
+                  <View className="flex-row justify-end items-center gap-2 bg-blue-300/40 rounded-lg py-[3px] px-3">
+                    <Text className="text-blue-600 text-lg  text-end font-semibold">
+                      {lastMedicationdata.timeReminder}
+                    </Text>
+                  </View>
+                </View>
+              </View>
+            ) : (
+              <View className="border-b-2 border-zinc-300/35 py-3 flex-row justify-between items-center pb-5 mb-1 w-full">
+                <View className="text-black text-base opacity-60 bg-zinc-400/50 rounded-md p-3 flex-row justify-between items-center w-full">
+                  <Text className="flex-row justify-start items-center">
+                    <Icon
+                      className="font-bold"
+                      name="alarm-outline"
+                      size={20}
+                      color={"#505050"}
+                    />
+                    <Text>
+                      Seu próximo <Text className="font-bold">Remédio</Text>
+                    </Text>
+                  </Text>
+
+                  <View className="flex-row justify-end items-center gap-2 bg-blue-300/40 rounded-lg py-[3px] px-3">
+                    <Text className="text-blue-600 text-lg  text-end font-semibold">
+                      08:30
+                    </Text>
+                  </View>
+                </View>
+              </View>
+            )}
+
+            {lastAppointmentdata ? (
+              <View className="border-b-2 border-zinc-300/35 py-3 flex-row justify-between items-center pb-5 mb-1 w-full">
+                <View className="text-black text-base opacity-60 bg-zinc-400/50 rounded-md p-3 flex-row justify-between items-center w-full">
                   <Text>
-                    Seu próximo <Text className="font-bold">Remédio</Text>
+                    <Icon name="alarm-outline" size={20} color={"#505050"} />
+                    Sua última{" "}
+                    <Text className="font-bold">
+                      {" "}
+                      Consulta agendada!({lastAppointmentdata.description})
+                    </Text>
                   </Text>
-                </Text>
 
-                <View className="flex-row justify-end items-center gap-2 bg-blue-300/40 rounded-lg py-[3px] px-3">
-                  <Text className="text-blue-600 text-lg  text-end font-semibold">
-                    08:30
+                  <View className="flex-row justify-end items-center gap-2 bg-green-300/40 rounded-lg py-[3px] px-3">
+                    <Text className="text-green-600  text-lg text-end font-semibold">
+                      {lastAppointmentdata.dateAppointment}
+                    </Text>
+                  </View>
+                </View>
+              </View>
+            ) : (
+              <View className="border-b-2 border-zinc-300/35 py-3 flex-row justify-between items-center pb-5 mb-1 w-full">
+                <View className="text-black text-base opacity-60 bg-zinc-400/50 rounded-md p-3 flex-row justify-between items-center w-full">
+                  <Text>
+                    <Icon name="alarm-outline" size={20} color={"#505050"} />
+                    <Text className="font-bold"> sem Consulta agendada</Text>
                   </Text>
                 </View>
               </View>
-            </View>
-            <View className="border-b-2 border-zinc-300/35 py-3 flex-row justify-between items-center pb-5 mb-1 w-full">
-              <View className="text-black text-base opacity-60 bg-zinc-400/50 rounded-md p-3 flex-row justify-between items-center w-full">
-                <Text>
-                  <Icon name="alarm-outline" size={20} color={"#505050"} />
-                  Sua próxima <Text className="font-bold"> Consulta</Text>
-                </Text>
-
-                <View className="flex-row justify-end items-center gap-2 bg-green-300/40 rounded-lg py-[3px] px-3">
-                  <Text className="text-green-600  text-lg text-end font-semibold">
-                    08:30
-                  </Text>
-                </View>
-              </View>
-            </View>
+            )}
           </View>
 
           <View className="mt-5">
@@ -364,9 +462,15 @@ const MedicalScreen = ({ route, navigation }: props) => {
                 className="p-5 rounded-xl border-2 border-zinc-400/30 w-[80%] h-20 me-2"
                 placeholder="Adicione Aqui alguma nota!"
               />
-              <View className=" rounded-xl h-9 w-9 flex justify-center items-center bg-blue-400">
-                <Icon name="send-outline" color={"#fff"} size={17}></Icon>
-              </View>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate("DailyScreen", { title: "" });
+                }}
+              >
+                <View className=" rounded-xl h-9 w-9 flex justify-center items-center bg-blue-400">
+                  <Icon name="send-outline" color={"#fff"} size={17}></Icon>
+                </View>
+              </TouchableOpacity>
             </View>
           </View>
           <View className="mt-5">
@@ -816,14 +920,23 @@ const MedicalScreen = ({ route, navigation }: props) => {
 
         <View className="mt-8">
           <Text className="font-semibold text-2xl">Histórico De Saúde</Text>
-
           <List.Section title="">
             <List.Accordion
               title="Históricos"
               left={(props) => <List.Icon {...props} icon="folder" />}
             >
-              <List.Item title="Histórico De Consultas" />
-              <List.Item title="Histórico de  Receitas" />
+              <List.Item
+                onPress={() => {
+                  navigation.navigate("Report", { title: "" });
+                }}
+                title="Histórico De Receitas"
+              />
+              <List.Item
+                onPress={() => {
+                  navigation.navigate("ExportarRelatorio", { title: "" });
+                }}
+                title="Exportar Relatórios"
+              />
             </List.Accordion>
           </List.Section>
         </View>

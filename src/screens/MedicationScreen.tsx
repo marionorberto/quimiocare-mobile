@@ -83,23 +83,10 @@ const MedicationsScreen = ({ route, navigation }: props) => {
         </View>
       </View> */}
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View className="rounded-lg border-2 bg-white border-zinc-100 p-3 py-2 mx-4 w-72 mt-5">
-          <View className="flex-row justify-between items-center ">
-            <View className="flex-row justify-start items-center gap-2 ">
-              <Text className="text-black font-semibold">
-                Adicionar novo remédio
-              </Text>
-            </View>
-            <Text className="border-zinc-100 border-2 rounded-lg">
-              <Icon name="add-circle-outline" color={"black"} size={23} />
-            </Text>
-          </View>
-        </View>
         <View className="mx-4 mt-4 p-3">
           <View className="flex-row justify-start items-center mb-3">
             <Text className="text-zinc-500 text-base">
-              Tomar Hoje(
-              {medicationCounter.count})
+              Para Tomar ({medicationCounter.count})
             </Text>
           </View>
 
@@ -128,14 +115,6 @@ const MedicationsScreen = ({ route, navigation }: props) => {
                   </Text>
                   <Text className="text-zinc-600 overflow-x-hidden text-wrap text-sm mt-2">
                     {item.note}
-                  </Text>
-                </View>
-                <View className="absolute top-3 right-6 rounded-full h-7 w-6 flex-row gap-2">
-                  <Text>
-                    <Icon name={"create-outline"} size={14} color="#2563EB" />
-                  </Text>
-                  <Text>
-                    <Icon name={"trash-outline"} size={14} color="#2563EB" />
                   </Text>
                 </View>
               </TouchableOpacity>

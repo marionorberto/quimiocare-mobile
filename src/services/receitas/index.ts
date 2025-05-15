@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { API_URL } from '../../constants/data';
 import api from '../api';
 
@@ -21,3 +20,14 @@ export const createReceita = async (
   }
 };
 
+
+export const allPrescriptions = async (): Promise<any> => {
+try {
+  const response = await api.get(`${API_URL}/receitas/all`);
+
+  return response.data;
+
+} catch(error: any) {
+  throw error.response.data || 'Erro tentando pegar as receitas!';
+}
+};

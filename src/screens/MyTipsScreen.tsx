@@ -23,7 +23,27 @@ import CheckBox from "expo-checkbox";
 type props = NativeStackScreenProps<RootStackParamsList, ScreenNames>;
 
 const MyTipsScreen = ({ route, navigation }: props) => {
-  const [tips, setTips] = useState();
+  const [tips, setTips] = useState([
+    { count: 0 },
+    [
+      {
+        id: "",
+        description: "",
+        category: {
+          id: "",
+          description: "",
+          createdAt: "",
+          updateAt: "",
+        },
+        userDoctor: {
+          username: "",
+          email: "",
+        },
+        createdAt: "",
+        updatedAt: "",
+      },
+    ],
+  ]);
 
   const fetchTips = async () => {
     await api
@@ -118,37 +138,32 @@ const MyTipsScreen = ({ route, navigation }: props) => {
           </View>
 
           {tips.length > 0 ? (
-            tips.map((tip) => (
+            tips[1].map((tip) => (
               <TouchableOpacity
                 key={tip.id}
                 className="p-4 bg-white rounded-lg flex-row items-start mb-3 relative"
               >
                 <Text className="pt-1">
-                  <Icon
-                    name="information-circle-outline"
-                    size={24}
-                    color="#2563EB"
-                  />
+                  <Icon name="bulb-outline" size={24} color="#2563EB" />
                 </Text>
 
                 <View className="ps-3 flex-1">
                   <Text className="text-zinc-900 font-medium text-base">
-                    {tip.category.charAt(0).toUpperCase() +
-                      tip.category.slice(1)}
+                    {tip.description}
                   </Text>
                   <Text className="text-zinc-600 text-sm mt-1">
-                    {tip.description}
+                    {tip.category.description}
                   </Text>
                 </View>
 
-                <View className="absolute top-3 right-6 rounded-full h-7 w-6 flex-row gap-2">
+                {/* <View className="absolute top-3 right-6 rounded-full h-7 w-6 flex-row gap-2">
                   <TouchableOpacity onPress={() => handleEditTip(tip.id)}>
                     <Icon name="create-outline" size={14} color="#2563EB" />
                   </TouchableOpacity>
                   <TouchableOpacity onPress={() => handleDeleteTip(tip.id)}>
                     <Icon name="trash-outline" size={14} color="#2563EB" />
                   </TouchableOpacity>
-                </View>
+                </View> */}
               </TouchableOpacity>
             ))
           ) : (

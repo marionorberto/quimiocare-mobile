@@ -1,10 +1,18 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, Pressable, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  Pressable,
+  ScrollView,
+  TouchableHighlight,
+} from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import Constants from "expo-constants";
 import ScreenNames from "../constants/ScreenName";
 import { RootStackParamsList } from "../navigations/RootStackParamsList";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { createSuggest } from "../services/suggest";
 
 type props = NativeStackScreenProps<RootStackParamsList, ScreenNames>;
 
@@ -12,12 +20,19 @@ const SugestaoDeVideo = ({ route, navigation }: props) => {
   const [mostrarCampo, setMostrarCampo] = useState(false);
   const [videoURL, setVideoURL] = useState("");
 
-  const handleSubmeter = () => {
+  const handleSubmeter = async () => {
     // Aqui você pode adicionar a lógica de envio da URL
-    alert("fazer a submissao");
-    console.log("Vídeo sugerido:", videoURL);
-    setVideoURL("");
+
+    alert(videoURL);
+    if (!videoURL) {
+      alert("Campo não pode estar vazio!");
+      return;
+    }
+    await createSuggest(videoURL);
+    alert("Vídeo sugerido com sucesso, será verificado pelo administrador!");
     setMostrarCampo(false);
+
+    navigation.goBack();
   };
 
   return (
@@ -25,7 +40,6 @@ const SugestaoDeVideo = ({ route, navigation }: props) => {
       style={{ marginTop: Constants.statusBarHeight }}
       className="flex-1 bg-white pt-8 pb-14"
     >
-      {/* Cabeçalho */}
       <View className="flex-row justify-start items-center gap-10 px-4">
         <View className="border-[1px] border-zinc-200 p-[3px] rounded-md bg-white">
           <Pressable onPress={() => navigation.goBack()}>
@@ -35,7 +49,6 @@ const SugestaoDeVideo = ({ route, navigation }: props) => {
         <Text className="text-xl text-black font-bold">Sugestão de Vídeo</Text>
       </View>
 
-      {/* Conteúdo */}
       <ScrollView
         showsVerticalScrollIndicator={false}
         className="mt-6 px-8"
@@ -82,14 +95,16 @@ const SugestaoDeVideo = ({ route, navigation }: props) => {
               onChangeText={setVideoURL}
               className="border border-zinc-400 rounded-md px-3 py-2 text-black mb-4"
             />
-            <Pressable
-              onPress={handleSubmeter}
+            <TouchableHighlight
+              onPress={() => {
+                handleSubmeter();
+              }}
               className="bg-blue-600 rounded-lg py-2 px-4"
             >
               <Text className="text-white text-center font-semibold">
                 Enviar sugestão
               </Text>
-            </Pressable>
+            </TouchableHighlight>
           </View>
         )}
       </ScrollView>

@@ -45,6 +45,9 @@ import GatherDoctorProfileFirstScreen from "../screens/GatherDoctorProfileFirstS
 import MyTipsScreen from "../screens/MyTipsScreen";
 import SuggestVideoScreen from "../screens/SuggestVideoScreen";
 import TabDoctorRoutes from "./tabs.routes-doctor";
+import CreatePostScreen from "../screens/CreatePostScreen";
+import ActivityRegisterScreen from "../screens/ActivityRegisterScreen";
+import ExportarRelatorio from "../screens/receitasScreen";
 
 const StackRoutes = () => {
   const Stack = createNativeStackNavigator<RootStackParamsList>();
@@ -210,7 +213,6 @@ const StackRoutes = () => {
         component={MyPostsScreen}
         options={{ headerShown: false }}
       />
-
       <Stack.Screen
         name={ScreenNames.OptionsAdmincreen}
         component={OptionsAdmincreen}
@@ -246,6 +248,22 @@ const StackRoutes = () => {
         component={TabDoctorRoutes}
         options={{ headerShown: false }}
       />
+      <Stack.Screen
+        name={ScreenNames.CreatePostScreen}
+        component={CreatePostScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name={ScreenNames.ActivityRegisterScreen}
+        component={ActivityRegisterScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name={ScreenNames.ExportarRelatorio}
+        component={ExportarRelatorio}
+        options={{ headerShown: false }}
+      />
+
       <Stack.Screen
         name={ScreenNames.Main}
         component={TabRoutes}

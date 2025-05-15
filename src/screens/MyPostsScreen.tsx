@@ -8,7 +8,7 @@ import {
   Linking,
   TouchableOpacity,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Icon from "react-native-vector-icons/Ionicons";
 import {
   NativeStackNavigatorProps,
@@ -19,36 +19,7 @@ import ScreenNames from "../constants/ScreenName";
 import Constants from "expo-constants";
 import { Image } from "expo-image";
 import { useNavigation } from "@react-navigation/native";
-
-const posts = [
-  {
-    id: "1",
-    author: "Mário Norberto",
-    avatar: require("../../assets/user.png"),
-    type: "Post",
-    tag: "Meloma",
-    content:
-      "Como lidar com os efeitos colaterais durante a quimioterapia? Neste post, vamos abordar maneiras práticas e acessíveis de minimizar os efeitos adversos.",
-  },
-  {
-    id: "2",
-    author: "Camila Ribeiro",
-    avatar: require("../../assets/user.png"),
-    type: "Post",
-    tag: "Ansiedade",
-    content:
-      "A ansiedade afeta milhões de pessoas no mundo todo. Conheça técnicas simples de respiração e rotina que ajudam a controlar os sintomas no dia a dia.",
-  },
-  {
-    id: "3",
-    author: "João Marcelo",
-    avatar: require("../../assets/user.png"),
-    type: "Post",
-    tag: "Saúde Mental",
-    content:
-      "Falar sobre saúde mental é essencial. Neste post, trago minha experiência pessoal com terapia e como ela transformou minha visão sobre autocuidado.",
-  },
-];
+import api from "../services/api";
 
 type props = NativeStackScreenProps<
   RootStackParamsList,
@@ -56,6 +27,34 @@ type props = NativeStackScreenProps<
 >;
 
 const MyPostsScreen = ({ route, navigation }: props) => {
+  const [post, setPost] = useState([
+    {
+      content: "",
+      description: "",
+      title: "",
+      tag: "",
+      createdAt: "",
+      user: {
+        username: "",
+      },
+    },
+  ]);
+
+  const fetchPosts = () => {
+    api
+      .get("/posts/all")
+      .then(({ data: res }) => {
+        setPost(res.data[1]);
+        console.log("ok", res.data[1]);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  useEffect(() => {
+    fetchPosts();
+  }, []);
   return (
     <View
       style={{ marginTop: Constants.statusBarHeight }}
@@ -75,15 +74,18 @@ const MyPostsScreen = ({ route, navigation }: props) => {
         className="mt-6 px-4"
         contentContainerStyle={{ paddingBottom: 30 }}
       >
-        {posts.map((post) => (
+        <Text className="font-semibold mb-1">
+          Veja todas as tuas postagens abaixo:
+        </Text>
+        {post.map((item) => (
           <View
-            key={post.id}
-            className="shadow-zinc-400 border-2 border-zinc-200 flex-col justify-center items-start bg-white mt-4 p-5 rounded-lg h-[16rem] w-full relative"
+            key={item.subtitle}
+            className="shadow-zinc-400 border-2 border-zinc-200 flex-col justify-center items-start bg-white mt-3 p-5 rounded-lg h-[16rem] w-full relative"
           >
             <View className="w-full py-3 pt-1">
               <View className="flex-row justify-start items-center gap-3 mb-1">
                 <Image
-                  source={post.avatar}
+                  source={require("../../assets/user.png")}
                   style={{
                     width: 40,
                     height: 40,
@@ -94,36 +96,32 @@ const MyPostsScreen = ({ route, navigation }: props) => {
                   }}
                 />
                 <Text className="font-semibold text-sm text-black">
-                  {post.author}
+                  {item.user.username}
                 </Text>
               </View>
               <View className="flex-row justify-between items-center gap-3">
                 <Text className="font-semibold text-sm text-black flex-row justify-start items-center">
                   <View className="h-1 w-1 bg-blue-400 rounded-full mr-2" />
-                  <Text>{post.type}</Text>
+                  <Text>{item.user.typeUser}</Text>
                 </Text>
-                <Text className="rounded-xl bg-blue-500/30 text-blue-600 font-semibold px-[11px] py-[3px]">
-                  {post.tag}
+                <Text className="rounded-xl bg-blue-500/30 text-blue-600 font-semibold px-3 py-[3px]  text-sm">
+                  {item.tag}
                 </Text>
               </View>
             </View>
-
             <View className="mt-2 mb-4">
-              <Text className="text-sm text-zinc-400 font-light text-wrap text-justify">
-                {post.content}
+              <Text className="text-xl text-zinc-600 font-light text-wrap text-justify">
+                {item.title}
+              </Text>
+              <Text className="text-xl text-zinc-600 font-light text-wrap text-justify">
+                {item.subtitle}
               </Text>
             </View>
-
-            <View className="flex-row justify-start items-center">
-              <View className="flex-row justify-start items-center me-4">
-                <Icon name="heart-circle-outline" color={"black"} size={18} />
-                <Text className="text-black text-sm ml-1">Adoro</Text>
-              </View>
-
-              <View className="flex-row justify-start items-center">
-                <Icon name="bookmark-outline" color={"black"} size={17} />
-                <Text className="text-black text-sm ml-1">Guardar</Text>
-              </View>
+            <View>
+              <Text className="text-zinc-400">
+                Postado Em <Text></Text>
+                {item.createdAt.split("T")[0]}
+              </Text>
             </View>
           </View>
         ))}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -18,9 +18,10 @@ import { RootStackParamsList } from "../navigations/RootStackParamsList";
 import ScreenNames from "../constants/ScreenName";
 import Modal from "../components/Modal";
 import axios from "axios";
-import { API_URL } from "../constants/data";
-import { createReceita } from "../services/receitas";
-// import * as DocumentPicker from "expo-document-picker";
+import { API_URL, API_URL_UPLOAD } from "../constants/data";
+import { allPrescriptions, createReceita } from "../services/receitas";
+import { WebView } from "react-native-webview";
+import * as Linking from "expo-linking";
 
 type props = NativeStackScreenProps<RootStackParamsList, ScreenNames>;
 
@@ -30,36 +31,35 @@ const ReportsScreen = ({ route, navigation }: props) => {
   const [reportCounter, setReportCount] = useState({
     count: 0,
   });
-
   const [receit, setReceit] = useState(false);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [url, setUrl] = useState("");
+  const [nameForShow, setNameForShow] = useState("Upload Ficheiro");
+  const [count, setCount] = useState(0);
+  const [receitas, setReceitas] = useState([
+    {
+      createdAt: "",
+      description: "",
+      id: "",
+      name: "",
+      updatedAt: "",
+      url: "",
+    },
+  ]);
 
-  type fileIconsType = {
-    pdf: string;
-    word: string;
-    excel: string;
-    image: string;
+  const isImage = (filename: string) => {
+    return /\.(jpg|jpeg|png|gif)$/i.test(filename);
+  };
+
+  const isPDF = (filename: string) => {
+    return /\.pdf$/i.test(filename);
   };
 
   const uploadReceitas = async () => {
-    // const { fileUploaded, filename } = await uploadFile(url);
-
-    // if (!fileUploaded) {
-    //   ToastAndroid.show(
-    //     "Não foi possivel cadastrar a arquivo",
-    //     ToastAndroid.SHORT
-    //   );
-    //   return;
-    // } else {
-    //   ToastAndroid.show("Arquivo cadastrado com sucesso", ToastAndroid.SHORT);
-    // }
-
-    // console.log(url);
-
-    alert(name);
     await createReceita(name, description, `uploads/${url}`);
+    alert("Receita uploaded com sucesso!");
+    navigation.navigate("Main", { title: "" });
   };
 
   const uploadFile = async (fileUri: string) => {
@@ -107,6 +107,22 @@ const ReportsScreen = ({ route, navigation }: props) => {
     }
   };
 
+  const fetchReceitas = async () => {
+    try {
+      const prescriptions = await allPrescriptions();
+
+      setCount(prescriptions.data[0].count);
+      setReceitas(prescriptions.data[1]);
+
+      console.log(prescriptions.data);
+    } catch (error: any) {
+      if (error.data) {
+        alert(`${error.message.map((error: string) => error)}`);
+      }
+      alert(`${error.message}`);
+    }
+  };
+
   const pickFile = async () => {
     try {
       const result = await DocumentPicker.getDocumentAsync({
@@ -129,6 +145,7 @@ const ReportsScreen = ({ route, navigation }: props) => {
       // }
 
       const uploadResult = await uploadFile(file.uri);
+      setNameForShow(uploadResult.filename);
       if (uploadResult.fileUploaded) {
         console.log("Arquivo enviado com sucesso:", uploadResult.filename);
       }
@@ -137,7 +154,9 @@ const ReportsScreen = ({ route, navigation }: props) => {
     }
   };
 
-  type ReportType = string[];
+  useEffect(() => {
+    fetchReceitas();
+  }, []);
 
   return (
     <View
@@ -157,7 +176,7 @@ const ReportsScreen = ({ route, navigation }: props) => {
         </Text>
       </View>
 
-      <View className="relative w-64 ms-4 mt-5">
+      {/* <View className="relative w-64 ms-4 mt-5">
         <TextInput
           placeholder="Pesquisar ..."
           className="bg-white p-3 rounded-lg mb-4 ps-10"
@@ -165,14 +184,10 @@ const ReportsScreen = ({ route, navigation }: props) => {
         <View className="absolute left-3 top-2">
           <Icon name="search-outline" color={"#545454"} size={21}></Icon>
         </View>
-      </View>
+      </View> */}
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Pressable
-          onPress={() => {
-            setReceit(true);
-          }}
-        >
-          <View className="rounded-lg border-2 bg-white border-zinc-100 p-3 py-3 mx-4 w-72">
+        <Pressable className="mt-6">
+          {/* <View className="rounded-lg border-2 bg-white border-zinc-100 p-3 py-3 mx-4 w-72">
             <View className="flex-row justify-between items-center">
               <View className="flex-row justify-start items-center gap-2">
                 <Text>
@@ -183,7 +198,27 @@ const ReportsScreen = ({ route, navigation }: props) => {
                 </Text>
               </View>
             </View>
-          </View>
+          </View> */}
+
+          <TouchableOpacity
+            onPress={() => {
+              setReceit(true);
+            }}
+            className="bg-blue-500 border-dashed rounded-lg py-3 mt-2 flex-row items-center justify-center w-72 mx-auto"
+          >
+            <Text>
+              <Icon
+                name="download-outline"
+                size={20}
+                color="white"
+                className="mr-2"
+              />
+            </Text>
+
+            <Text className="text-white text-center font-semibold">
+              Upload Nova Receita
+            </Text>
+          </TouchableOpacity>
           <Modal isOpen={receit} withInput={false}>
             <View className="p-7 bg-white rounded-2xl w-full max-w-md shadow-lg">
               <View className="flex-row justify-between items-center mb-4">
@@ -195,7 +230,9 @@ const ReportsScreen = ({ route, navigation }: props) => {
                     setReceit(false);
                   }}
                 >
-                  <Icon name="close" size={24} color="#4A4A4A" />
+                  <Text>
+                    <Icon name="close" size={30} color="#4A4A4A" />
+                  </Text>
                 </TouchableOpacity>
               </View>
               <Text className="text-zinc-700 mb-1">Nome da Receita</Text>
@@ -212,20 +249,23 @@ const ReportsScreen = ({ route, navigation }: props) => {
                 onChangeText={setDescription}
                 className="border border-zinc-400 rounded-md px-3 py-2 text-black mb-4"
               />
+
               <TouchableOpacity
                 className="border-2 border-zinc-300 border-dashed rounded-lg py-3 mt-2 flex-row items-center justify-center"
                 onPress={() => {
                   pickFile();
                 }}
               >
-                <Icon
-                  name="download-outline"
-                  size={20}
-                  color="white"
-                  className="mr-2"
-                />
+                <Text>
+                  <Icon
+                    name="download-outline"
+                    size={20}
+                    color="white"
+                    className="mr-2"
+                  />
+                </Text>
                 <Text className="text-black text-center font-semibold">
-                  Upload Ficheiro
+                  {nameForShow}
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
@@ -235,7 +275,9 @@ const ReportsScreen = ({ route, navigation }: props) => {
                   setReceit(false);
                 }}
               >
-                <Icon name="save" size={20} color="white" className="mr-2" />
+                <Text>
+                  <Icon name="save" size={20} color="white" className="mr-2" />
+                </Text>
                 <Text className="text-white text-center font-semibold">
                   Salvar
                 </Text>
@@ -247,34 +289,78 @@ const ReportsScreen = ({ route, navigation }: props) => {
           <View className="flex-row justify-between items-center mb-3">
             <Text className="text-zinc-500 text-lg">
               Receitas Guardadas(
-              {reportCounter.count})
+              {count})
             </Text>
-            <Text className="text-zinc-400 text-lg">
+            {/* <Text className="text-zinc-400 text-lg">
               <Icon name="ellipsis-horizontal-sharp" color={"#999"} size={24} />
-            </Text>
+            </Text> */}
           </View>
-          {reportCounter.count ? (
-            report.map((item) => (
-              <View
+          {receitas.length > 0 ? (
+            receitas.map((item) => (
+              <TouchableOpacity
                 key={item.id}
-                className="bg-zinc-50/40 p-4 rounded-lg mb-4 flex-row justify-between items-stretch"
+                className="bg-zinc-50/40 p-4 rounded-lg mb-4 flex-row justify-between items-stretch border-2  border-zinc-400"
               >
                 <View className="flex-col gap-3">
                   <Text className="text-black font-semibold text-[13px]">
                     Nome: {item.name}
                   </Text>
+                  {/* <Image
+                    style={{
+                      width: 280,
+                      height: 380,
+                      alignContent: "center",
+                      borderWidth: 2,
+                      borderColor: "#fff",
+                      backgroundColor: "#ccc",
+                    }}
+                    source={{
+                      uri: `http://${API_URL_UPLOAD}:3000/${item.url}`,
+                    }}
+                  /> */}
+                  {isImage(item.url) && (
+                    <Image
+                      style={{
+                        width: 280,
+                        height: 380,
+                        alignContent: "center",
+                        borderWidth: 2,
+                        borderColor: "#fff",
+                        backgroundColor: "#ccc",
+                      }}
+                      source={{
+                        uri: `http://${API_URL_UPLOAD}:3000/${item.url}`,
+                      }}
+                    />
+                  )}
+                  {isPDF(item.url)} && (
+                  <View
+                    style={{
+                      height: 500,
+                      width: "100%",
+                      borderRadius: 10,
+                      overflow: "hidden",
+                    }}
+                  >
+                    <WebView
+                      source={{
+                        uri: `https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(`http://${API_URL_UPLOAD}:3000/${item.url}`)}`,
+                      }}
+                      originWhitelist={["*"]}
+                      startInLoadingState={true}
+                      style={{ flex: 1 }}
+                    />
+                  </View>
+                  )
                 </View>
-              </View>
+              </TouchableOpacity>
             ))
           ) : (
-            <View className="bg-yellow-500/50 w-full p-4 rounded-lg mt-1">
-              <Text className="text-yellow-600 font-semibold text-sm text-center flex-row justify-center items-center gap-3 py-2">
-                <Text>
-                  Adicione um <Text className="font-bold">Receitas</Text> para
-                  poder vê-los!
-                </Text>
+            <TouchableOpacity className="p-4 bg-zinc-50 shadow-lg rounded-lg flex-row  justify-center items-center mb-3 ">
+              <Text className="text-yellow-600  text-base text-center">
+                Sem Receitas baixadas!
               </Text>
-            </View>
+            </TouchableOpacity>
           )}
         </View>
       </ScrollView>

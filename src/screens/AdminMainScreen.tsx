@@ -175,7 +175,6 @@ const AdminMainScreen = ({ navigation, route }: props) => {
               </Text>
             </View>
           </View>
-
           <View className="mt-10 flex-col  justify-center items-center gap-3">
             <View className="shadow-black shadow-lg rounded-lg bg-white p-4 w-72 h-36 mb-3">
               <Text className="text-zinc-500 text-4xl mt-4 text-center">
@@ -207,15 +206,15 @@ const AdminMainScreen = ({ navigation, route }: props) => {
             </View>
           </View>
 
-          <View className="w-full mt-4">
-            <View className="flex-row gap-5 justify-center items-center mt-3 border-b-2 border-zinc-300 w-full pb-5 ">
+          <View className="w-full mt-4 mb-8">
+            <View className="grid-flow-col grid-cols-2 gap-5 justify-center items-center mt-3 border-b-2 border-zinc-300 w-full pb-5 ">
               <Text
                 onPress={() => {
                   navigation.navigate("AutorizationScreen", { title: "ada" });
                 }}
-                className="font-semibold bg-blue-300/20 text-blue-400 p-4 px-7 rounded-lg"
+                className="font-semibold bg-blue-300/20 text-blue-400 p-4 px-7 rounded-lg w-40 text-center"
               >
-                Autorizações{" "}
+                Autorizações
                 <Icon
                   name="chevron-forward-outline"
                   color={"#60a5fa"}
@@ -226,7 +225,7 @@ const AdminMainScreen = ({ navigation, route }: props) => {
                 onPress={() => {
                   navigation.navigate("AnalisesScreen", { title: "ada" });
                 }}
-                className="font-semibold bg-blue-300/20 text-blue-400 p-4 px-7 rounded-lg"
+                className="font-semibold bg-blue-300/20 text-blue-400 p-4 px-7 rounded-lg w-40 text-center"
               >
                 Análises
                 <Icon
@@ -239,7 +238,7 @@ const AdminMainScreen = ({ navigation, route }: props) => {
                 onPress={() => {
                   navigation.navigate("OptionsAdmincreen", { title: "ada" });
                 }}
-                className="font-semibold bg-blue-300/20 text-blue-400 p-4 px-7 rounded-lg"
+                className="font-semibold bg-blue-300/20 text-blue-400 p-4 px-7 rounded-lg w-40 text-center"
               >
                 Opções{" "}
                 <Icon
@@ -249,7 +248,7 @@ const AdminMainScreen = ({ navigation, route }: props) => {
                 />
               </Text>
             </View>
-
+            {/* 
             <TouchableOpacity className="p-3 bg-white rounded-lg  items-center mb-3 relative mt-3 w-72 mx-auto flex-col">
               <Icon
                 name={"balloon-outline"}
@@ -262,7 +261,7 @@ const AdminMainScreen = ({ navigation, route }: props) => {
               </Text>
 
               <Text className="mt-3 text-blue-400">Ver solicitações</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </View>
       </ScrollView>

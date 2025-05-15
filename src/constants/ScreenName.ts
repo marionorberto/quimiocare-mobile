@@ -49,6 +49,10 @@ enum ScreenNames {
   MyTipsScreen = 'MyTipsScreen',
   SuggestVideoScreen = 'SuggestVideoScreen',
   ProfileMedicoScreen = 'ProfileMedicoScreen',
+  CreatePostScreen = 'CreatePostScreen',
+  ActivityRegisterScreen = 'ActivityRegisterScreen',
+  ExportarRelatorio = 'ExportarRelatorio',
+
 }
 
 export default ScreenNames;

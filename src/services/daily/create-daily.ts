@@ -36,3 +36,15 @@ export const handleSaveDaily = async (
 };
 
 
+export const lastdaily = async (): Promise<any> => {
+try {
+  const response = await api.get(`${API_URL}/dailys/already`);
+
+  return response.data;
+
+} catch(error: any) {
+if (error.response.message) throw error.response.message;
+throw error.response.data || 'Erro tentando pegar a ulltima daily!';
+} 
+};
+

@@ -208,6 +208,19 @@ type ProfileMedicoScreen = {
   title: string;
 }
 
+
+type CreatePostScreen = {
+  title: string;
+}
+
+type ActivityRegisterScreen = {
+  title: string;
+}
+
+type ExportarRelatorio = {
+  title: string;
+}
+
 export type RootStackParamsList = {
   Home: HomeScreenParams;
   Setting: SettingScreenParams;
@@ -258,4 +271,7 @@ export type RootStackParamsList = {
   MyTipsScreen: MyTipsScreen;
   SuggestVideoScreen: SuggestVideoScreen;
   ProfileMedicoScreen: ProfileMedicoScreen;
+  CreatePostScreen: CreatePostScreen;
+  ActivityRegisterScreen: ActivityRegisterScreen;
+  ExportarRelatorio: ExportarRelatorio;
 }

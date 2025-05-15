@@ -19,10 +19,6 @@ import CheckBox from "expo-checkbox";
 type props = NativeStackScreenProps<RootStackParamsList, ScreenNames>;
 
 const AutorizationScreen = ({ route, navigation }: props) => {
-  const handleViewDetails = (id: number) => {
-    console.log("Exibindo detalhes da consulta:", id);
-  };
-
   const { theme, toggleTheme } = useTheme();
   const [agreed, setAgreed] = useState(false);
   const [doctorCount, setDoctorCount] = useState(0);
@@ -46,9 +42,9 @@ const AutorizationScreen = ({ route, navigation }: props) => {
     },
   ]);
 
-  useEffect(() => {
-    fetchUsers();
-  }, []);
+  const handleAutorization = (item: any) => {
+    alert("certeza?");
+  };
 
   const fetchUsers = async () => {
     await api
@@ -64,6 +60,11 @@ const AutorizationScreen = ({ route, navigation }: props) => {
         console.log(err);
       });
   };
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
   return (
     <View
       style={{ marginTop: Constants.statusBarHeight }}
@@ -94,48 +95,63 @@ const AutorizationScreen = ({ route, navigation }: props) => {
           Autorizações de Usuários
         </Text>
 
+        <Text className="text-zinc-600 mb-3">
+          Como usuário podes desativar/activar contas de usuários na aplicação.
+          Por favor faça as operações com muita cautela e responsabilidade.
+        </Text>
+
         <View className="mb-6">
           <Text
             className={`text-lg font-semibold mb-3 ${theme === "dark" ? "text-white" : "text-zinc-800"}`}
           >
             Médicos({doctorCount})
           </Text>
-          {allDoctors.map((item) => (
-            <TouchableOpacity
-              key={item.id}
-              className={`p-4 rounded-lg flex-row items-center mb-3 relative ${theme === "dark" ? "bg-neutral-800" : "bg-white"}`}
-            >
-              <Text>
-                <Icon name={"medkit-outline"} size={24} color="#2563EB" />
-              </Text>
+          {allDoctors.length &&
+            allDoctors.map((item) => (
+              <TouchableOpacity
+                key={item.id}
+                className={`p-4 rounded-lg flex-row items-center mb-3 relative ${theme === "dark" ? "bg-neutral-800" : "bg-white"}`}
+              >
+                <Text>
+                  <Icon name={"medkit-outline"} size={24} color="#2563EB" />
+                </Text>
 
-              <View className="overflow-hidden text-wrap ps-3">
-                <Text
-                  className={`font-medium ${theme === "dark" ? "text-white" : "text-zinc-900"}`}
-                >
-                  {item.username}
-                </Text>
-                <Text
-                  className={`font-medium ${theme === "dark" ? "text-white" : "text-zinc-900"}`}
-                >
-                  {item.email}
-                </Text>
-                <Text
-                  className={`text-sm ${theme === "dark" ? "text-zinc-400" : "text-zinc-500"}`}
-                >
-                  Médico
-                </Text>
-              </View>
+                <View className="overflow-hidden text-wrap ps-3">
+                  <Text
+                    className={`font-medium ${theme === "dark" ? "text-white" : "text-zinc-900"}`}
+                  >
+                    {item.username}
+                  </Text>
+                  <Text
+                    className={`font-medium ${theme === "dark" ? "text-white" : "text-zinc-900"}`}
+                  >
+                    {item.email}
+                  </Text>
+                  <Text
+                    className={`text-sm ${theme === "dark" ? "text-zinc-400" : "text-zinc-500"}`}
+                  >
+                    Médico
+                  </Text>
+                  <View
+                    className={` rounded-full  p-1  mt-1  ${item.active ? "bg-green-300/20" : "bg-red-300/50"}`}
+                  >
+                    <Text
+                      className={` font-semibold text-sm text-center ${item.active ? "text-green-500" : "text-red-500"}`}
+                    >
+                      Usuario {item.active ? "ativado" : "desativado"}
+                    </Text>
+                  </View>
+                </View>
 
-              <View className="absolute top-5 right-8 rounded-full h-7 w-6 flex-row gap-2">
-                <CheckBox
-                  value={agreed}
-                  onValueChange={setAgreed}
-                  className="pt-[1px] ms-2"
-                />
-              </View>
-            </TouchableOpacity>
-          ))}
+                <View className="absolute top-5 right-8 rounded-full h-7 w-6 flex-row gap-2">
+                  <CheckBox
+                    value={item.active}
+                    onValueChange={setAgreed}
+                    className="pt-[1px] ms-2"
+                  />
+                </View>
+              </TouchableOpacity>
+            ))}
         </View>
         <View className="mb-6">
           <Text
@@ -143,45 +159,55 @@ const AutorizationScreen = ({ route, navigation }: props) => {
           >
             Pacientes({patientCount})
           </Text>
-          {allPatients.map((item) => (
-            <TouchableOpacity
-              key={item.id}
-              className={`p-4 rounded-lg flex-row items-center mb-3 relative ${theme === "dark" ? "bg-neutral-800" : "bg-white"}`}
-            >
-              <Text>
-                <Icon name={"medkit-outline"} size={24} color="#2563EB" />
-              </Text>
+          {allPatients.length &&
+            allPatients.map((item) => (
+              <TouchableOpacity
+                onPress={() => {
+                  handleAutorization(item);
+                }}
+                key={item.id}
+                className={`p-4 rounded-lg flex-row items-center mb-3 relative ${theme === "dark" ? "bg-neutral-800" : "bg-white"}`}
+              >
+                <Text>
+                  <Icon name={"medkit-outline"} size={24} color="#2563EB" />
+                </Text>
 
-              <View className="overflow-hidden text-wrap ps-3">
-                <Text
-                  className={`font-medium ${theme === "dark" ? "text-white" : "text-zinc-900"}`}
-                >
-                  {item.username}
-                </Text>
-                <Text
-                  className={`font-medium ${theme === "dark" ? "text-white" : "text-zinc-900"}`}
-                >
-                  {item.email}
-                </Text>
-                <Text
-                  className={`text-sm ${theme === "dark" ? "text-zinc-400" : "text-zinc-500"}`}
-                >
-                  Paciente
-                </Text>
-              </View>
+                <View className="overflow-hidden text-wrap ps-3">
+                  <Text
+                    className={`font-medium ${theme === "dark" ? "text-white" : "text-zinc-900"}`}
+                  >
+                    {item.username}
+                  </Text>
+                  <Text
+                    className={`font-medium ${theme === "dark" ? "text-white" : "text-zinc-900"}`}
+                  >
+                    {item.email}
+                  </Text>
+                  <Text
+                    className={`text-sm ${theme === "dark" ? "text-zinc-400" : "text-zinc-500"}`}
+                  >
+                    Paciente
+                  </Text>
+                  <View
+                    className={` rounded-full  p-1  mt-1  ${item.active ? "bg-green-300/20" : "bg-red-300/50"}`}
+                  >
+                    <Text
+                      className={` font-semibold text-sm text-center ${item.active ? "text-green-500" : "text-red-500"}`}
+                    >
+                      Usuario {item.active ? "ativado" : "desativado"}
+                    </Text>
+                  </View>
+                </View>
 
-              <View className="absolute top-5 right-8 rounded-full h-7 w-6 flex-row gap-2">
-                <CheckBox
-                  value={agreed}
-                  onValueChange={setAgreed}
-                  className="pt-[1px] ms-2"
-                />
-              </View>
-              <View className="absolute top-14 right-5 rounded-full flex-row gap-2 bg-green-300/40 p-1 px-2 rounded-2">
-                <Text className="text-green-500">Ativo</Text>
-              </View>
-            </TouchableOpacity>
-          ))}
+                <View className="absolute top-5 right-8 rounded-full h-7 w-6 flex-row gap-2">
+                  <CheckBox
+                    value={item.active}
+                    onValueChange={setAgreed}
+                    className="pt-[1px] ms-2"
+                  />
+                </View>
+              </TouchableOpacity>
+            ))}
         </View>
       </ScrollView>
     </View>

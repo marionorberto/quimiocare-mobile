@@ -17,7 +17,7 @@ import ScreenNames from "../constants/ScreenName";
 import { RootStackParamsList } from "../navigations/RootStackParamsList";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useTheme } from "../helpers/theme-context";
-import YoutubeIframe from "react-native-youtube-iframe";
+// import YoutubeIframe from "react-native-youtube-iframe";
 
 type props = NativeStackScreenProps<RootStackParamsList, ScreenNames>;
 
@@ -354,7 +354,7 @@ const LibraryScreen = ({ route, navigation }: props) => {
               Assista os melhores videos para te inspirares!
             </Text>
           </View>
-          <View className="mt-4 relative border-2 p-2 border-zinc-300 rounded-xl">
+          {/* <View className="mt-4 relative border-2 p-2 border-zinc-300 rounded-xl">
             <YoutubeIframe
               videoId="F1VlqUJlCko"
               height={180}
@@ -418,7 +418,7 @@ const LibraryScreen = ({ route, navigation }: props) => {
                 color={theme === "dark" ? "white" : "black"}
               />
             )}
-          </View>
+          </View> */}
 
           <TouchableOpacity
             onPress={() => {

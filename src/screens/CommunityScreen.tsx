@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -16,6 +16,7 @@ import ScreenNames from "../constants/ScreenName";
 import { RootStackParamsList } from "../navigations/RootStackParamsList";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useTheme } from "../helpers/theme-context";
+import api from "../services/api";
 
 type props = NativeStackScreenProps<RootStackParamsList, ScreenNames.Community>;
 
@@ -66,6 +67,36 @@ const CommunityScreen = ({ route, navigation }: props) => {
     },
   ];
   const { theme, toggleTheme } = useTheme();
+  const [post, setPost] = useState([
+    {
+      id: "",
+      content: "",
+      description: "",
+      title: "",
+      tag: "",
+      createdAt: "",
+      user: {
+        username: "",
+        typeUser: "",
+      },
+    },
+  ]);
+
+  const fetchPosts = () => {
+    api
+      .get("/posts/todas")
+      .then(({ data: res }) => {
+        setPost(res.data[1]);
+        console.log("ateçao", res.data[1][0].content);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  useEffect(() => {
+    fetchPosts();
+  }, []);
   return (
     <View
       style={{ marginTop: Constants.statusBarHeight }}
@@ -126,12 +157,24 @@ const CommunityScreen = ({ route, navigation }: props) => {
             </TouchableOpacity>
           </View>
         </View>
-        <View>
+        <View className="flex-row gap-2 justify-between items-center mt-4">
           <TouchableOpacity
-            className={` bg-black py-3 rounded-lg flex-row items-center justify-center mb-4 w-36 mt-5 px-2 ${theme === "dark" ? "bg-neutral-700/60" : "bg-black"}`}
+            onPress={() => {
+              navigation.navigate("CreatePostScreen", { title: "Postagem" });
+            }}
+            className={` bg-black py-5 rounded-lg flex-row items-center justify-center mb-4 w-44 h-16  px-2 ${theme === "dark" ? "bg-neutral-700/60" : "bg-black"}`}
           >
             <Icon name="create-outline" size={20} color="white" />
             <Text className="text-white ">Criar Postagem</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("MyPostsScreen", { title: "Postagem" });
+            }}
+            className={` bg-blue-500 py-1 rounded-lg flex-row items-center justify-center mb-4 h-16 w-44 px-2 ${theme === "dark" ? "bg-neutral-700/60" : "bg-black"}`}
+          >
+            <Icon name="eye-outline" size={20} color="white" />
+            <Text className="text-white ">Minhas Postagem</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -151,334 +194,54 @@ const CommunityScreen = ({ route, navigation }: props) => {
               showsHorizontalScrollIndicator={false}
               className="py-4"
             >
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate("PostSingleScreen", { title: "weee" });
-                }}
-              >
-                <View className=" shadow-zinc-400 border-2 border-zinc-200 flex-col justify-center items-start bg-white mt-4 p-5 rounded-lg  h-[16rem] w-80 me-3 relative">
+              {post.map((item) => (
+                <View
+                  key={item.id}
+                  className="shadow-zinc-400 border-2 border-zinc-200 flex-col justify-center items-start bg-white mt-3 p-5 rounded-lg h-[16rem] relative me-3"
+                >
                   <View className="w-full py-3 pt-1">
-                    <View className="flex-row justify-start items-center gap-3 ">
+                    <View className="flex-row justify-start items-center gap-3 mb-1">
                       <Image
+                        source={require("../../assets/user.png")}
                         style={{
                           width: 40,
                           height: 40,
                           borderRadius: 50,
-                          alignContent: "center",
                           borderWidth: 2,
                           borderColor: "#fff",
                           backgroundColor: "#ccc",
                         }}
-                        source={require("../../assets/user.png")}
                       />
                       <Text className="font-semibold text-sm text-black">
-                        Mário Norberto
+                        {item.user.username}
                       </Text>
                     </View>
                     <View className="flex-row justify-between items-center gap-3">
                       <Text className="font-semibold text-sm text-black flex-row justify-start items-center">
-                        <View className="h-1 w-1 bg-blue-400 rounded-full"></View>
-                        <Text>Post</Text>
+                        <View className="h-1 w-1 bg-blue-400 rounded-full mr-2" />
+                        <Text>{item.user.typeUser}</Text>
                       </Text>
-                      <TouchableOpacity
-                        onPress={() => {
-                          navigation.navigate("PostSingleScreen", {
-                            title: "",
-                          });
-                        }}
-                      >
-                        <Text className="rounded-xl bg-blue-500/30 text-blue-600 font-semibold px-[11px] py-[3px]">
-                          Meloma
-                        </Text>
-                      </TouchableOpacity>
+                      <Text className="rounded-xl bg-blue-500/30 text-blue-600 font-semibold px-3 py-[3px]  text-sm">
+                        {item.tag}
+                      </Text>
                     </View>
+                  </View>
+                  <View className="mt-2 mb-4">
+                    <Text className="text-xl text-zinc-600 font-light text-wrap text-justify">
+                      {item.title}
+                    </Text>
+                    <Text className="text-xl text-zinc-600 font-light text-wrap text-justify">
+                      {item.subtitle}
+                    </Text>
                   </View>
                   <View>
-                    <Text className="text-sm  text-zinc-400 font-light text-wrap text-justify">
-                      Como lidar com os efeitos colaterais durate a
-                      quimioterapia? Como lidar com os efeitos colaterais durate
-                      a quimioterapia? Como lidar com os efeitos colaterais
-                      durate a quimioterapia?
-                    </Text>
-                  </View>
-                  <View className="flex-row justify-start items-center">
-                    <View className="flex-row justify-start items-center me-2">
-                      <Icon
-                        name="heart-circle-outline"
-                        color={"black"}
-                        size={18}
-                      />
-                      <Text className="rounded-sm py-2 px-1 text-black text-sm">
-                        Adoro
-                      </Text>
-                    </View>
-
-                    <View className="flex-row justify-start items-center me-2">
-                      <Icon name="bookmark-outline" color={"black"} size={17} />
-                      <Text className="rounded-sm py-2 px-1 text-black text-sm">
-                        Guardar
-                      </Text>
-                    </View>
-                  </View>
-                </View>
-              </TouchableOpacity>
-
-              <View className=" shadow-zinc-400 border-2 border-zinc-200 flex-col justify-center items-start bg-white mt-4 p-5 rounded-lg  h-[16rem] w-80 me-3 relative">
-                <View className="w-full py-3 pt-1">
-                  <View className="flex-row justify-start items-center gap-3 ">
-                    <Image
-                      style={{
-                        width: 40,
-                        height: 40,
-                        borderRadius: 50,
-                        alignContent: "center",
-                        borderWidth: 2,
-                        borderColor: "#fff",
-                        backgroundColor: "#ccc",
-                      }}
-                      source={require("../../assets/user.png")}
-                    />
-                    <Text className="font-semibold text-sm text-black">
-                      Mário Norberto
-                    </Text>
-                  </View>
-                  <View className="flex-row justify-between items-center gap-3">
-                    <Text className="font-semibold text-sm text-black flex-row justify-start items-center">
-                      <View className="h-1 w-1 bg-blue-400 rounded-full"></View>
-                      <Text>Post</Text>
-                    </Text>
-                    <TouchableOpacity
-                      onPress={() => {
-                        navigation.navigate("PostSingleScreen", {
-                          title: "",
-                        });
-                      }}
-                    >
-                      <Text className="rounded-xl bg-blue-500/30 text-blue-600 font-semibold px-[11px] py-[3px]">
-                        Meloma
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-                <View>
-                  <Text className="text-sm  text-zinc-400 font-light text-wrap text-justify">
-                    Como lidar com os efeitos colaterais durate a quimioterapia?
-                    Como lidar com os efeitos colaterais durate a quimioterapia?
-                    Como lidar com os efeitos colaterais durate a quimioterapia?
-                  </Text>
-                </View>
-                <View className="flex-row justify-start items-center">
-                  <View className="flex-row justify-start items-center me-2">
-                    <Icon
-                      name="heart-circle-outline"
-                      color={"black"}
-                      size={18}
-                    />
-                    <Text className="rounded-sm py-2 px-1 text-black text-sm">
-                      Adoro
-                    </Text>
-                  </View>
-
-                  <View className="flex-row justify-start items-center me-2">
-                    <Icon name="bookmark-outline" color={"black"} size={17} />
-                    <Text className="rounded-sm py-2 px-1 text-black text-sm">
-                      Guardar
+                    <Text className="text-zinc-400">
+                      Postado Em <Text></Text>
+                      {item.createdAt.split("T")[0]}
                     </Text>
                   </View>
                 </View>
-              </View>
-              <View className=" shadow-zinc-400 border-2 border-zinc-200 flex-col justify-center items-start bg-white mt-4 p-5 rounded-lg  h-[16rem] w-80 me-3 relative">
-                <View className="w-full py-3 pt-1">
-                  <View className="flex-row justify-start items-center gap-3 ">
-                    <Image
-                      style={{
-                        width: 40,
-                        height: 40,
-                        borderRadius: 50,
-                        alignContent: "center",
-                        borderWidth: 2,
-                        borderColor: "#fff",
-                        backgroundColor: "#ccc",
-                      }}
-                      source={require("../../assets/user.png")}
-                    />
-                    <Text className="font-semibold text-sm text-black">
-                      Mário Norberto
-                    </Text>
-                  </View>
-                  <View className="flex-row justify-between items-center gap-3">
-                    <Text className="font-semibold text-sm text-black flex-row justify-start items-center">
-                      <View className="h-1 w-1 bg-blue-400 rounded-full"></View>
-                      <Text>Post</Text>
-                    </Text>
-                    <TouchableOpacity
-                      onPress={() => {
-                        navigation.navigate("PostSingleScreen", {
-                          title: "",
-                        });
-                      }}
-                    >
-                      <Text className="rounded-xl bg-blue-500/30 text-blue-600 font-semibold px-[11px] py-[3px]">
-                        Meloma
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-                <View>
-                  <Text className="text-sm  text-zinc-400 font-light text-wrap text-justify">
-                    Como lidar com os efeitos colaterais durate a quimioterapia?
-                    Como lidar com os efeitos colaterais durate a quimioterapia?
-                    Como lidar com os efeitos colaterais durate a quimioterapia?
-                  </Text>
-                </View>
-                <View className="flex-row justify-start items-center">
-                  <View className="flex-row justify-start items-center me-2">
-                    <Icon
-                      name="heart-circle-outline"
-                      color={"black"}
-                      size={18}
-                    />
-                    <Text className="rounded-sm py-2 px-1 text-black text-sm">
-                      Adoro
-                    </Text>
-                  </View>
-
-                  <View className="flex-row justify-start items-center me-2">
-                    <Icon name="bookmark-outline" color={"black"} size={17} />
-                    <Text className="rounded-sm py-2 px-1 text-black text-sm">
-                      Guardar
-                    </Text>
-                  </View>
-                </View>
-              </View>
-              <View className=" shadow-zinc-400 border-2 border-zinc-200 flex-col justify-center items-start bg-white mt-4 p-5 rounded-lg  h-[16rem] w-80 me-3 relative">
-                <View className="w-full py-3 pt-1">
-                  <View className="flex-row justify-start items-center gap-3 ">
-                    <Image
-                      style={{
-                        width: 40,
-                        height: 40,
-                        borderRadius: 50,
-                        alignContent: "center",
-                        borderWidth: 2,
-                        borderColor: "#fff",
-                        backgroundColor: "#ccc",
-                      }}
-                      source={require("../../assets/user.png")}
-                    />
-                    <Text className="font-semibold text-sm text-black">
-                      Mário Norberto
-                    </Text>
-                  </View>
-                  <View className="flex-row justify-between items-center gap-3">
-                    <Text className="font-semibold text-sm text-black flex-row justify-start items-center">
-                      <View className="h-1 w-1 bg-blue-400 rounded-full"></View>
-                      <Text>Post</Text>
-                    </Text>
-                    <TouchableOpacity
-                      onPress={() => {
-                        navigation.navigate("PostSingleScreen", {
-                          title: "",
-                        });
-                      }}
-                    >
-                      <Text className="rounded-xl bg-blue-500/30 text-blue-600 font-semibold px-[11px] py-[3px]">
-                        Meloma
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-                <View>
-                  <Text className="text-sm  text-zinc-400 font-light text-wrap text-justify">
-                    Como lidar com os efeitos colaterais durate a quimioterapia?
-                    Como lidar com os efeitos colaterais durate a quimioterapia?
-                    Como lidar com os efeitos colaterais durate a quimioterapia?
-                  </Text>
-                </View>
-                <View className="flex-row justify-start items-center">
-                  <View className="flex-row justify-start items-center me-2">
-                    <Icon
-                      name="heart-circle-outline"
-                      color={"black"}
-                      size={18}
-                    />
-                    <Text className="rounded-sm py-2 px-1 text-black text-sm">
-                      Adoro
-                    </Text>
-                  </View>
-
-                  <View className="flex-row justify-start items-center me-2">
-                    <Icon name="bookmark-outline" color={"black"} size={17} />
-                    <Text className="rounded-sm py-2 px-1 text-black text-sm">
-                      Guardar
-                    </Text>
-                  </View>
-                </View>
-              </View>
-              <View className=" shadow-zinc-400 border-2 border-zinc-200 flex-col justify-center items-start bg-white mt-4 p-5 rounded-lg  h-[16rem] w-80 me-3 relative">
-                <View className="w-full py-3 pt-1">
-                  <View className="flex-row justify-start items-center gap-3 ">
-                    <Image
-                      style={{
-                        width: 40,
-                        height: 40,
-                        borderRadius: 50,
-                        alignContent: "center",
-                        borderWidth: 2,
-                        borderColor: "#fff",
-                        backgroundColor: "#ccc",
-                      }}
-                      source={require("../../assets/user.png")}
-                    />
-                    <Text className="font-semibold text-sm text-black">
-                      Mário Norberto
-                    </Text>
-                  </View>
-                  <View className="flex-row justify-between items-center gap-3">
-                    <Text className="font-semibold text-sm text-black flex-row justify-start items-center">
-                      <View className="h-1 w-1 bg-blue-400 rounded-full"></View>
-                      <Text>Post</Text>
-                    </Text>
-                    <TouchableOpacity
-                      onPress={() => {
-                        navigation.navigate("PostSingleScreen", {
-                          title: "",
-                        });
-                      }}
-                    >
-                      <Text className="rounded-xl bg-blue-500/30 text-blue-600 font-semibold px-[11px] py-[3px]">
-                        Meloma
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-                <View>
-                  <Text className="text-sm  text-zinc-400 font-light text-wrap text-justify">
-                    Como lidar com os efeitos colaterais durate a quimioterapia?
-                    Como lidar com os efeitos colaterais durate a quimioterapia?
-                    Como lidar com os efeitos colaterais durate a quimioterapia?
-                  </Text>
-                </View>
-                <View className="flex-row justify-start items-center">
-                  <View className="flex-row justify-start items-center me-2">
-                    <Icon
-                      name="heart-circle-outline"
-                      color={"black"}
-                      size={18}
-                    />
-                    <Text className="rounded-sm py-2 px-1 text-black text-sm">
-                      Adoro
-                    </Text>
-                  </View>
-
-                  <View className="flex-row justify-start items-center me-2">
-                    <Icon name="bookmark-outline" color={"black"} size={17} />
-                    <Text className="rounded-sm py-2 px-1 text-black text-sm">
-                      Guardar
-                    </Text>
-                  </View>
-                </View>
-              </View>
+              ))}
             </ScrollView>
           </View>
 

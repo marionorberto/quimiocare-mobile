@@ -80,31 +80,7 @@ const BookingScreen = ({ route, navigation }: props) => {
         </Text>
       </View>
 
-      <View className="relative w-64 ms-4 mt-5">
-        <TextInput
-          placeholder="Pesquisar ..."
-          className="bg-white p-3 rounded-lg mb-4 ps-10"
-        />
-        <View className="absolute left-3 top-2">
-          <Icon name="search-outline" color={"#545454"} size={21}></Icon>
-        </View>
-      </View>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View className="rounded-lg border-2 bg-white border-zinc-100 p-3 py-2 mx-4 w-72">
-          <View className="flex-row justify-between items-center">
-            <View className="flex-row justify-start items-center gap-2">
-              <Text>
-                <Icon name="menu-outline" color={"black"} size={24} />
-              </Text>
-              <Text className="text-black font-semibold">
-                Adicionar nova consulta
-              </Text>
-            </View>
-            <Text className="border-zinc-100 border-2 rounded-lg">
-              <Icon name="add-outline" color={"black"} size={23} />
-            </Text>
-          </View>
-        </View>
         <View className="mx-4 mt-4 p-3">
           <View className="flex-row justify-between items-center mb-3">
             <Text className="text-zinc-400 text-lg">

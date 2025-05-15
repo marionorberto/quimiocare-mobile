@@ -17,6 +17,9 @@ export type BottomTabParamList = {
   RedefinirPassword: undefined,
   MainMedicoScreen: undefined,
   ProfileMedicoScreen: undefined,
+  CreatePostScreen: undefined,
+  ActivityRegisterScreen: undefined,
+  ExportarRelatorio: undefined,
 };
 
 export type onSaveDateMedication = {
