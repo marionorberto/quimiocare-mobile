@@ -139,11 +139,6 @@ const ReportsScreen = ({ route, navigation }: props) => {
       const file = result.assets[0];
       console.log("Arquivo selecionado:", file);
 
-      // Se quiser, exibir preview se for imagem
-      // if (file.mimeType?.includes("image")) {
-      //   setFile(file.uri); // exibir no preview, por exemplo
-      // }
-
       const uploadResult = await uploadFile(file.uri);
       setNameForShow(uploadResult.filename);
       if (uploadResult.fileUploaded) {
@@ -291,9 +286,6 @@ const ReportsScreen = ({ route, navigation }: props) => {
               Receitas Guardadas(
               {count})
             </Text>
-            {/* <Text className="text-zinc-400 text-lg">
-              <Icon name="ellipsis-horizontal-sharp" color={"#999"} size={24} />
-            </Text> */}
           </View>
           {receitas.length > 0 ? (
             receitas.map((item) => (
@@ -305,19 +297,6 @@ const ReportsScreen = ({ route, navigation }: props) => {
                   <Text className="text-black font-semibold text-[13px]">
                     Nome: {item.name}
                   </Text>
-                  {/* <Image
-                    style={{
-                      width: 280,
-                      height: 380,
-                      alignContent: "center",
-                      borderWidth: 2,
-                      borderColor: "#fff",
-                      backgroundColor: "#ccc",
-                    }}
-                    source={{
-                      uri: `http://${API_URL_UPLOAD}:3000/${item.url}`,
-                    }}
-                  /> */}
                   {isImage(item.url) && (
                     <Image
                       style={{

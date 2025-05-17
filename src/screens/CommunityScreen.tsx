@@ -71,6 +71,7 @@ const CommunityScreen = ({ route, navigation }: props) => {
     {
       id: "",
       content: "",
+      subtitle: "",
       description: "",
       title: "",
       tag: "",
@@ -260,29 +261,6 @@ const CommunityScreen = ({ route, navigation }: props) => {
               "Quais são os melhores alimentos para reforçar a imunidade?"
             </Text>
             <Text className="text-zinc-500 text-sm mt-2">5 respostas</Text>
-          </TouchableOpacity>
-          <TouchableOpacity className="bg-zinc-200 p-4 rounded-lg mb-3 ">
-            <Text className="text-zinc-800 font-medium text-lg">
-              "É normal sentir fraqueza depois da quimio?"
-            </Text>
-            <Text className="text-zinc-500 text-sm mt-2">8 respostas</Text>
-          </TouchableOpacity>
-          <TouchableOpacity className="bg-zinc-200 p-4 rounded-lg mb-3">
-            <Text className="text-zinc-800 font-medium text-lg">
-              "É normal sentir fraqueza depois da quimio?"
-            </Text>
-            <Text className="text-zinc-500 text-sm mt-2">8 respostas</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("AskReplyScreen", { title: "" });
-            }}
-            className="bg-zinc-200 p-4 rounded-lg mb-3"
-          >
-            <Text className="text-zinc-800 font-medium text-lg">
-              "É normal sentir fraqueza depois da quimio?"
-            </Text>
-            <Text className="text-zinc-500 text-sm mt-2">8 respostas</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
