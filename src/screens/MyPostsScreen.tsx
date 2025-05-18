@@ -20,6 +20,7 @@ import Constants from "expo-constants";
 import { Image } from "expo-image";
 import { useNavigation } from "@react-navigation/native";
 import api from "../services/api";
+import { API_URL_UPLOAD } from "../constants/data";
 
 type props = NativeStackScreenProps<
   RootStackParamsList,
@@ -32,11 +33,14 @@ const MyPostsScreen = ({ route, navigation }: props) => {
       content: "",
       description: "",
       title: "",
+      subtitle: "",
       tag: "",
       createdAt: "",
       user: {
         username: "",
+        typeUser: "",
       },
+      imgUrl: "",
     },
   ]);
 
@@ -85,7 +89,9 @@ const MyPostsScreen = ({ route, navigation }: props) => {
             <View className="w-full py-3 pt-1">
               <View className="flex-row justify-start items-center gap-3 mb-1">
                 <Image
-                  source={require("../../assets/user.png")}
+                  source={{
+                    uri: `http://${API_URL_UPLOAD}:3000/${item.imgUrl}`,
+                  }}
                   style={{
                     width: 40,
                     height: 40,

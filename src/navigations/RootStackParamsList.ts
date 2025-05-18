@@ -197,7 +197,6 @@ type ProfileAdminScreen = {
 
 type MyTipsScreen = {
   title: string;
-  tips: [],
 }
 
 type SuggestVideoScreen = {

@@ -8,6 +8,7 @@ import {
   Pressable,
   Linking,
   TextInput,
+  TouchableHighlight,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
@@ -17,6 +18,7 @@ import { RootStackParamsList } from "../navigations/RootStackParamsList";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useTheme } from "../helpers/theme-context";
 import api from "../services/api";
+import { API_URL_UPLOAD } from "../constants/data";
 
 type props = NativeStackScreenProps<RootStackParamsList, ScreenNames.Community>;
 
@@ -76,6 +78,7 @@ const CommunityScreen = ({ route, navigation }: props) => {
       title: "",
       tag: "",
       createdAt: "",
+      imgUrl: "",
       user: {
         username: "",
         typeUser: "",
@@ -203,7 +206,9 @@ const CommunityScreen = ({ route, navigation }: props) => {
                   <View className="w-full py-3 pt-1">
                     <View className="flex-row justify-start items-center gap-3 mb-1">
                       <Image
-                        source={require("../../assets/user.png")}
+                        source={{
+                          uri: `http://${API_URL_UPLOAD}:3000/${item.imgUrl}`,
+                        }}
                         style={{
                           width: 40,
                           height: 40,
@@ -245,6 +250,7 @@ const CommunityScreen = ({ route, navigation }: props) => {
               ))}
             </ScrollView>
           </View>
+          {/* Botão para mostrar campo */}
 
           <Text
             className={`text-lg font-semibold  mt-4 mb-2 ${theme === "dark" ? "text-white" : "text-black"}`}

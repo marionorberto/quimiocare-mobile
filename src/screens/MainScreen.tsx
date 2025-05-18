@@ -76,6 +76,7 @@ const MainScreen = ({ navigation, route }: props) => {
         username: "",
         typeUser: "",
       },
+      imgUrl: "",
     },
   ]);
   const [medicationCounter, setMedicationCounter] = useState({
@@ -136,6 +137,7 @@ const MainScreen = ({ navigation, route }: props) => {
       .then(({ data: res }) => {
         setPost(res.data[1]);
         // console.log("ateçao", res.data[1][0].content);
+        // console.log("image from post", res.data[1]);
       })
       .catch((error) => {
         console.log(error);
@@ -148,7 +150,7 @@ const MainScreen = ({ navigation, route }: props) => {
         .get(`${API_URL}/profiles/single`)
         .then(({ data: response }) => {
           setUserImg(`http://${API_URL_UPLOAD}:3000/${response.data.urlImg}`);
-          // console.log(response.data);
+          // console.log("image from profile", response.data.urlImg);
         })
         .catch((error) => {
           console.log(error);
@@ -617,7 +619,7 @@ const MainScreen = ({ navigation, route }: props) => {
                   <Text
                     className={`font-bold ${theme === "dark" ? "text-white" : "text-[#999]"}`}
                   >
-                    Veja os nosvos posts da comunidade Quimiocare!
+                    Veja os novos posts da comunidade Quimiocare!
                   </Text>
                 </View>
                 <ScrollView
@@ -633,7 +635,9 @@ const MainScreen = ({ navigation, route }: props) => {
                       <View className="w-full py-3 pt-1">
                         <View className="flex-row justify-start items-center gap-3 mb-1">
                           <Image
-                            source={require("../../assets/user.png")}
+                            source={{
+                              uri: `http://${API_URL_UPLOAD}:3000/${item.imgUrl}`,
+                            }}
                             style={{
                               width: 40,
                               height: 40,

@@ -8,8 +8,9 @@ import {
   Linking,
   TextInput,
   TouchableOpacity,
+  TouchableHighlight,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import Icon from "react-native-vector-icons/Ionicons";
 import {
   NativeStackNavigatorProps,
@@ -26,11 +27,14 @@ type props = NativeStackScreenProps<
 >;
 
 const QuestionScreen = ({ route, navigation }: props) => {
+  const [showInputReply, setShowInputReply] = useState(false);
   return (
     <View
       style={{ marginTop: Constants.statusBarHeight }}
       className="flex-col justify-center items-stretch  pb-8"
     >
+      {/* Campo de sugestão de vídeo */}
+
       <View className="flex-row justify-start items-center gap-10 px-4 mt-4 mb-5">
         <View className="border-[1px] border-zinc-200 p-[3px] rounded-md bg-white">
           <Pressable onPress={() => navigation.goBack()}>
@@ -46,8 +50,8 @@ const QuestionScreen = ({ route, navigation }: props) => {
         </Text>
       </View>
 
-      <View className="self-start flex-col justify-center items-start mt-4 mb-[1px] px-8">
-        <View className="flex-row justify-start items-center mb-3">
+      <View className="self-start flex-col justify-center items-start mt-4 mb-[1px] px-8  rounded-lg w-full">
+        <View className="flex-row justify-start items-center  gap-3">
           <Image
             style={{
               width: 40,
@@ -61,30 +65,81 @@ const QuestionScreen = ({ route, navigation }: props) => {
             source={require("../../assets/user.png")}
           />
           <View>
-            <Text className="text-zinc-500 text-start text-lg">
+            <Text className="text-zinc-500 text-start text-lg font-bold">
               marionorberto
             </Text>
-            <Text>Cancer</Text>
-          </View>
-        </View>
-        <Text className="text-xl  text-black  text-wrap text-start">
-          algum titulo algum titulo algum titulo algum titulo algum titulo
-        </Text>
-        <Text className="text-zinc-500 text-sm mt-2">8 respostas</Text>
-      </View>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View className="px-6 mt-4 pb-24">
-          <View className="rounde-xl bg-blue-500/10 p-3 rounded-lg">
-            <Text className="text-blue-600 font-bold  text-xl text-center">
-              Responder
+            <Text className="text-blue-600 bg-blue-300/40 rounded-lg  text-center p-1">
+              Cancer
             </Text>
           </View>
-          <TextInput
-            className="border-2 rounded-lg border-zinc-300 mt-5 p-3 pt-1 h-28"
-            placeholder="Minha Resposta é!"
-          />
         </View>
-      </ScrollView>
+        <TouchableOpacity className="bg-zinc-200 p-4 rounded-lg my-4 w-full">
+          <Text className="text-zinc-800 font-medium ">
+            "É normal sentir fraqueza depois da quimio?"
+          </Text>
+          <Text className="text-zinc-500 text-sm mt-1">8 respostas</Text>
+        </TouchableOpacity>
+        <Pressable
+          onPress={() => setShowInputReply(!showInputReply)}
+          className="bg-blue-600 rounded-lg py-2 px-4 mb-6"
+        >
+          <Text className="text-white text-center font-semibold">
+            Responder
+          </Text>
+        </Pressable>
+
+        {showInputReply && (
+          <View className="border border-zinc-300 rounded-lg p-4 w-full">
+            <Text className="text-black font-semibold mb-2">
+              Escreva a sua resposta:
+            </Text>
+            <TextInput
+              placeholder="Resposta...."
+              // value={}
+              // onChangeText={}
+              className="border border-zinc-400 rounded-md px-3 py-2 text-black mb-4"
+            />
+            <TouchableHighlight
+              onPress={() => {
+                //  handleSubmitResponse();
+                alert("Submit response");
+              }}
+              className="bg-blue-600 rounded-lg py-2 px-4"
+            >
+              <Text className="text-white text-center font-semibold">
+                Enviar Resposta
+              </Text>
+            </TouchableHighlight>
+          </View>
+        )}
+        <Text className="my-4">Respostas:</Text>
+        <View className=" rounded-lg p-3 mb-5 border-b-2 border-zinc-200 w-full">
+          <View className="mb-3 ">
+            <View className="flex-row">
+              <Image
+                style={{
+                  width: 25,
+                  height: 25,
+                  borderRadius: 50,
+                  alignContent: "center",
+                  borderWidth: 2,
+                  borderColor: "#fff",
+                  backgroundColor: "#ccc",
+                }}
+                source={require("../../assets/user.png")}
+              />
+              <View>
+                <Text className="text-zinc-500 text-start text-sm font-bold">
+                  marionorberto
+                </Text>
+              </View>
+            </View>
+            <View className="bg-zinc-200 rounded-lg mt-1 p-4">
+              <Text>adaadalaklkakldlladasdasdas</Text>
+            </View>
+          </View>
+        </View>
+      </View>
     </View>
   );
 };

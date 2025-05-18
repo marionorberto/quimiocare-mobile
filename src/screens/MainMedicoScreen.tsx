@@ -73,6 +73,7 @@ const MainMedicoScreen = ({ navigation, route }: props) => {
         username: "",
         typeUser: "",
       },
+      imgUrl: "",
     },
   ]);
   const [myPostCount, setMyPostCount] = useState({ count: 0 });
@@ -279,7 +280,7 @@ const MainMedicoScreen = ({ navigation, route }: props) => {
             <TouchableHighlight
               onPress={() => {
                 navigation.navigate("MyTipsScreen", {
-                  title: "",
+                  title: "ss",
                 });
               }}
             >
@@ -390,7 +391,7 @@ const MainMedicoScreen = ({ navigation, route }: props) => {
 
                 <Text
                   onPress={() => {
-                    navigation.navigate("MyTipsScreen", { title: "" });
+                    navigation.navigate("MyTipsScreen", { title: "sd" });
                   }}
                   className="bg-black text-white text-sm rounded-md w-32 py-3 text-center"
                 >
@@ -444,19 +445,24 @@ const MainMedicoScreen = ({ navigation, route }: props) => {
             </Text>
           </View>
           <ScrollView
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            className="py-4"
+            showsVerticalScrollIndicator={false}
+            className="mt-6 px-4"
+            contentContainerStyle={{ paddingBottom: 30 }}
           >
+            <Text className="font-semibold mb-1">
+              Veja todas as tuas postagens abaixo:
+            </Text>
             {post.map((item) => (
               <View
-                key={item.id}
-                className="shadow-zinc-400 border-2 border-zinc-200 flex-col justify-center items-start bg-white mt-3 p-5 rounded-lg h-[16rem] me-2 relative"
+                key={item.subtitle}
+                className="shadow-zinc-400 border-2 border-zinc-200 flex-col justify-center items-start bg-white mt-3 p-5 rounded-lg h-[16rem] w-full relative"
               >
                 <View className="w-full py-3 pt-1">
                   <View className="flex-row justify-start items-center gap-3 mb-1">
                     <Image
-                      source={require("../../assets/user.png")}
+                      source={{
+                        uri: `http://${API_URL_UPLOAD}:3000/${item.imgUrl}`,
+                      }}
                       style={{
                         width: 40,
                         height: 40,
