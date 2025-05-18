@@ -9,7 +9,7 @@ import {
   StatusBar,
   Alert,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Contants from "expo-constants";
 import { Image } from "expo-image";
 import Icon from "react-native-vector-icons/Ionicons";
@@ -26,6 +26,7 @@ import { API_URL, API_URL_UPLOAD } from "../constants/data";
 import { allPrescriptions } from "../services/receitas";
 import { lastdaily } from "../services/daily/create-daily";
 import { parse, format, isSameDay } from "date-fns";
+import { useFocusEffect } from "@react-navigation/native";
 
 type props = NativeStackScreenProps<RootStackParamsList, ScreenNames.Main>;
 
@@ -104,6 +105,24 @@ const MainScreen = ({ navigation, route }: props) => {
     // Compara se são iguais
     return formattedDateFromLastDaily === formattedDateToday;
   };
+
+  useFocusEffect(
+    useCallback(() => {
+      // Essa função é chamada sempre que a tela ganha foco
+      fetchTips();
+      fetchSymptom();
+      fetchMedications();
+      fetchAppointment();
+      fetchImgUser();
+      fetchPosts();
+      fetchReceitas();
+      fetchLastdaily();
+
+      return () => {
+        // Opcional: código quando sai da tela
+      };
+    }, [])
+  );
 
   useEffect(() => {
     fetchTips();

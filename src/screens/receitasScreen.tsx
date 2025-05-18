@@ -276,7 +276,7 @@ const ExportarRelatorio = ({ navigation }: props) => {
   const print = async () => {
     await onSaveReport();
 
-    let html = "";
+    let html: string = "";
 
     html = buildHTML();
 
@@ -353,6 +353,8 @@ const ExportarRelatorio = ({ navigation }: props) => {
           <DateTimePicker
             value={dataInicial}
             mode="date"
+            minimumDate={new Date(2025, 0, 1)}
+            maximumDate={new Date()}
             display="default"
             onChange={(_, date) => {
               setMostrarInicial(false);
@@ -361,7 +363,6 @@ const ExportarRelatorio = ({ navigation }: props) => {
           />
         )}
 
-        {/* Botão de Exportação */}
         <TouchableHighlight
           onPress={() => {
             print();

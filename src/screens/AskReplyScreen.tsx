@@ -32,6 +32,39 @@ const AskReplyScreen = ({ route, navigation }: props) => {
         </Pressable>
 
         <ScrollView>
+          <Pressable
+            onPress={() => setMostrarCampo(!mostrarCampo)}
+            className="bg-blue-600 rounded-lg py-2 px-4 mb-6"
+          >
+            <Text className="text-white text-center font-semibold">
+              Sugerir vídeo
+            </Text>
+          </Pressable>
+
+          {/* Campo de sugestão de vídeo */}
+          {show && (
+            <View className="border border-zinc-300 rounded-lg p-4">
+              <Text className="text-black font-semibold mb-2">
+                Insira o link do vídeo:
+              </Text>
+              <TextInput
+                placeholder="https://www.youtube.com/..."
+                // value={}
+                // onChangeText={}
+                className="border border-zinc-400 rounded-md px-3 py-2 text-black mb-4"
+              />
+              <TouchableHighlight
+                onPress={() => {
+                  // handleSubmeter();
+                }}
+                className="bg-blue-600 rounded-lg py-2 px-4"
+              >
+                <Text className="text-white text-center font-semibold">
+                  Enviar sugestão
+                </Text>
+              </TouchableHighlight>
+            </View>
+          )}
           <TouchableOpacity className="bg-zinc-200 p-4 rounded-lg mb-3">
             <Text className="text-zinc-800 font-medium">
               "É normal sentir fraqueza depois da quimio?"

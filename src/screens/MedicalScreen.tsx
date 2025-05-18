@@ -5,6 +5,7 @@ import {
   ScrollView,
   TextInput,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import Contants from "expo-constants";
@@ -178,8 +179,23 @@ const MedicalScreen = ({ route, navigation }: props) => {
     event: DateTimePickerEvent,
     date: Date | undefined
   ) => {
+    const hour = date?.getHours();
+    const minutes = date?.getMinutes();
+
+    // Verifica se está entre 08:00 e 16:00
+    if (hour && hour >= 8 && hour < 16) {
+      if (date) {
+        setReminderTime(date);
+      }
+    } else {
+      Alert.alert(
+        "Horário inválido",
+        "Selecione um horário entre 08:00 e 16:00"
+      );
+    }
+
     if (date) {
-      setDateAppointment(date);
+      setReminderTime(date);
     }
     setShowTimePickerAppointment(false);
   };
@@ -803,6 +819,8 @@ const MedicalScreen = ({ route, navigation }: props) => {
                         <DateTimePicker
                           value={dateAppointment}
                           mode="date"
+                          minimumDate={new Date(2025, 4, 18)}
+                          maximumDate={new Date(2025, 11, 31)}
                           display="inline"
                           onChange={handleDateAppointmentChange}
                         />

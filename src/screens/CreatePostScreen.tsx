@@ -143,7 +143,7 @@ const CreatePostScreen = ({ route, navigation }: props) => {
               />
             </Picker>
 
-            <TouchableOpacity
+            {/* <TouchableOpacity
               className="border-2 border-zinc-300 border-dashed rounded-lg py-3 mt-2 flex-row items-center justify-center"
               onPress={() => {
                 // alert("implementar o meto");
@@ -158,7 +158,7 @@ const CreatePostScreen = ({ route, navigation }: props) => {
               <Text className="text-black text-center font-semibold">
                 carragar imagem para o post
               </Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <TouchableOpacity
               className="bg-blue-500 rounded-lg py-3 mt-2 flex-row items-center justify-center"
               onPress={() => onSave()}

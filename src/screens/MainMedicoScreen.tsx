@@ -10,7 +10,7 @@ import {
   Alert,
   TextInput,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Contants from "expo-constants";
 import { Image } from "expo-image";
 import Icon from "react-native-vector-icons/Ionicons";
@@ -27,6 +27,7 @@ import { API_URL, API_URL_UPLOAD } from "../constants/data";
 import { Picker } from "@react-native-picker/picker";
 import Modal from "../components/Modal";
 import { saveTip } from "../services/tips/create-tips";
+import { useFocusEffect } from "@react-navigation/native";
 
 type props = NativeStackScreenProps<RootStackParamsList, ScreenNames>;
 
@@ -89,6 +90,21 @@ const MainMedicoScreen = ({ navigation, route }: props) => {
         console.log(error);
       });
   };
+
+  useFocusEffect(
+    useCallback(() => {
+      // Essa função é chamada sempre que a tela ganha foco
+      fetchTips();
+      fetchImgUser();
+      fetchTipsCategory();
+      fetchMyPosts();
+      fetchPosts();
+
+      return () => {
+        // Opcional: código quando sai da tela
+      };
+    }, [])
+  );
 
   useEffect(() => {
     fetchTips();

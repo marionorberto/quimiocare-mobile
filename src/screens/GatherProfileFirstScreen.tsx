@@ -30,7 +30,7 @@ type props = NativeStackScreenProps<RootStackParamsList, ScreenNames>;
 const GatherProfileFirstScreen = ({ route, navigation }: props) => {
   const FormData = global.FormData;
   const [countryName, setcountryName] = useState("");
-  const [birthday, setBirthday] = useState(new Date());
+  const [birthday, setBirthday] = useState(new Date(2010, 11, 31));
   const [sex, setSex] = useState<string>("");
   const [bio, setBio] = useState<string>("");
   const [phoneNumber, setPhoneNumber] = useState<string>("");
@@ -41,6 +41,18 @@ const GatherProfileFirstScreen = ({ route, navigation }: props) => {
   const [cancerTypes, setCancerTypes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showDateTimePicker, setShowDateTimePicker] = useState(false);
+
+  // Data atual
+  // const today = new Date();
+
+  // // Define limites
+  // const maxDate = new Date(); // 15 anos atrás
+  // maxDate.setFullYear(today.getFullYear() - 15);
+
+  // const minDate = new Date(); // 75 anos atrás
+  // minDate.setFullYear(today.getFullYear() - 75);
+
+  // console.log(minDate, maxDate);
 
   const setDate = (event: DateTimePickerEvent, date: Date) => {
     const {
@@ -195,17 +207,38 @@ const GatherProfileFirstScreen = ({ route, navigation }: props) => {
             Regista os seus dados pessoais!
           </Text>
           <View className="flex flex-col gap-2 pt-10">
-            <View>
-              <Text className="text-zinc-700 mb-1">
-                Número De Telefone(Opcional)
-              </Text>
+            <Text className="text-zinc-700 mb-1">
+              Número De Telefone(Opcional)
+            </Text>
+            <View className="flex-row justify-start items-center gap-1">
+              <Text className="text-black">+244</Text>
               <TextInput
-                className="border border-zinc-300 rounded-lg px-4 py-3"
-                placeholder="Teu Telefone"
+                className="border border-zinc-300 rounded-lg px-4 py-3 w-72"
+                placeholder="Teu Telefone(Ex: 9xx xxx xxx)"
                 value={phoneNumber}
-                onChangeText={(text) =>
-                  setPhoneNumber(text.replace(/[^0-9+]/g, ""))
-                }
+                onChangeText={(text) => {
+                  // Remove tudo que não for número
+                  let cleaned = text.replace(/[^0-9]/g, "");
+
+                  // Limita a 9 caracteres
+                  if (cleaned.length > 9) return;
+
+                  // Validações específicas
+                  if (cleaned.length >= 1 && cleaned[0] !== "9") return;
+
+                  if (
+                    cleaned.length >= 2 &&
+                    !["1", "2", "3", "4", "5", "7"].includes(cleaned[1])
+                  )
+                    return;
+
+                  // Evita todos os números iguais
+                  if (cleaned.length === 9 && /^(\d)\1{8}$/.test(cleaned))
+                    return;
+
+                  // Tudo certo, atualiza o estado
+                  setPhoneNumber(cleaned);
+                }}
                 keyboardType="visible-password"
               />
             </View>
@@ -220,7 +253,12 @@ const GatherProfileFirstScreen = ({ route, navigation }: props) => {
               />
             </View>
             <View className="mt-1">
-              <Text className="text-zinc-700 mb-1">Data de Nascimento</Text>
+              <Text className="text-zinc-700 mb-1">
+                Data de Nascimento{" "}
+                <Text className="text-red-400">
+                  (Apenas permitdo usuários entre 15 à 75 anos!)
+                </Text>
+              </Text>
               <Button
                 title="Definir"
                 onPress={() => setShowDateTimePicker(true)}
@@ -237,6 +275,8 @@ const GatherProfileFirstScreen = ({ route, navigation }: props) => {
                   value={birthday}
                   mode="date"
                   display="spinner"
+                  minimumDate={new Date(1950, 0, 1)}
+                  maximumDate={new Date(2010, 11, 31)}
                   onChange={onChange}
                 />
               )}

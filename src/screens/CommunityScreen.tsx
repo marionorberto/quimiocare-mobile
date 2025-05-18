@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -11,7 +11,7 @@ import {
   TouchableHighlight,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import Constants from "expo-constants";
 import ScreenNames from "../constants/ScreenName";
 import { RootStackParamsList } from "../navigations/RootStackParamsList";
@@ -97,6 +97,17 @@ const CommunityScreen = ({ route, navigation }: props) => {
         console.log(error);
       });
   };
+
+  useFocusEffect(
+    useCallback(() => {
+      // Essa função é chamada sempre que a tela ganha foco
+      fetchPosts();
+
+      return () => {
+        // Opcional: código quando sai da tela
+      };
+    }, [])
+  );
 
   useEffect(() => {
     fetchPosts();

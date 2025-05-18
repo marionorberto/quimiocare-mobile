@@ -201,9 +201,29 @@ const GatherDoctorProfileFirstScreen = ({ route, navigation }: props) => {
                 className="border border-zinc-300 rounded-lg px-4 py-3"
                 placeholder="Teu Telefone"
                 value={phoneNumber}
-                onChangeText={(text) =>
-                  setPhoneNumber(text.replace(/[^0-9+]/g, ""))
-                }
+                onChangeText={(text) => {
+                  // Remove tudo que não for número
+                  let cleaned = text.replace(/[^0-9]/g, "");
+
+                  // Limita a 9 caracteres
+                  if (cleaned.length > 9) return;
+
+                  // Validações específicas
+                  if (cleaned.length >= 1 && cleaned[0] !== "9") return;
+
+                  if (
+                    cleaned.length >= 2 &&
+                    !["1", "2", "3", "4", "5", "7"].includes(cleaned[1])
+                  )
+                    return;
+
+                  // Evita todos os números iguais
+                  if (cleaned.length === 9 && /^(\d)\1{8}$/.test(cleaned))
+                    return;
+
+                  // Tudo certo, atualiza o estado
+                  setPhoneNumber(cleaned);
+                }}
                 keyboardType="visible-password"
               />
             </View>

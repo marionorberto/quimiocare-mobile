@@ -9,6 +9,7 @@ import {
   TextInput,
   Alert,
   ToastAndroid,
+  TouchableHighlight,
 } from "react-native";
 import * as DocumentPicker from "expo-document-picker";
 import Icon from "react-native-vector-icons/Ionicons";
@@ -22,6 +23,10 @@ import { API_URL, API_URL_UPLOAD } from "../constants/data";
 import { allPrescriptions, createReceita } from "../services/receitas";
 import { WebView } from "react-native-webview";
 import * as Linking from "expo-linking";
+import * as Print from "expo-print";
+import * as Sharing from "expo-sharing";
+import * as FileSystem from "expo-file-system";
+import * as MediaLibrary from "expo-media-library";
 
 type props = NativeStackScreenProps<RootStackParamsList, ScreenNames>;
 
@@ -149,6 +154,63 @@ const ReportsScreen = ({ route, navigation }: props) => {
     }
   };
 
+  const printToFile = async () => {
+    let html = "";
+    // html = buildHTML();
+
+    const { uri } = await Print.printToFileAsync({ html });
+  };
+
+  const downloadAndSavePDF = async (fileUrl: string, filename: string) => {
+    try {
+      // const downloadResumable = FileSystem.createDownloadResumable(
+      //   fileUrl, // Exemplo: http://192.168.0.10:3000/uploads/arquivo.pdf
+      //   FileSystem.documentDirectory + filename
+      // );
+
+      // const downloadResult = await downloadResumable.downloadAsync();
+
+      // if (!downloadResult) {
+      //   throw new Error("Download falhou ou retornou vazio.");
+      // }
+
+      // const { uri } = downloadResult;
+      await Print.printAsync({ uri: fileUrl });
+
+      // Verifica se o compartilhamento é possível
+      const canShare = await Sharing.isAvailableAsync();
+      if (!canShare) {
+        Alert.alert(
+          "Erro",
+          "O compartilhamento não está disponível neste dispositivo."
+        );
+        return;
+      }
+
+      // Compartilha o PDF ou salva onde o usuário desejar
+      // await Sharing.shareAsync();
+    } catch (error) {
+      console.error("Erro ao baixar e compartilhar o PDF:", error);
+      Alert.alert("Erro", "Não foi possível baixar o PDF.");
+    }
+  };
+
+  // const generatePDF = async () => {
+  //   try {
+  //     const { uri } = await Print.printToFileAsync({ html });
+  //     console.log("PDF gerado em:", uri);
+
+  //     // Compartilhar PDF
+  //     if (await Sharing.isAvailableAsync()) {
+  //       await Sharing.shareAsync(uri);
+  //     } else {
+  //       alert("Compartilhamento não disponível no dispositivo");
+  //     }
+  //   } catch (error) {
+  //     console.error("Erro ao gerar PDF:", error);
+  //   }
+  // };
+
   useEffect(() => {
     fetchReceitas();
   }, []);
@@ -170,31 +232,8 @@ const ReportsScreen = ({ route, navigation }: props) => {
           Receitas Médicas
         </Text>
       </View>
-
-      {/* <View className="relative w-64 ms-4 mt-5">
-        <TextInput
-          placeholder="Pesquisar ..."
-          className="bg-white p-3 rounded-lg mb-4 ps-10"
-        />
-        <View className="absolute left-3 top-2">
-          <Icon name="search-outline" color={"#545454"} size={21}></Icon>
-        </View>
-      </View> */}
       <ScrollView showsVerticalScrollIndicator={false}>
         <Pressable className="mt-6">
-          {/* <View className="rounded-lg border-2 bg-white border-zinc-100 p-3 py-3 mx-4 w-72">
-            <View className="flex-row justify-between items-center">
-              <View className="flex-row justify-start items-center gap-2">
-                <Text>
-                  <Icon name="download-outline" color={"black"} size={20} />
-                </Text>
-                <Text className="text-black font-semibold">
-                  Upload Nova Receita
-                </Text>
-              </View>
-            </View>
-          </View> */}
-
           <TouchableOpacity
             onPress={() => {
               setReceit(true);
@@ -209,7 +248,6 @@ const ReportsScreen = ({ route, navigation }: props) => {
                 className="mr-2"
               />
             </Text>
-
             <Text className="text-white text-center font-semibold">
               Upload Nova Receita
             </Text>
@@ -312,25 +350,48 @@ const ReportsScreen = ({ route, navigation }: props) => {
                       }}
                     />
                   )}
-                  {isPDF(item.url)} && (
-                  <View
-                    style={{
-                      height: 500,
-                      width: "100%",
-                      borderRadius: 10,
-                      overflow: "hidden",
-                    }}
-                  >
-                    <WebView
-                      source={{
-                        uri: `https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(`http://${API_URL_UPLOAD}:3000/${item.url}`)}`,
+                  {isPDF(item.url) && (
+                    <View
+                      style={{
+                        height: 500,
+                        width: "100%",
+                        borderRadius: 10,
+                        overflow: "hidden",
                       }}
-                      originWhitelist={["*"]}
-                      startInLoadingState={true}
-                      style={{ flex: 1 }}
-                    />
-                  </View>
-                  )
+                    >
+                      {/* <WebView
+                        source={{
+                          uri: `https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(`http://${API_URL_UPLOAD}:3000/${item.url}`)}`,
+                        }}
+                        originWhitelist={["*"]}
+                        startInLoadingState={true}
+                        style={{ flex: 1 }}
+                      /> */}
+                      <View className="flex-col justify-content-center items-center">
+                        <View className="flex-row justify-center items-center mt-5">
+                          <Image
+                            style={{
+                              height: 150,
+                              width: 150,
+                            }}
+                            source={require("../../assets/efe.jpg")}
+                          />
+                        </View>
+
+                        <TouchableHighlight
+                          onPress={() => {
+                            const url = `http://${API_URL_UPLOAD}:3000/${item.url}`;
+                            downloadAndSavePDF(url, item.url);
+                          }}
+                          className="bg-blue-600 rounded-lg py-3 px-4"
+                        >
+                          <Text className="text-white text-center font-semibold">
+                            Exportar Relatório
+                          </Text>
+                        </TouchableHighlight>
+                      </View>
+                    </View>
+                  )}
                 </View>
               </TouchableOpacity>
             ))
