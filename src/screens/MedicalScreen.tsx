@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
+  Dimensions,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import Contants from "expo-constants";
@@ -34,6 +35,7 @@ import { addMedication } from "../utils/storage";
 import api from "../services/api";
 import { Image } from "expo-image";
 import { lastAppointment, lastMedication } from "../services/last";
+import { BarChart, LineChart, ProgressChart } from "react-native-chart-kit";
 
 type props = NativeStackScreenProps<RootStackParamsList, ScreenNames.Medical>;
 
@@ -108,7 +110,7 @@ const MedicalScreen = ({ route, navigation }: props) => {
     datasets: [
       {
         data: [20, 45, 28, 80, 90],
-        color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`,
+        color: (opacity = 100) => `rgba(0 , 0, 0, ${opacity})`,
         strokeWidth: 3,
       },
     ],
@@ -117,13 +119,16 @@ const MedicalScreen = ({ route, navigation }: props) => {
   const [filter, setFilter] = useState("normal");
   const chartConfig = {
     backgroundGradientFrom: "#3b82f6",
-    backgroundGradientFromOpacity: 0,
+    backgroundGradientFromOpacity: "#3b82f6",
     backgroundGradientTo: "#3b82f6",
-    backgroundGradientToOpacity: 0.5,
-    color: (opacity = 1) => `rgb(147 197 253 / ${opacity})`,
-    strokeWidth: 2,
+    // backgroundGradientToOpacity: 0.5,
+    color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+    strokeWidth: 6, // optional, default 3
     barPercentage: 0.5,
-    useShadowColorFromDataset: false,
+    style: {
+      borderRadius: 10,
+    },
+    useShadowColorFromDataset: false, // optional
   };
   const moodFeeling = moodDayFeeling;
 
@@ -334,7 +339,73 @@ const MedicalScreen = ({ route, navigation }: props) => {
         <View className="mt-6">
           <Text className="text-black text-xl font-semibold mb-4">Sumário</Text>
 
-          <Image
+          <View className=" rounded-xl p-4 mb-6">
+            <Text className="text-lg font-bold text-black ">Gráfico (Mês)</Text>
+            <Text className="text-lg font-bold text-black ">
+              Consultas/Remédios/Sintomas
+            </Text>
+            <View className=" rounded-lg p-4 pb-0 items-center justify-center ">
+              <View className=" pt-0">
+                {/* <LineChart
+                  data={{
+                    labels: ["Dez", "Jan", "Feb", "Mar", "Abr", "Mai"],
+                    datasets: [
+                      {
+                        data: [34, 12, 44, 89, 12, 33],
+                      },
+                    ],
+                  }}
+                  width={Dimensions.get("window").width} // from react-native
+                  height={220}
+                  yAxisLabel=""
+                  yAxisSuffix=""
+                  yAxisInterval={1} // optional, defaults to 1
+                  chartConfig={{
+                    backgroundColor: "#3b82f6",
+                    backgroundGradientFrom: "#3b82f6",
+                    backgroundGradientTo: "#3b82f6",
+                    // decimalPlaces: , // optional, defaults to 2dp
+                    color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                    labelColor: (opacity = 1) =>
+                      `rgba(255, 255, 255, ${opacity})`,
+                    style: {
+                      borderRadius: 10,
+                      padding: 10,
+                    },
+                    propsForDots: {
+                      r: "6",
+                      strokeWidth: "2",
+                      stroke: "#ffa726",
+                    },
+                  }}
+                  // bezier
+                  style={{
+                    marginVertical: 8,
+                    borderRadius: 10,
+                  }}
+                /> */}
+
+                <ProgressChart
+                  data={{
+                    labels: ["🩺", "💊", "🤒"], // optional
+                    data: [0.6, 0.12, 0.34],
+                  }}
+                  width={330}
+                  height={250}
+                  strokeWidth={20}
+                  radius={20}
+                  chartConfig={chartConfig}
+                  hideLegend={false}
+                  style={{
+                    borderRadius: 16,
+                    width: "full",
+                  }}
+                />
+              </View>
+            </View>
+          </View>
+
+          {/* <Image
             style={{
               width: 320,
               height: 160,
@@ -345,7 +416,7 @@ const MedicalScreen = ({ route, navigation }: props) => {
               backgroundColor: "#ccc",
             }}
             source={require("../../assets/cm.webp")}
-          />
+          /> */}
 
           <View>
             {lastMedicationdata ? (

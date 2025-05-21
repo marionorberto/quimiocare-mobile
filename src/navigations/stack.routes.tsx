@@ -34,7 +34,6 @@ import DailyScreen from "../screens/DailScreen";
 import MainScreen from "../screens/MainScreen";
 import AdminMainScreen from "../screens/AdminMainScreen";
 import AnalisesScreen from "../screens/AnalisesScreen";
-import AutorizationScreen from "../screens/AutorizationScreen";
 import OptionsAdmincreen from "../screens/OptionsAdminScreen";
 import MainMedicoScreen from "../screens/MainMedicoScreen";
 import MyPostsScreen from "../screens/MyPostsScreen";
@@ -187,11 +186,6 @@ const StackRoutes = () => {
       <Stack.Screen
         name={ScreenNames.CreateMedicationScreen}
         component={CreateMedicationScreen}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name={ScreenNames.AutorizationScreen}
-        component={AutorizationScreen}
         options={{ headerShown: false }}
       />
       <Stack.Screen

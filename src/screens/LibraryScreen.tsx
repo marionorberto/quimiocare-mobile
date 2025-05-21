@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import {
   View,
   Text,
@@ -17,13 +17,16 @@ import ScreenNames from "../constants/ScreenName";
 import { RootStackParamsList } from "../navigations/RootStackParamsList";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useTheme } from "../helpers/theme-context";
-// import YoutubeIframe from "react-native-youtube-iframe";
+import YoutubeIframe from "react-native-youtube-iframe";
 
-type props = NativeStackScreenProps<RootStackParamsList, ScreenNames>;
+type props = NativeStackScreenProps<RootStackParamsList, ScreenNames.Library>;
 
 const LibraryScreen = ({ route, navigation }: props) => {
   const [videoReady, setVideoReady] = useState(false);
-  const videoIds = ["THivxQYsJ_U", "0GOUF8vNqzE"];
+  const [searchQuery, setSearchQuery] = useState("");
+  const { theme, toggleTheme } = useTheme();
+
+  // Dados originais mantidos conforme seu arquivo
   const [books, setBooks] = useState([
     {
       id: 1,
@@ -175,37 +178,58 @@ const LibraryScreen = ({ route, navigation }: props) => {
       image: require("../../assets/8-article.png"),
     },
   ]);
+  const youtubeChannels = useMemo(
+    () => [
+      {
+        id: 1,
+        title: "Histórias de Superação contra o Câncer",
+        videoId: "F1VlqUJlCko",
+      },
+      {
+        id: 2,
+        title: "Minha História",
+        videoId: "FGSqYPrJDak",
+      },
+      { id: 3, title: "Alimentação e Câncer", videoId: "HuXbsrBYbKg" },
+      { id: 4, title: "Oque é o cancer", videoId: "AhwSBUwevP0" },
+      { id: 5, title: "Histórias de superacão", videoId: "Ep5MWBVd3xg" },
+    ],
+    []
+  );
 
-  const image = require("../../assets/cancer-porque-eu.jpeg");
+  // Função de filtro unificada
+  const filterContent = (items: any[], query: string) => {
+    if (!query.trim()) return items;
 
-  const youtubeChannels = [
-    {
-      id: 1,
-      title: "Saúde e Bem-Estar",
-      thumbnail: "https://source.unsplash.com/400x300/?health",
-    },
-    {
-      id: 2,
-      title: "Dicas para Pacientes Oncológicos",
-      thumbnail: "https://source.unsplash.com/400x300/?doctor",
-    },
-  ];
+    const queryWords = query
+      .toLowerCase()
+      .split(" ")
+      .filter((word) => word.length > 0);
 
-  const openYoutubeChannel = (youtubeChannelName: string) => {
-    const url = `${openYoutubeChannel}`;
+    return items.filter((item) => {
+      const searchText =
+        `${item.title} ${item.author || ""} ${item.content || ""}`.toLowerCase();
+      return queryWords.every((word) => searchText.includes(word));
+    });
+  };
 
+  // Aplicando filtros
+  const filteredBooks = filterContent(books, searchQuery);
+  const filteredArticles = filterContent(articles, searchQuery);
+  const filteredVideos = filterContent(youtubeChannels, searchQuery);
+
+  const openYoutubeChannel = (url: string) => {
     Linking.openURL(url).catch((err) =>
       alert("Não foi possível abrir o canal no youtube!")
     );
   };
-
-  const { theme, toggleTheme } = useTheme();
 
   return (
     <View
       style={{ marginTop: Constants.statusBarHeight }}
       className={`flex-col justify-center items-stretch w-full pt-8 pb-28 ${theme === "dark" ? "bg-neutral-900" : ""}`}
     >
+      {/* Header */}
       <View className="flex-row justify-start items-center gap-10 px-4">
         <View
           className={`border-[1px]  p-[3px] rounded-md  ${theme === "dark" ? "bg-neutral-900 border-zinc-600" : "bg-white border-zinc-200"}`}
@@ -215,7 +239,7 @@ const LibraryScreen = ({ route, navigation }: props) => {
               name="chevron-back-outline"
               size={20}
               color={theme === "dark" ? "#fff" : "#505050"}
-            ></Icon>
+            />
           </Pressable>
         </View>
         <Text
@@ -225,37 +249,54 @@ const LibraryScreen = ({ route, navigation }: props) => {
         </Text>
       </View>
 
-      <View className="relative w-64 ms-4 my-4">
-        <TextInput
-          placeholder="Pesquisar..."
-          className={` p-3 rounded-lg mb-4 ps-10 ${theme === "dark" ? "bg-white" : "bg-white"}`}
-        />
-        <View className="absolute left-3 top-2">
-          <Icon name="search-outline" color={"#545454"} size={21} />
+      {/* Barra de Pesquisa */}
+      <View
+        className={`p-4 ${theme === "dark" ? "bg-neutral-800" : "bg-gray-100"}`}
+      >
+        <View
+          className={`flex-row items-center rounded-lg px-4 ${theme === "dark" ? "bg-neutral-700" : "bg-white"}`}
+        >
+          <Icon name="search" size={20} color="#999" />
+          <TextInput
+            className="flex-1 p-3 ml-2"
+            placeholder="Buscar livros, artigos ou vídeos..."
+            placeholderTextColor={theme === "dark" ? "#aaa" : "#999"}
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+          />
+          {searchQuery && (
+            <TouchableOpacity onPress={() => setSearchQuery("")}>
+              <Icon name="close" size={20} color="#999" />
+            </TouchableOpacity>
+          )}
         </View>
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false}>
+        {/* Seção de Livros */}
         <View className="px-8 mb-6">
           <Text
-            className={`text-lg font-semibold  mb-2 ${theme === "dark" ? "text-white" : "text-black"}`}
+            className={`text-lg font-semibold mb-2 ${theme === "dark" ? "text-white" : "text-black"}`}
           >
             Livros Recomendados
           </Text>
-          <Text className="text-zinc-500">
-            Muita gente superou o cancer, aprenda com eles lendo esses livros e
+          <Text
+            className={`${theme === "dark" ? "text-zinc-400" : "text-zinc-500"}`}
+          >
+            Muita gente superou o câncer, aprenda com eles lendo esses livros e
             conhecendo novas histórias.
           </Text>
-          <ScrollView
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            className="p-1"
-          >
-            {books &&
-              books.map((book) => (
+
+          {filteredBooks.length > 0 ? (
+            <ScrollView
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              className="p-1"
+            >
+              {filteredBooks.map((book) => (
                 <View
                   key={book.id}
-                  className="bg-white flex-col justify-stretch items-center border-2 border-zinc-300 mt-4 p-2 rounded-3xl  h-[20rem] w-72 me-3 relative"
+                  className={`flex-col justify-stretch items-center border-2 ${theme === "dark" ? "border-zinc-700" : "border-zinc-300"} mt-4 p-2 rounded-3xl h-[20rem] w-72 me-3 relative ${theme === "dark" ? "bg-neutral-800" : "bg-white"}`}
                 >
                   <Image
                     style={{
@@ -267,10 +308,14 @@ const LibraryScreen = ({ route, navigation }: props) => {
                     source={book.image}
                   />
                   <View className="self-start flex-col justify-center items-start mt-4 mb-[1px] ps-2">
-                    <Text className="text-xl  text-black font-semibold text-wrap text-start">
+                    <Text
+                      className={`text-xl font-semibold text-start ${theme === "dark" ? "text-white" : "text-black"}`}
+                    >
                       {book.title}
                     </Text>
-                    <Text className="text-zinc-500 text-start text-lg">
+                    <Text
+                      className={`text-start text-lg ${theme === "dark" ? "text-zinc-400" : "text-zinc-500"}`}
+                    >
                       {book.author}
                     </Text>
                   </View>
@@ -282,33 +327,45 @@ const LibraryScreen = ({ route, navigation }: props) => {
                         art: book,
                       });
                     }}
-                    className="text-blue-500 bg-blue-400/20 font-light  rounded-2xl px-2 py-1 absolute bottom-3 right-3"
+                    className={`${theme === "dark" ? "bg-blue-600" : "bg-blue-400/20"} font-light rounded-2xl px-2 py-1 absolute bottom-3 right-3 ${theme === "dark" ? "text-white" : "text-blue-500"}`}
                   >
                     Saber Mais
                   </Text>
                 </View>
               ))}
-          </ScrollView>
+            </ScrollView>
+          ) : (
+            <Text
+              className={`text-center mt-4 ${theme === "dark" ? "text-zinc-400" : "text-zinc-500"}`}
+            >
+              Nenhum livro encontrado
+            </Text>
+          )}
+        </View>
 
+        {/* Seção de Artigos */}
+        <View className="px-8 mb-6">
           <Text
-            className={`text-lg font-semibold  mt-10 ${theme === "dark" ? "text-white" : "text-black"}`}
+            className={`text-lg font-semibold mt-10 ${theme === "dark" ? "text-white" : "text-black"}`}
           >
             Artigos Populares
           </Text>
-
-          <Text className="text-zinc-500">
+          <Text
+            className={`${theme === "dark" ? "text-zinc-400" : "text-zinc-500"}`}
+          >
             Leia e se informe sobre os artigos mais recentes e novos artigos
           </Text>
-          <ScrollView
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            className="p-1"
-          >
-            {articles &&
-              articles.map((article) => (
+
+          {filteredArticles.length > 0 ? (
+            <ScrollView
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              className="p-1"
+            >
+              {filteredArticles.map((article) => (
                 <View
                   key={article.id}
-                  className="bg-white flex-col justify-stretch items-center  mt-4 p-2 h-[32rem] w-72 me-3 relative"
+                  className={`flex-col justify-stretch items-center mt-4 p-2 h-[32rem] w-72 me-3 relative ${theme === "dark" ? "bg-neutral-800" : "bg-white"}`}
                 >
                   <Image
                     style={{
@@ -319,106 +376,89 @@ const LibraryScreen = ({ route, navigation }: props) => {
                     source={article.image}
                   />
                   <View className="self-start flex-col justify-center items-start mt-4 mb-[1px] ps-2">
-                    <Text className="text-xl  text-black font-semibold text-wrap text-start">
+                    <Text
+                      className={`text-xl font-semibold text-start ${theme === "dark" ? "text-white" : "text-black"}`}
+                    >
                       {article.title}
                     </Text>
-                    <Text className="text-zinc-500 text-start text-lg">
+                    <Text
+                      className={`text-start text-lg ${theme === "dark" ? "text-zinc-400" : "text-zinc-500"}`}
+                    >
                       {article.author}
                     </Text>
                   </View>
-                  <Text className="text-black px-2 mt-2 text-justify">
-                    {article.content}
+                  <Text
+                    className={`px-2 mt-2 text-justify ${theme === "dark" ? "text-zinc-300" : "text-black"}`}
+                  >
+                    {article.content.substring(0, 150)}...
                   </Text>
 
                   <Text
                     onPress={() => {
                       Linking.openURL(article.link).catch((err) =>
-                        alert("Não foi possívbel abrir o WhatsApp")
+                        alert("Não foi possível abrir o artigo")
                       );
                     }}
-                    className="text-zinc-500 bg-zinc-400/20 font-light  rounded-2xl px-4 py-2 absolute bottom-3 right-3"
+                    className={`${theme === "dark" ? "bg-zinc-700 text-white" : "bg-zinc-400/20 text-zinc-500"} font-light rounded-2xl px-4 py-2 absolute bottom-3 right-3`}
                   >
                     Ler Artigo
                   </Text>
                 </View>
               ))}
-          </ScrollView>
+            </ScrollView>
+          ) : (
+            <Text
+              className={`text-center mt-4 ${theme === "dark" ? "text-zinc-400" : "text-zinc-500"}`}
+            >
+              Nenhum artigo encontrado
+            </Text>
+          )}
+        </View>
 
+        {/* Seção de Vídeos */}
+        <View className="px-8 mb-6">
           <Text
-            className={`text-lg font-semibold ${theme === "dark" ? "text-white" : "text-black"}  mt-10 mb-2`}
+            className={`text-lg font-semibold ${theme === "dark" ? "text-white" : "text-black"} mt-10 mb-2`}
           >
             Canais do YouTube
           </Text>
-          <View>
-            <Text className="text-zinc-500">
-              Assista os melhores videos para te inspirares!
+          <Text
+            className={`${theme === "dark" ? "text-zinc-400" : "text-zinc-500"}`}
+          >
+            Assista os melhores vídeos para te inspirar!
+          </Text>
+
+          {filteredVideos.length > 0 ? (
+            filteredVideos.map((channel) => (
+              <View
+                key={channel.id}
+                className={`mt-4 relative border-2 p-2 ${theme === "dark" ? "border-zinc-700" : "border-zinc-300"} rounded-xl`}
+              >
+                <YoutubeIframe
+                  videoId={channel.videoId}
+                  height={180}
+                  onReady={() => setVideoReady(true)}
+                />
+                <Text
+                  className={`text-center mt-2 ${theme === "dark" ? "text-white" : "text-black"}`}
+                >
+                  {channel.title}
+                </Text>
+                {!videoReady && (
+                  <ActivityIndicator
+                    className="absolute right-[50%] top-[50%]"
+                    color={theme === "dark" ? "white" : "black"}
+                  />
+                )}
+              </View>
+            ))
+          ) : (
+            <Text
+              className={`text-center mt-4 ${theme === "dark" ? "text-zinc-400" : "text-zinc-500"}`}
+            >
+              Nenhum vídeo encontrado
             </Text>
-          </View>
-          {/* <View className="mt-4 relative border-2 p-2 border-zinc-300 rounded-xl">
-            <YoutubeIframe
-              videoId="F1VlqUJlCko"
-              height={180}
-              onReady={() => setVideoReady(true)}
-            />
-            {!videoReady && (
-              <ActivityIndicator
-                className="absolute right-[50%] top-[50%]"
-                color={theme === "dark" ? "white" : "black"}
-              />
-            )}
-          </View>
-          <View className="mt-4 relative border-2 p-2 border-zinc-300 rounded-xl">
-            <YoutubeIframe
-              videoId="FGSqYPrJDak"
-              height={180}
-              onReady={() => setVideoReady(true)}
-            />
-            {!videoReady && (
-              <ActivityIndicator
-                className="absolute right-[50%] top-[50%]"
-                color={theme === "dark" ? "white" : "black"}
-              />
-            )}
-          </View>
-          <View className="mt-4 relative border-2 p-2 border-zinc-300 rounded-xl">
-            <YoutubeIframe
-              videoId="HuXbsrBYbKg"
-              height={180}
-              onReady={() => setVideoReady(true)}
-            />
-            {!videoReady && (
-              <ActivityIndicator
-                className="absolute right-[50%] top-[50%]"
-                color={theme === "dark" ? "white" : "black"}
-              />
-            )}
-          </View>
-          <View className="mt-4 relative border-2 p-2 border-zinc-300 rounded-xl">
-            <YoutubeIframe
-              videoId="AhwSBUwevP0"
-              height={180}
-              onReady={() => setVideoReady(true)}
-            />
-            {!videoReady && (
-              <ActivityIndicator
-                className="absolute right-[50%] top-[50%]"
-                color={theme === "dark" ? "white" : "black"}
-              />
-            )}
-          </View>
-          <View className="mt-4 relative border-2 p-2 border-zinc-300 rounded-xl">
-            <YoutubeIframe
-              videoId="Ep5MWBVd3xg"
-              height={180}
-              onReady={() => setVideoReady(true)}
-            />
-            {!videoReady && (
-              <ActivityIndicator
-                className="absolute right-[50%] top-[50%]"
-                color={theme === "dark" ? "white" : "black"}
-              />
-            )}
-          </View> */}
+          )}
 
           <TouchableOpacity
             onPress={() => {
@@ -428,10 +468,10 @@ const LibraryScreen = ({ route, navigation }: props) => {
             }}
           >
             <View
-              className={`rounde-xl  p-3 rounded-lg mt-4 ${theme === "dark" ? "bg-white text-black" : "bg-zinc-500/40"}`}
+              className={`rounded-xl p-3 rounded-lg mt-4 ${theme === "dark" ? "bg-blue-600" : "bg-zinc-500/40"}`}
             >
-              <Text className="text-black font-bold  text-lg text-center">
-                Ver Videos Youtube
+              <Text className="text-white font-bold text-lg text-center">
+                Ver Mais Vídeos no YouTube
               </Text>
             </View>
           </TouchableOpacity>

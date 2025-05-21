@@ -71,7 +71,7 @@ const BanUserScreen = ({ navigation }: props) => {
 
   return (
     <View
-      className={`flex-1 ${theme === "dark" ? "bg-neutral-900" : "bg-white"}`}
+      className={`mt-8 flex-1 ${theme === "dark" ? "bg-neutral-900" : "bg-white"}`}
     >
       {/* Header */}
       <View

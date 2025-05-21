@@ -5,7 +5,6 @@ import {
   ScrollView,
   TouchableOpacity,
   Pressable,
-  TextInput,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import Constants from "expo-constants";
@@ -73,7 +72,7 @@ const AllDoctorsScreen = ({ route, navigation }: props) => {
       style={{ marginTop: Constants.statusBarHeight }}
       className="flex-col justify-center items-stretch w-full pb-14"
     >
-      <View className="flex-row justify-start it{ems-center gap-10 px-4">
+      <View className="flex-row justify-start it{ems-center gap-10 px-4 mt-2">
         <View className="border-[1px] border-zinc-200 p-[3px] rounded-md bg-white">
           <Pressable onPress={() => navigation.goBack()}>
             <Icon
@@ -84,7 +83,7 @@ const AllDoctorsScreen = ({ route, navigation }: props) => {
           </Pressable>
         </View>
         <Text className="text-xl self-center text-center text-black font-bold">
-          Autorizações
+          Todos Médicos
         </Text>
       </View>
 
@@ -95,12 +94,12 @@ const AllDoctorsScreen = ({ route, navigation }: props) => {
         <Text
           className={`text-xl font-bold mb-6 ${theme === "dark" ? "text-white" : "text-zinc-900"}`}
         >
-          Autorizações de Usuários
+          Usuários Como médico na aplicação
         </Text>
 
         <Text className="text-zinc-600 mb-3">
-          Como usuário podes desativar/activar contas de usuários na aplicação.
-          Por favor faça as operações com muita cautela e responsabilidade.
+          Essa é a lista de todos os usuários cadastrados como médicos na
+          aplicação.
         </Text>
 
         <View className="mb-6">
@@ -146,69 +145,7 @@ const AllDoctorsScreen = ({ route, navigation }: props) => {
                   </View>
                 </View>
 
-                <View className="absolute top-5 right-8 rounded-full h-7 w-6 flex-row gap-2">
-                  <CheckBox
-                    value={item.active}
-                    onValueChange={setAgreed}
-                    className="pt-[1px] ms-2"
-                  />
-                </View>
-              </TouchableOpacity>
-            ))}
-        </View>
-        <View className="mb-6">
-          <Text
-            className={`text-lg font-semibold mb-3 ${theme === "dark" ? "text-white" : "text-zinc-800"}`}
-          >
-            Pacientes({patientCount})
-          </Text>
-          {allPatients.length &&
-            allPatients.map((item) => (
-              <TouchableOpacity
-                onPress={() => {
-                  handleAutorization(item);
-                }}
-                key={item.id}
-                className={`p-4 rounded-lg flex-row items-center mb-3 relative ${theme === "dark" ? "bg-neutral-800" : "bg-white"}`}
-              >
-                <Text>
-                  <Icon name={"medkit-outline"} size={24} color="#2563EB" />
-                </Text>
-
-                <View className="overflow-hidden text-wrap ps-3">
-                  <Text
-                    className={`font-medium ${theme === "dark" ? "text-white" : "text-zinc-900"}`}
-                  >
-                    {item.username}
-                  </Text>
-                  <Text
-                    className={`font-medium ${theme === "dark" ? "text-white" : "text-zinc-900"}`}
-                  >
-                    {item.email}
-                  </Text>
-                  <Text
-                    className={`text-sm ${theme === "dark" ? "text-zinc-400" : "text-zinc-500"}`}
-                  >
-                    Paciente
-                  </Text>
-                  <View
-                    className={` rounded-full  p-1  mt-1  ${item.active ? "bg-green-300/20" : "bg-red-300/50"}`}
-                  >
-                    <Text
-                      className={` font-semibold text-sm text-center ${item.active ? "text-green-500" : "text-red-500"}`}
-                    >
-                      Usuario {item.active ? "ativado" : "desativado"}
-                    </Text>
-                  </View>
-                </View>
-
-                <View className="absolute top-5 right-8 rounded-full h-7 w-6 flex-row gap-2">
-                  <CheckBox
-                    value={item.active}
-                    onValueChange={setAgreed}
-                    className="pt-[1px] ms-2"
-                  />
-                </View>
+                <View className="absolute top-5 right-8 rounded-full h-7 w-6 flex-row gap-2"></View>
               </TouchableOpacity>
             ))}
         </View>

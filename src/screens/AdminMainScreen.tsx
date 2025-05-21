@@ -35,17 +35,55 @@ const AdminMainScreen = ({ navigation, route }: props) => {
     totalPatients: 156,
     activeAppointments: 18,
     newRegistrations: 12,
-    recentDoctors: [
-      { id: 1, name: "Dr. Ana Sousa", specialty: "Oncologista" },
-      { id: 2, name: "Dr. Pedro Martins", specialty: "Radioterapia" },
-    ],
-    recentPatients: [
-      { id: 1, name: "Maria Silva", lastAppointment: "15/05/2024" },
-      { id: 2, name: "João Ferreira", lastAppointment: "14/05/2024" },
-    ],
+    // recentDoctors: [
+    //   { id: 1, name: "Dr. Ana Sousa", specialty: "Oncologista" },
+    //   { id: 2, name: "Dr. Pedro Martins", specialty: "Radioterapia" },
+    // ],
+    // recentPatients: [
+    //   { id: 1, name: "Maria Silva", lastAppointment: "15/05/2024" },
+    //   { id: 2, name: "João Ferreira", lastAppointment: "14/05/2024" },
+    // ],
   };
   const [doctorCount, setDoctorCount] = useState(0);
   const [patientCount, setPatientCount] = useState(0);
+  const [appointmentCount, setAppointmentCount] = useState([
+    {
+      totalAppointments: 0,
+    },
+  ]);
+  const [recentDoctors, setRecentDoctors] = useState([
+    {
+      id: "",
+      username: "",
+      email: "",
+      typeUser: "",
+      active: true,
+      password: "",
+      resetPasswordToken: null,
+      resetPasswordExpires: null,
+      createdAt: "",
+      updatedAt: "",
+      notifications: [],
+      tags: [],
+    },
+  ]);
+  const [recentPatients, setRecentPatients] = useState([
+    {
+      id: "",
+      username: "",
+      email: "",
+      typeUser: "",
+      active: true,
+      password: "",
+      resetPasswordToken: null,
+      resetPasswordExpires: null,
+      createdAt: "",
+      updatedAt: "",
+      notifications: [],
+      tags: [],
+    },
+  ]);
+
   const fetchUsers = async () => {
     await api
       .get("/users/all")
@@ -57,11 +95,40 @@ const AdminMainScreen = ({ navigation, route }: props) => {
         console.log(err);
       });
   };
+
+  const fetchAppointments = async () => {
+    await api
+      .get("/appointments/count")
+      .then(({ data: res }) => {
+        setAppointmentCount(res.data);
+
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const lastUsersRegistered = async () => {
+    await api
+      .get("/users/lastUsersRegistered")
+      .then(({ data: res }) => {
+        setRecentDoctors(res.data.lastTwoDoctors);
+        setRecentPatients(res.data.lastTwoPatients);
+        console.log("last users", res.data.lastTwoDoctors);
+        console.log("last patients", res.data.lastTwoPatients);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   useFocusEffect(
     useCallback(() => {
       // Essa função é chamada sempre que a tela ganha foco
       fetchUsers();
-
+      fetchAppointments();
+      lastUsersRegistered();
       return () => {
         // Opcional: código quando sai da tela
       };
@@ -132,7 +199,7 @@ const AdminMainScreen = ({ navigation, route }: props) => {
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false} className="p-4">
-        <View className="flex-row flex-wrap justify-between gap-4 mb-6 ">
+        <View className="flex-row  justify-between gap-4 mb-6 ">
           <MetricCard
             icon="medkit-outline"
             value={doctorCount}
@@ -145,18 +212,20 @@ const AdminMainScreen = ({ navigation, route }: props) => {
             label="Pacientes"
             color="bg-black"
           />
-          <MetricCard
-            icon="calendar-outline"
-            value={adminData.activeAppointments}
-            label="Consultas"
-            color="bg-blue-500"
-          />
-          <MetricCard
-            icon="person-add-outline"
-            value={adminData.newRegistrations}
-            label="Novos Registros"
-            color="bg-zinc-500"
-          />
+        </View>
+
+        <View className="flex-row flex-wrap justify-between gap-4 mb-6 ">
+          <View
+            className={`${"bg-blue-500"} rounded-xl p-4 w-[48%] aspect-square`}
+          >
+            <View className="bg-white/20 rounded-full w-14 h-14 items-center justify-center mb-2">
+              <Icon name={"calendar-outline"} size={40} color="white" />
+            </View>
+            <Text className="text-white text-4xl font-bold">
+              {appointmentCount[0].totalAppointments}
+            </Text>
+            <Text className="text-white/90 text-2xl">{"Consultas"}</Text>
+          </View>
         </View>
 
         <Text className="text-lg font-bold text-black mb-3">Ações Rápidas</Text>
@@ -246,11 +315,11 @@ const AdminMainScreen = ({ navigation, route }: props) => {
         </View>
 
         <View className=" rounded-xl p-4 mb-6">
-          <Text className="text-lg font-bold text-black mb-3">
-            Novos Registros (Mês)
+          <Text className="text-lg font-bold text-black ">
+            Novos Usuários no Quimiocare (Mês)
           </Text>
-          <View className="bg-white rounded-lg p-4 items-center justify-center">
-            <View className="mt-4 p-5">
+          <View className="bg-white rounded-lg p-4 pb-0 items-center justify-center">
+            <View className=" p-5 pt-0">
               <BarChart
                 data={{
                   labels: ["Dez", "Jan", "Feb", "Mar", "Abr", "Mai"],
@@ -260,7 +329,7 @@ const AdminMainScreen = ({ navigation, route }: props) => {
                     },
                   ],
                 }}
-                width={Dimensions.get("window").width - 50} // from react-native
+                width={Dimensions.get("window").width} // from react-native
                 height={220}
                 yAxisLabel=""
                 yAxisSuffix=""
@@ -274,7 +343,7 @@ const AdminMainScreen = ({ navigation, route }: props) => {
                   labelColor: (opacity = 1) =>
                     `rgba(255, 255, 255, ${opacity})`,
                   style: {
-                    borderRadius: 10,
+                    borderRadius: 0,
                     padding: 10,
                   },
                   propsForDots: {
@@ -286,7 +355,7 @@ const AdminMainScreen = ({ navigation, route }: props) => {
                 // bezier
                 style={{
                   marginVertical: 8,
-                  borderRadius: 10,
+                  borderRadius: 0,
                 }}
               />
             </View>
@@ -296,7 +365,7 @@ const AdminMainScreen = ({ navigation, route }: props) => {
         <View className="flex-row gap-4 mb-6">
           <RecentList
             title="Médicos Recentes"
-            data={adminData.recentDoctors}
+            data={recentDoctors}
             icon="medkit-outline"
             onPress={() => {
               navigation.navigate("AllDoctorsScreen", { title: "Doutores" });
@@ -304,7 +373,7 @@ const AdminMainScreen = ({ navigation, route }: props) => {
           />
           <RecentList
             title="Pacientes Recentes"
-            data={adminData.recentPatients}
+            data={recentPatients}
             icon="person-outline"
             onPress={() => {
               navigation.navigate("AllPatientsScreen", { title: "Pacientes" });
@@ -365,22 +434,31 @@ const RecentList = ({
   icon: any;
   onPress: any;
 }) => (
-  <View className="bg-zinc-100 rounded-xl p-4 flex-1">
+  <View className="bg-zinc-100 rounded-xl p-4 flex-1 mb-20">
     <Text className="text-lg font-bold text-black mb-3">{title}</Text>
-    {data.map((item: any) => (
-      <View
-        key={item.id}
-        className="flex-row items-center py-2 border-b border-zinc-200"
-      >
-        <Icon name={icon} size={18} color="#3B82F6" className="mr-2" />
-        <View>
-          <Text className="text-black">{item.name}</Text>
-          <Text className="text-zinc-500 text-sm">
-            {item.specialty || item.lastAppointment}
-          </Text>
+    {data &&
+      data.map((item: any) => (
+        <View
+          key={item.id}
+          className="flex-row items-center py-2 border-b border-zinc-200"
+        >
+          <Icon name={icon} size={18} color="#3B82F6" className="mr-2" />
+          <View>
+            <Text className="text-black">{item.username}</Text>
+            <Text className="text-zinc-500 text-sm">
+              {item.createdAt.split("T")[0]}
+            </Text>
+          </View>
         </View>
-      </View>
-    ))}
+      ))}
+
+    {data == false && (
+      <TouchableOpacity className="p-4 bg-zinc-50 shadow-lg rounded-lg flex-row  justify-center items-center mb-3 ">
+        <Text className="text-blue-500  text-base text-center">
+          Sem nova notificações disponível!
+        </Text>
+      </TouchableOpacity>
+    )}
     <TouchableOpacity onPress={onPress} className="mt-2 flex-row items-center">
       <Text className="text-blue-500 text-sm">Ver todos</Text>
       <Icon
