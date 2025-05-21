@@ -29,7 +29,10 @@ import Modal from "../components/Modal";
 import { saveTip } from "../services/tips/create-tips";
 import { useFocusEffect } from "@react-navigation/native";
 
-type props = NativeStackScreenProps<RootStackParamsList, ScreenNames>;
+type props = NativeStackScreenProps<
+  RootStackParamsList,
+  ScreenNames.MainMedicoScreen
+>;
 
 const MainMedicoScreen = ({ navigation, route }: props) => {
   const [userImg, setUserImg] = useState("");
@@ -444,6 +447,18 @@ const MainMedicoScreen = ({ navigation, route }: props) => {
               Sugerir agora
             </Text>
           </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate(ScreenNames.CreateQuestionScreen, {
+                title: "",
+              });
+            }}
+            className="bg-white border-2 border-blue-500 rounded-full py-1 mt-2 flex-row items-center justify-center w-56 h-14"
+          >
+            <Text className="text-blue-500 text-center font-semibold text-lg">
+              Criar Uma Questão
+            </Text>
+          </TouchableOpacity>
         </View>
         <View
           className={`h-1 w-full ${theme === "dark" ? "bg-zinc-600" : "bg-zinc-100"}`}
@@ -470,7 +485,7 @@ const MainMedicoScreen = ({ navigation, route }: props) => {
             </Text>
             {post.map((item) => (
               <View
-                key={item.subtitle}
+                key={item.id}
                 className="shadow-zinc-400 border-2 border-zinc-200 flex-col justify-center items-start bg-white mt-3 p-5 rounded-lg h-[16rem] w-full relative"
               >
                 <View className="w-full py-3 pt-1">

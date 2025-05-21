@@ -1,88 +1,51 @@
 import {
   View,
   Text,
-  Pressable,
   ScrollView,
-  TouchableHighlight,
   TouchableOpacity,
-  Linking,
-  StatusBar,
-  Alert,
+  Image,
+  Dimensions,
 } from "react-native";
-import React, { useEffect, useState } from "react";
-import Contants from "expo-constants";
-import { Image } from "expo-image";
+import React, { useCallback, useEffect, useState } from "react";
+import Constants from "expo-constants";
 import Icon from "react-native-vector-icons/Ionicons";
 import ScreenNames from "../constants/ScreenName";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import api from "../services/api";
 import { RootStackParamsList } from "../navigations/RootStackParamsList";
+import api from "../services/api";
+import { useFocusEffect } from "@react-navigation/native";
+import { handleLogout } from "../services/authService";
 import {
-  handleSaveMedication,
-  handleSaveSymptom,
-} from "../services/mainService";
-import { useTheme } from "../helpers/theme-context";
-import { API_URL, API_URL_UPLOAD } from "../constants/data";
+  LineChart,
+  BarChart,
+  PieChart,
+  ProgressChart,
+  ContributionGraph,
+  StackedBarChart,
+} from "react-native-chart-kit";
 
-type props = NativeStackScreenProps<RootStackParamsList, ScreenNames>;
+type props = NativeStackScreenProps<
+  RootStackParamsList,
+  ScreenNames.AdminMainScreen
+>;
 
 const AdminMainScreen = ({ navigation, route }: props) => {
-  const [userImg, setUserImg] = useState("");
+  const adminData = {
+    totalDoctors: 24,
+    totalPatients: 156,
+    activeAppointments: 18,
+    newRegistrations: 12,
+    recentDoctors: [
+      { id: 1, name: "Dr. Ana Sousa", specialty: "Oncologista" },
+      { id: 2, name: "Dr. Pedro Martins", specialty: "Radioterapia" },
+    ],
+    recentPatients: [
+      { id: 1, name: "Maria Silva", lastAppointment: "15/05/2024" },
+      { id: 2, name: "João Ferreira", lastAppointment: "14/05/2024" },
+    ],
+  };
   const [doctorCount, setDoctorCount] = useState(0);
   const [patientCount, setPatientCount] = useState(0);
-  const [tipsData, setTipsData] = useState({
-    id: "",
-    description: "",
-    category: {
-      id: "",
-      description: "",
-      createdAt: "",
-      updateAt: "",
-    },
-    createdAt: "",
-    updatedAt: "",
-  });
-  const [symptomsCounter, setSymptomCounter] = useState({ count: 0 });
-  const [medicationCounter, setMedicationCounter] = useState({
-    count: 0,
-  });
-  const [appointmentCounter, setAppontmentCounter] = useState({ count: 0 });
-
-  useEffect(() => {
-    fetchTips();
-    fetchSymptom();
-    fetchMedications();
-    fetchAppointment();
-    fetchImgUser();
-    fetchUsers();
-  }, []);
-
-  const fetchImgUser = async () => {
-    try {
-      api
-        .get(`${API_URL}/profiles/single`)
-        .then(({ data: response }) => {
-          setUserImg(`http://${API_URL_UPLOAD}:3000/${response.data.urlImg}`);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    } catch (error: any) {
-      Alert.alert("Erro", "erro tentando pegar os dados de perfil");
-    }
-  };
-
-  const fetchTips = async () => {
-    await api
-      .get("/tips/tip")
-      .then(({ data: res }) => {
-        setTipsData(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
   const fetchUsers = async () => {
     await api
       .get("/users/all")
@@ -94,179 +57,340 @@ const AdminMainScreen = ({ navigation, route }: props) => {
         console.log(err);
       });
   };
+  useFocusEffect(
+    useCallback(() => {
+      // Essa função é chamada sempre que a tela ganha foco
+      fetchUsers();
 
-  const fetchSymptom = () => {
-    api
-      .get("/symptoms/all")
-      .then(({ data: res }) => {
-        setSymptomCounter(res.data[0]);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+      return () => {
+        // Opcional: código quando sai da tela
+      };
+    }, [])
+  );
 
-  const fetchAppointment = () => {
-    api
-      .get("/appointments/all")
-      .then(({ data: res }) => {
-        setAppontmentCounter(res.data[0]);
-        // console.log(res.data[0]);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-  const fetchMedications = () => {
-    api
-      .get("/medications/all")
-      .then(({ data: res }) => {
-        setMedicationCounter(res.data[0]);
-        // console.log(res.data[0]);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
-  const { theme, toggleTheme } = useTheme();
-
+  useEffect(() => {
+    fetchUsers();
+  }, []);
   return (
-    <View className={`${theme === "dark" ? "bg-neutral-900" : ""}`}>
-      <StatusBar backgroundColor={"#3b82f6"}></StatusBar>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        style={{
-          paddingBottom: 20,
-        }}
-      >
+    <View
+      className="flex-1 bg-white"
+      style={{ paddingTop: Constants.statusBarHeight }}
+    >
+      <View className="flex-row justify-start items-strech gap-3 bg-blue-500 w-full pt-10 px-5 h-56">
+        <Image
+          style={{
+            width: 60,
+            height: 60,
+            borderRadius: 50,
+            alignContent: "center",
+            borderWidth: 2,
+            borderColor: "#fff",
+            backgroundColor: "#ccc",
+          }}
+          source={require("../../assets/admin.png")}
+        />
         <View
-          className={`flex-col  justify-between items-center  w-full    ${theme === "dark" ? "bg-neutral-900" : ""}`}
+          className="flex-row justify-between items-stretch w-full"
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "stretch",
+          }}
         >
-          <View className="flex-row justify-start items-strech gap-3 bg-blue-500 w-full pt-10 px-5 h-56">
-            <Image
-              style={{
-                width: 60,
-                height: 60,
-                borderRadius: 50,
-                alignContent: "center",
-                borderWidth: 2,
-                borderColor: "#fff",
-                backgroundColor: "#ccc",
+          <View className="flex-col justify-stretch items-start w">
+            <Text className="text-lg font-bold text-white/50">
+              Conta Restrita
+            </Text>
+            <Text className="text-base font-semibold text-white/70">admin</Text>
+            <Text className="text-base font-bold text-white/70">
+              admin@gmail.com
+            </Text>
+
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate("ProfileAdminScreen", { title: "ssd" })
+              }
+              className=" mt-2 p-3 bg-white/30 rounded-lg text-lg flex-row gap-1 items-center"
+            >
+              <Text className="text-white">Meu Perfil</Text>
+              <Icon name="chevron-forward-outline" color={"#fff"} size={10} />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={async () => {
+                await handleLogout();
+                navigation.navigate("Login", { title: "ssd" });
               }}
-              source={require("../../assets/admin.png")}
-            />
-            <View>
-              <Text className="text-lg font-bold text-white">
-                Conta Restrita
+              className=" mt-2 p-2 bg-white/30 rounded-lg text-lg flex-row gap-1 items-center"
+            >
+              <Text className="text-[#f87171]" style={{ color: "#f87171" }}>
+                Sair
               </Text>
-              <Text className="text-lg font-semibold text-white">admin</Text>
-              <Text className="text-lg font-bold text-white">
-                admin@gmail.com
-              </Text>
-              <Text
-                onPress={() =>
-                  navigation.navigate("ProfileAdminScreen", { title: "ssd" })
-                }
-                className="text-white mt-2"
-              >
-                ver perfil
-                <Icon name="chevron-forward-outline" color={"#fff"} size={10} />
-              </Text>
-            </View>
+              <Icon name="log-out-outline" color={"#f87171"} size={20} />
+            </TouchableOpacity>
           </View>
-          <View className="mt-10 flex-col  justify-center items-center gap-3">
-            <View className="shadow-black shadow-lg rounded-lg bg-white p-4 w-72 h-36 mb-3">
-              <Text className="text-zinc-500 text-4xl mt-4 text-center">
-                {patientCount}
-              </Text>
-              <Text className="text-black text-lg font-semibold">
-                Total Pacientes
-              </Text>
-              <View>
-                <Text>
-                  <Icon name="arrow-down-outline" color={"#ef4444"} size={13} />
-                  <Text className="text-zinc-500">23% mês corrente</Text>
-                </Text>
-              </View>
-            </View>
-            <View className="rounded-lg bg-white p-4 w-72 h-36  shadow-lg">
-              <Text className="text-zinc-500 text-4xl mt-4 text-center">
-                {doctorCount}
-              </Text>
-              <Text className="text-black text-lg font-semibold">
-                Total Médicos
-              </Text>
-              <View>
-                <Text>
-                  <Icon name="arrow-up-outline" color={"#4ade80"} size={13} />
-                  <Text className="text-zinc-500">13% mês corrente</Text>
-                </Text>
-              </View>
-            </View>
-          </View>
+        </View>
+      </View>
 
-          <View className="w-full mt-4 mb-8">
-            <View className="grid-flow-col grid-cols-2 gap-5 justify-center items-center mt-3 border-b-2 border-zinc-300 w-full pb-5 ">
-              <Text
-                onPress={() => {
-                  navigation.navigate("AutorizationScreen", { title: "ada" });
+      <ScrollView showsVerticalScrollIndicator={false} className="p-4">
+        <View className="flex-row flex-wrap justify-between gap-4 mb-6 ">
+          <MetricCard
+            icon="medkit-outline"
+            value={doctorCount}
+            label="Médicos"
+            color="bg-stone-500"
+          />
+          <MetricCard
+            icon="people-outline"
+            value={patientCount}
+            label="Pacientes"
+            color="bg-black"
+          />
+          <MetricCard
+            icon="calendar-outline"
+            value={adminData.activeAppointments}
+            label="Consultas"
+            color="bg-blue-500"
+          />
+          <MetricCard
+            icon="person-add-outline"
+            value={adminData.newRegistrations}
+            label="Novos Registros"
+            color="bg-zinc-500"
+          />
+        </View>
+
+        <Text className="text-lg font-bold text-black mb-3">Ações Rápidas</Text>
+        <View className="flex-row flex-wrap gap-3 mb-6">
+          <ActionButton
+            icon="medkit-outline"
+            label="Cadastrar Médico"
+            onPress={() => navigation.navigate("AcceptDoctor")}
+          />
+
+          {/* 2. Gerar Relatório */}
+          <ActionButton
+            icon="document-text-outline"
+            label="Gerar Relatório"
+            onPress={() => navigation.navigate("GenerateReport")}
+          />
+
+          {/* 3. Enviar Alerta */}
+          <ActionButton
+            icon="alert-circle-outline"
+            label="Enviar Alerta"
+            onPress={() => navigation.navigate("SendAlertScreen")}
+          />
+
+          {/* 4. Banir Usuário */}
+          <ActionButton
+            icon="remove-circle-outline"
+            label="Banir Usuário"
+            onPress={() => navigation.navigate("BanUserScreen", { title: "" })}
+          />
+
+          {/* 5. Atualizar Estoque */}
+          <ActionButton
+            icon="cube-outline"
+            label="Atualizar Estoque"
+            onPress={() => navigation.navigate("Adicionar Categoria de Dicas")}
+          />
+
+          {/* 6. Enviar Comunicado */}
+          <ActionButton
+            icon="megaphone-outline"
+            label="Enviar Comunicado"
+            onPress={() => navigation.navigate("BroadcastMessage")}
+          />
+
+          {/* 7. Criar Grupo */}
+          <ActionButton
+            icon="people-circle-outline"
+            label="Criar Grupo"
+            onPress={() => navigation.navigate("CreateGroup")}
+          />
+
+          {/* 8. Agendar Manutenção */}
+          <ActionButton
+            icon="construct-outline"
+            label="Agendar Manutenção"
+            onPress={() => navigation.navigate("ScheduleMaintenance")}
+          />
+
+          {/* 9. Reatribuir Consulta */}
+          <ActionButton
+            icon="calendar-number-outline"
+            label="Reatribuir Consulta"
+            onPress={() => navigation.navigate("ReassignAppointment")}
+          />
+
+          {/* 10. Exportar Dados */}
+          <ActionButton
+            icon="download-outline"
+            label="Exportar Dados"
+            onPress={() => navigation.navigate("ExportData")}
+          />
+
+          {/* 11. Modo Emergência (extra) */}
+          <ActionButton
+            icon="shield-alert-outline"
+            label="Modo Emergência"
+            onPress={() => navigation.navigate("EmergencyMode")}
+          />
+
+          {/* 12. Fixar Aviso (extra) */}
+          <ActionButton
+            icon="pin-outline"
+            label="Fixar Aviso"
+            onPress={() => navigation.navigate("PinAnnouncement")}
+          />
+        </View>
+
+        <View className=" rounded-xl p-4 mb-6">
+          <Text className="text-lg font-bold text-black mb-3">
+            Novos Registros (Mês)
+          </Text>
+          <View className="bg-white rounded-lg p-4 items-center justify-center">
+            <View className="mt-4 p-5">
+              <BarChart
+                data={{
+                  labels: ["Dez", "Jan", "Feb", "Mar", "Abr", "Mai"],
+                  datasets: [
+                    {
+                      data: [34, 12, 44, 89, 12, 33],
+                    },
+                  ],
                 }}
-                className="font-semibold bg-blue-300/20 text-blue-400 p-4 px-7 rounded-lg w-40 text-center"
-              >
-                Autorizações
-                <Icon
-                  name="chevron-forward-outline"
-                  color={"#60a5fa"}
-                  size={10}
-                />
-              </Text>
-              <Text
-                onPress={() => {
-                  navigation.navigate("AnalisesScreen", { title: "ada" });
+                width={Dimensions.get("window").width - 50} // from react-native
+                height={220}
+                yAxisLabel=""
+                yAxisSuffix=""
+                yAxisInterval={1} // optional, defaults to 1
+                chartConfig={{
+                  backgroundColor: "#3b82f6",
+                  backgroundGradientFrom: "#3b82f6",
+                  backgroundGradientTo: "#3b82f6",
+                  // decimalPlaces: , // optional, defaults to 2dp
+                  color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                  labelColor: (opacity = 1) =>
+                    `rgba(255, 255, 255, ${opacity})`,
+                  style: {
+                    borderRadius: 10,
+                    padding: 10,
+                  },
+                  propsForDots: {
+                    r: "6",
+                    strokeWidth: "2",
+                    stroke: "#ffa726",
+                  },
                 }}
-                className="font-semibold bg-blue-300/20 text-blue-400 p-4 px-7 rounded-lg w-40 text-center"
-              >
-                Análises
-                <Icon
-                  name="chevron-forward-outline"
-                  color={"#60a5fa"}
-                  size={10}
-                />
-              </Text>
-              <Text
-                onPress={() => {
-                  navigation.navigate("OptionsAdmincreen", { title: "ada" });
+                // bezier
+                style={{
+                  marginVertical: 8,
+                  borderRadius: 10,
                 }}
-                className="font-semibold bg-blue-300/20 text-blue-400 p-4 px-7 rounded-lg w-40 text-center"
-              >
-                Opções{" "}
-                <Icon
-                  name="chevron-forward-outline"
-                  color={"#60a5fa"}
-                  size={10}
-                />
-              </Text>
-            </View>
-            {/* 
-            <TouchableOpacity className="p-3 bg-white rounded-lg  items-center mb-3 relative mt-3 w-72 mx-auto flex-col">
-              <Icon
-                name={"balloon-outline"}
-                size={24}
-                color="#2563EB"
-                className="mr-4"
               />
-              <Text className="mt-1 font-semibold text-center px-2">
-                Ver novas solitações para ingressar no quimiocare
-              </Text>
-
-              <Text className="mt-3 text-blue-400">Ver solicitações</Text>
-            </TouchableOpacity> */}
+            </View>
           </View>
+        </View>
+
+        <View className="flex-row gap-4 mb-6">
+          <RecentList
+            title="Médicos Recentes"
+            data={adminData.recentDoctors}
+            icon="medkit-outline"
+            onPress={() => {
+              navigation.navigate("AllDoctorsScreen", { title: "Doutores" });
+            }}
+          />
+          <RecentList
+            title="Pacientes Recentes"
+            data={adminData.recentPatients}
+            icon="person-outline"
+            onPress={() => {
+              navigation.navigate("AllPatientsScreen", { title: "Pacientes" });
+            }}
+          />
         </View>
       </ScrollView>
     </View>
   );
 };
+
+const MetricCard = ({
+  icon,
+  value,
+  label,
+  color,
+}: {
+  icon: any;
+  value: any;
+  label: any;
+  color: any;
+}) => (
+  <View className={`${color} rounded-xl p-4 w-[48%] aspect-square`}>
+    <View className="bg-white/20 rounded-full w-14 h-14 items-center justify-center mb-2">
+      <Icon name={icon} size={40} color="white" />
+    </View>
+    <Text className="text-white text-4xl font-bold">{value}</Text>
+    <Text className="text-white/90 text-2xl">{label}</Text>
+  </View>
+);
+
+const ActionButton = ({
+  icon,
+  label,
+  onPress,
+}: {
+  icon: any;
+  label: any;
+  onPress: any;
+}) => (
+  <TouchableOpacity
+    onPress={onPress}
+    className="bg-zinc-100 rounded-lg p-4 flex-row items-center w-[48%]"
+  >
+    <Icon name={icon} size={20} color="#3B82F6" className="mr-2" />
+    <Text className="text-black">{label}</Text>
+  </TouchableOpacity>
+);
+
+const RecentList = ({
+  title,
+  data,
+  icon,
+  onPress,
+}: {
+  title: any;
+  data: any;
+  icon: any;
+  onPress: any;
+}) => (
+  <View className="bg-zinc-100 rounded-xl p-4 flex-1">
+    <Text className="text-lg font-bold text-black mb-3">{title}</Text>
+    {data.map((item: any) => (
+      <View
+        key={item.id}
+        className="flex-row items-center py-2 border-b border-zinc-200"
+      >
+        <Icon name={icon} size={18} color="#3B82F6" className="mr-2" />
+        <View>
+          <Text className="text-black">{item.name}</Text>
+          <Text className="text-zinc-500 text-sm">
+            {item.specialty || item.lastAppointment}
+          </Text>
+        </View>
+      </View>
+    ))}
+    <TouchableOpacity onPress={onPress} className="mt-2 flex-row items-center">
+      <Text className="text-blue-500 text-sm">Ver todos</Text>
+      <Icon
+        name="chevron-forward-outline"
+        size={16}
+        color="#3B82F6"
+        className="ml-1"
+      />
+    </TouchableOpacity>
+  </View>
+);
 
 export default AdminMainScreen;

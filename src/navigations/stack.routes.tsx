@@ -48,6 +48,12 @@ import TabDoctorRoutes from "./tabs.routes-doctor";
 import CreatePostScreen from "../screens/CreatePostScreen";
 import ActivityRegisterScreen from "../screens/ActivityRegisterScreen";
 import ExportarRelatorio from "../screens/receitasScreen";
+import CreateQuestionScreen from "../screens/CreateQuestionScreen";
+import MyQuestionScreen from "../screens/MyQuestionScreen";
+import MyDoctorScreen from "../screens/MyDoctor";
+import BanUserScreen from "../screens/BanUserScreen";
+import AllDoctorsScreen from "../screens/AllDoctorsScreen";
+import AllPatientsScreen from "../screens/AllPatientsScreen";
 
 const StackRoutes = () => {
   const Stack = createNativeStackNavigator<RootStackParamsList>();
@@ -263,7 +269,36 @@ const StackRoutes = () => {
         component={ExportarRelatorio}
         options={{ headerShown: false }}
       />
-
+      <Stack.Screen
+        name={ScreenNames.CreateQuestionScreen}
+        component={CreateQuestionScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name={ScreenNames.MyQuestionScreen}
+        component={MyQuestionScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name={ScreenNames.MyDoctorScreen}
+        component={MyDoctorScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name={ScreenNames.BanUserScreen}
+        component={BanUserScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name={ScreenNames.AllDoctorsScreen}
+        component={AllDoctorsScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name={ScreenNames.AllPatientsScreen}
+        component={AllPatientsScreen}
+        options={{ headerShown: false }}
+      />
       <Stack.Screen
         name={ScreenNames.Main}
         component={TabRoutes}

@@ -46,6 +46,7 @@ const ProfileMedicoScreen = ({ route, navigation }: props) => {
     bio: "",
     sex: "",
     phoneNumber: "",
+    speciality: "",
     address: "",
     job: "",
     urlImg: "",
@@ -114,6 +115,7 @@ const ProfileMedicoScreen = ({ route, navigation }: props) => {
       bio: string;
       address: string;
       phoneNumber: string;
+      speciality: string;
       created_at: Date;
       updated_at: Date;
       urlImg: string;
@@ -293,6 +295,25 @@ const ProfileMedicoScreen = ({ route, navigation }: props) => {
                     className={`text-base  ${theme === "dark" ? "text-zinc-300 " : "text-zinc-800"} `}
                   >
                     {userData.email}
+                  </Text>
+                ) : (
+                  <Text>--</Text>
+                )}
+              </View>
+            </View>
+            <View className="flex-row justify-start items-center gap-2 mt-3">
+              <Text>🩺</Text>
+              <View>
+                <Text
+                  className={`text-base  ${theme === "dark" ? "text-zinc-200" : "text-zinc-400"}`}
+                >
+                  Especialidade Médica
+                </Text>
+                {profileData.speciality ? (
+                  <Text
+                    className={`text-base  ${theme === "dark" ? "text-zinc-300 " : "text-zinc-800"} `}
+                  >
+                    {profileData.speciality}
                   </Text>
                 ) : (
                   <Text>--</Text>

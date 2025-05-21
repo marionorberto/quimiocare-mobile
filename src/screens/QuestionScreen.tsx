@@ -20,6 +20,7 @@ import { RootStackParamsList } from "../navigations/RootStackParamsList";
 import ScreenNames from "../constants/ScreenName";
 import Constants from "expo-constants";
 import { Image } from "expo-image";
+import { API_URL_UPLOAD } from "../constants/data";
 
 type props = NativeStackScreenProps<
   RootStackParamsList,
@@ -28,13 +29,12 @@ type props = NativeStackScreenProps<
 
 const QuestionScreen = ({ route, navigation }: props) => {
   const [showInputReply, setShowInputReply] = useState(false);
+  const { id, question, imgUrl, createdAt, updatedAt, user } = route.params;
   return (
     <View
       style={{ marginTop: Constants.statusBarHeight }}
       className="flex-col justify-center items-stretch  pb-8"
     >
-      {/* Campo de sugestão de vídeo */}
-
       <View className="flex-row justify-start items-center gap-10 px-4 mt-4 mb-5">
         <View className="border-[1px] border-zinc-200 p-[3px] rounded-md bg-white">
           <Pressable onPress={() => navigation.goBack()}>
@@ -62,22 +62,22 @@ const QuestionScreen = ({ route, navigation }: props) => {
               borderColor: "#fff",
               backgroundColor: "#ccc",
             }}
-            source={require("../../assets/user.png")}
+            source={{
+              uri: `http://${API_URL_UPLOAD}:3000/${imgUrl}`,
+            }}
           />
           <View>
             <Text className="text-zinc-500 text-start text-lg font-bold">
-              marionorberto
+              {user.username}
             </Text>
             <Text className="text-blue-600 bg-blue-300/40 rounded-lg  text-center p-1">
-              Cancer
+              {user.typeUser}
             </Text>
           </View>
         </View>
         <TouchableOpacity className="bg-zinc-200 p-4 rounded-lg my-4 w-full">
-          <Text className="text-zinc-800 font-medium ">
-            "É normal sentir fraqueza depois da quimio?"
-          </Text>
-          <Text className="text-zinc-500 text-sm mt-1">8 respostas</Text>
+          <Text className="text-zinc-800 font-medium ">{question}</Text>
+          <Text className="text-zinc-500 text-sm mt-1">0 respostas</Text>
         </TouchableOpacity>
         <Pressable
           onPress={() => setShowInputReply(!showInputReply)}
@@ -101,8 +101,9 @@ const QuestionScreen = ({ route, navigation }: props) => {
             />
             <TouchableHighlight
               onPress={() => {
-                //  handleSubmitResponse();
-                alert("Submit response");
+                alert(
+                  "Método a ser implementado!(Lógica ainda não foi finalizada!)"
+                );
               }}
               className="bg-blue-600 rounded-lg py-2 px-4"
             >
@@ -112,9 +113,9 @@ const QuestionScreen = ({ route, navigation }: props) => {
             </TouchableHighlight>
           </View>
         )}
-        <Text className="my-4">Respostas:</Text>
+        <Text className="my-4">Respostas(0):</Text>
         <View className=" rounded-lg p-3 mb-5 border-b-2 border-zinc-200 w-full">
-          <View className="mb-3 ">
+          {/* <View className="mb-3 ">
             <View className="flex-row">
               <Image
                 style={{
@@ -137,7 +138,7 @@ const QuestionScreen = ({ route, navigation }: props) => {
             <View className="bg-zinc-200 rounded-lg mt-1 p-4">
               <Text>adaadalaklkakldlladasdasdas</Text>
             </View>
-          </View>
+          </View> */}
         </View>
       </View>
     </View>

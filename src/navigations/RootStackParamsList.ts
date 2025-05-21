@@ -179,7 +179,15 @@ type TipsMedicoScreen = {
 }
 
 type QuestionScreen = {
-  title: string;
+  id: string,
+  question: string,
+  createdAt: string,
+  updatedAt: string,
+  user: {
+    username: string,
+    typeUser: string,
+  },
+  imgUrl: string,
 }
 
 type GatherDoctorProfileFirstScreen = {
@@ -219,6 +227,50 @@ type ActivityRegisterScreen = {
 type ExportarRelatorio = {
   title: string;
 }
+
+type CreateQuestionScreen = {
+  title: string;
+}
+
+
+type MyQuestionScreen = {
+  title: string;
+}
+
+type MyDoctorScreen = {
+  title: string;
+}
+
+type BanUserScreen = {
+  title: string;
+}
+
+type AllDoctorsScreen = {
+  title: string;
+}
+
+
+type AllPatientsScreen = {
+  title: string;
+}
+
+type SendAlertScreen = {
+  title: string;
+}
+
+type GenerateReportScreen = {
+  title: string;
+}
+
+type PinAnnouncementScreen = {
+  title: string;
+}
+
+
+type AddTipCategoryScreen = {
+  title: string;
+}
+
 
 export type RootStackParamsList = {
   Home: HomeScreenParams;
@@ -273,4 +325,15 @@ export type RootStackParamsList = {
   CreatePostScreen: CreatePostScreen;
   ActivityRegisterScreen: ActivityRegisterScreen;
   ExportarRelatorio: ExportarRelatorio;
+  CreateQuestionScreen: CreateQuestionScreen;
+  MyQuestionScreen: MyQuestionScreen;
+  MyDoctorScreen: MyDoctorScreen;
+  BanUserScreen: BanUserScreen;
+  AllDoctorsScreen: AllDoctorsScreen;
+  AllPatientsScreen: AllPatientsScreen;
+  
+  SendAlertScreen: SendAlertScreen;
+  GenerateReportScreen: GenerateReportScreen;
+  PinAnnouncementScreen: PinAnnouncementScreen;
+  AddTipCategoryScreen: AddTipCategoryScreen
 }

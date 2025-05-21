@@ -430,6 +430,29 @@ const MedicalScreen = ({ route, navigation }: props) => {
               </View>
             )}
           </View>
+          <Pressable
+            onPress={() => {
+              navigation.navigate("MyDoctorScreen", {
+                title: "",
+              });
+            }}
+          >
+            <View className="border-b-2 border-zinc-300/35 py-3 flex-row justify-between items-center pb-5 mb-1 w-full">
+              <View className="text-black text-base opacity-60 bg-zinc-400/50 rounded-md p-3 flex-row justify-between items-center w-full">
+                <Text>
+                  <Icon name="medical-outline" size={20} color={"#505050"} />
+                  <Text className="font-bold"> Meu doctor</Text>
+                </Text>
+                <Text className="rounded-lg ps-4">
+                  <Icon
+                    name="chevron-forward-outline"
+                    color={"black"}
+                    size={23}
+                  />
+                </Text>
+              </View>
+            </View>
+          </Pressable>
 
           <View className="mt-5">
             <Text className="text-black text-lg font-semibold">

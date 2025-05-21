@@ -11,7 +11,10 @@ import { RootStackParamsList } from "../navigations/RootStackParamsList";
 import ScreenNames from "../constants/ScreenName";
 import Icon from "react-native-vector-icons/Ionicons";
 
-type props = NativeStackScreenProps<RootStackParamsList, ScreenNames>;
+type props = NativeStackScreenProps<
+  RootStackParamsList,
+  ScreenNames.CreateQuestionScreen
+>;
 const CreateSymptomScreen = ({ route, navigation }: props) => {
   const [medicationName, setMedicationName] = useState("");
   const [dosage, setDosage] = useState("");

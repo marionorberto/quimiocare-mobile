@@ -52,7 +52,16 @@ enum ScreenNames {
   CreatePostScreen = 'CreatePostScreen',
   ActivityRegisterScreen = 'ActivityRegisterScreen',
   ExportarRelatorio = 'ExportarRelatorio',
-
+  CreateQuestionScreen = 'CreateQuestionScreen',
+  MyQuestionScreen = 'MyQuestionScreen',
+  MyDoctorScreen = 'MyDoctorScreen',
+  BanUserScreen = 'BanUserScreen',
+  AllDoctorsScreen = 'AllDoctorsScreen',
+  AllPatientsScreen = 'AllPatientsScreen',
+  SendAlertScreen = 'SendAlertScreen',
+  GenerateReport = 'GenerateReport',
+  PinAnnouncement = 'PinAnnouncement',
+  AddTipCategory = 'AddTipCategory'
 }
 
 export default ScreenNames;

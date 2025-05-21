@@ -373,7 +373,11 @@ const GatherDoctorProfileFirstScreen = ({ route, navigation }: props) => {
               >
                 <Picker.Item label="Escolha a Especialidade" value="" />
                 {cancerTypes.map(({ description, id }) => (
-                  <Picker.Item key={id} label={description} value={id} />
+                  <Picker.Item
+                    key={id}
+                    label={description}
+                    value={description}
+                  />
                 ))}
               </Picker>
             </View>

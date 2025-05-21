@@ -17,7 +17,10 @@ import { Image } from "expo-image";
 import { handleLogin } from "../services/authService";
 import { useTheme } from "../helpers/theme-context";
 
-type props = NativeStackScreenProps<RootStackParamsList, ScreenNames>;
+type props = NativeStackScreenProps<
+  RootStackParamsList,
+  ScreenNames.AskReplyScreen
+>;
 
 const AskReplyScreen = ({ route, navigation }: props) => {
   const { theme } = useTheme();

@@ -19,6 +19,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useTheme } from "../helpers/theme-context";
 import api from "../services/api";
 import { API_URL_UPLOAD } from "../constants/data";
+import { todasQuestions } from "../services/questions";
 
 type props = NativeStackScreenProps<RootStackParamsList, ScreenNames.Community>;
 
@@ -86,6 +87,24 @@ const CommunityScreen = ({ route, navigation }: props) => {
     },
   ]);
 
+  const [questions, setQuestions] = useState([
+    {
+      id: "",
+      question: "",
+      createdAt: "",
+      updatedAt: "",
+      user: {
+        username: "",
+        typeUser: "",
+      },
+      imgUrl: "",
+    },
+  ]);
+
+  const [questionCount, setQuestionsCounter] = useState({
+    count: 0,
+  });
+
   const fetchPosts = () => {
     api
       .get("/posts/todas")
@@ -97,6 +116,26 @@ const CommunityScreen = ({ route, navigation }: props) => {
         console.log(error);
       });
   };
+
+  const fetchAllQuestions = async () => {
+    try {
+      const { data } = await todasQuestions();
+
+      setQuestions(data[1]);
+      console.log(data[1]);
+      setQuestionsCounter(data[0]);
+      // console.log(data[0]);
+    } catch (error: any) {
+      if (error.data) {
+        alert(`${error.message.map((error: string) => error)}`);
+      }
+      alert(`${error.message}`);
+    }
+  };
+
+  useEffect(() => {
+    fetchAllQuestions();
+  }, []);
 
   useFocusEffect(
     useCallback(() => {
@@ -266,19 +305,56 @@ const CommunityScreen = ({ route, navigation }: props) => {
           <Text
             className={`text-lg font-semibold  mt-4 mb-2 ${theme === "dark" ? "text-white" : "text-black"}`}
           >
-            Perguntas e Respostas
+            Perguntas e Respostas({questionCount.count || 0})
           </Text>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("QuestionScreen", { title: "weee" });
-            }}
-            className="bg-zinc-200 p-4 rounded-lg mb-3"
-          >
-            <Text className="text-zinc-800 font-medium text-lg">
-              "Quais são os melhores alimentos para reforçar a imunidade?"
-            </Text>
-            <Text className="text-zinc-500 text-sm mt-2">5 respostas</Text>
-          </TouchableOpacity>
+          {questions &&
+            questions.map((item) => (
+              <TouchableOpacity
+                key={item.id}
+                onPress={() => {
+                  navigation.navigate("QuestionScreen", {
+                    id: item.id,
+                    question: item.question,
+                    createdAt: item.createdAt,
+                    updatedAt: item.updatedAt,
+                    user: {
+                      username: item.user.username,
+                      typeUser: item.user.typeUser,
+                    },
+                    imgUrl: item.imgUrl,
+                  });
+                }}
+                className="bg-zinc-200 p-4 rounded-lg mb-3"
+              >
+                <View className="flex-row items-center justify-start gap-1">
+                  <Image
+                    source={{
+                      uri: `http://${API_URL_UPLOAD}:3000/${item.imgUrl}`,
+                    }}
+                    style={{
+                      width: 30,
+                      height: 30,
+                      borderRadius: 50,
+                      borderWidth: 2,
+                      borderColor: "#fff",
+                      backgroundColor: "#ccc",
+                    }}
+                  />
+                  <View>
+                    <Text className="text-zinc-500 text-start text-sm font-bold">
+                      {item.user.username}
+                    </Text>
+                  </View>
+                </View>
+                <Text className="rounded-xl bg-blue-500/30 text-blue-600 font-semibold px-3 py-[3px] text-sm w-24 text-center my-1">
+                  {item.user.typeUser}
+                </Text>
+                <Text className="text-zinc-800 font-medium text-lg">
+                  {item.question}
+                </Text>
+                <Text className="text-zinc-500 text-sm mt-2">0 respostas</Text>
+              </TouchableOpacity>
+            ))}
         </View>
       </ScrollView>
     </View>

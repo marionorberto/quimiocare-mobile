@@ -20,6 +20,8 @@ export type BottomTabParamList = {
   CreatePostScreen: undefined,
   ActivityRegisterScreen: undefined,
   ExportarRelatorio: undefined,
+  CreateQuestionScreen: undefined,
+  MyQuestionScreen: undefined,
 };
 
 export type onSaveDateMedication = {

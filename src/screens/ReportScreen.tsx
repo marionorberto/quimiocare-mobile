@@ -386,7 +386,7 @@ const ReportsScreen = ({ route, navigation }: props) => {
                           className="bg-blue-600 rounded-lg py-3 px-4"
                         >
                           <Text className="text-white text-center font-semibold">
-                            Exportar Relatório
+                            Baixar Receita
                           </Text>
                         </TouchableHighlight>
                       </View>

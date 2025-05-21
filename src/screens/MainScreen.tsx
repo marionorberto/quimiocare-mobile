@@ -506,7 +506,7 @@ const MainScreen = ({ navigation, route }: props) => {
           <TouchableOpacity
             onPress={() => {
               // compareDate(lastdailyCreated.createdAt);
-              // navigation.navigate("ActivityRegisterScreen", { title: "hello" });
+              navigation.navigate("ActivityRegisterScreen", { title: "hello" });
             }}
             className=" border-[1px] border-blue-500 bg-white rounded-full py-1 mt-2 flex-row items-center justify-center w-56 h-14"
           >
