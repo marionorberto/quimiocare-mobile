@@ -272,7 +272,7 @@ const LibraryScreen = ({ route, navigation }: props) => {
         </View>
       </View>
 
-      {/* <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View className="px-8 mb-6">
           <Text
             className={`text-lg font-semibold mb-2 ${theme === "dark" ? "text-white" : "text-black"}`}
@@ -473,7 +473,7 @@ const LibraryScreen = ({ route, navigation }: props) => {
             </View>
           </TouchableOpacity>
         </View>
-      </ScrollView> */}
+      </ScrollView>
     </View>
   );
 };
