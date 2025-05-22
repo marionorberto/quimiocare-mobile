@@ -15,10 +15,10 @@ import ScreenNames from "../constants/ScreenName";
 
 type props = NativeStackScreenProps<
   RootStackParamsList,
-  ScreenNames.SendAlertScreen
+  ScreenNames.GenerateReportScreen
 >;
 
-const SendAlertScreen = ({ route, navigation }: props) => {
+const GenerateReportScreen = ({ route, navigation }: props) => {
   // const { colorScheme, toggleColorScheme } = useColorScheme();
   const [isEnabledConsultAlert, setIsEnabledConsultAlert] = useState(true);
   const [isEnabledReminderMedication, setIsEnabledReminderMedication] =
@@ -57,16 +57,16 @@ const SendAlertScreen = ({ route, navigation }: props) => {
         <Text
           className={`text-xl self-center text-center  font-bold ${theme === "dark" ? "text-white" : "text-black"}`}
         >
-          Enviar Alerta
+          Geral Relatórios Gerais
         </Text>
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View className="w-[92%] rounded-lg p-4 mt-6 mx-auto">
-          <Text>Enviar Alerta</Text>
+          <Text>Hello</Text>
         </View>
       </ScrollView>
     </View>
   );
 };
 
-export default SendAlertScreen;
+export default GenerateReportScreen;

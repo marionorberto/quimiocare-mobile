@@ -49,10 +49,16 @@ import ActivityRegisterScreen from "../screens/ActivityRegisterScreen";
 import ExportarRelatorio from "../screens/receitasScreen";
 import CreateQuestionScreen from "../screens/CreateQuestionScreen";
 import MyQuestionScreen from "../screens/MyQuestionScreen";
-import MyDoctorScreen from "../screens/MyDoctor";
+import MyDoctorScreen from "../screens/MyDoctorScreen";
 import BanUserScreen from "../screens/BanUserScreen";
 import AllDoctorsScreen from "../screens/AllDoctorsScreen";
 import AllPatientsScreen from "../screens/AllPatientsScreen";
+import ActivateUserScreen from "../screens/ActivateUserScreen";
+import GenerateReportScreen from "../screens/GenerateReportScreen";
+import SendAlertScreen from "../screens/SendAlertScreen";
+import AddTipsCategoryScreen from "../screens/AddTipsCategoryScreen";
+import CreateGroupScreen from "../screens/CreateGroupScreen";
+import MyPatientsScreen from "../screens/MyPatientsScreen";
 
 const StackRoutes = () => {
   const Stack = createNativeStackNavigator<RootStackParamsList>();
@@ -293,6 +299,37 @@ const StackRoutes = () => {
         component={AllPatientsScreen}
         options={{ headerShown: false }}
       />
+      <Stack.Screen
+        name={ScreenNames.ActivateUserScreen}
+        component={ActivateUserScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name={ScreenNames.GenerateReportScreen}
+        component={GenerateReportScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name={ScreenNames.SendAlertScreen}
+        component={SendAlertScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name={ScreenNames.AddTipsCategoryScreen}
+        component={AddTipsCategoryScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name={ScreenNames.CreateGroupScreen}
+        component={CreateGroupScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name={ScreenNames.MyPatientsScreen}
+        component={MyPatientsScreen}
+        options={{ headerShown: false }}
+      />
+
       <Stack.Screen
         name={ScreenNames.Main}
         component={TabRoutes}

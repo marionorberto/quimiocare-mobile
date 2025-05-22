@@ -459,6 +459,18 @@ const MainMedicoScreen = ({ navigation, route }: props) => {
               Criar Uma Questão
             </Text>
           </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate(ScreenNames.MyPatientsScreen, {
+                title: "",
+              });
+            }}
+            className="bg-black shadow-slate-400 mt-10 border-2 border-blue-500 rounded-full py-1  flex-row items-center justify-center w-56 h-14"
+          >
+            <Text className="text-blue-500 text-center font-semibold text-lg">
+              Meus Pacientes 🧑‍🤝‍🧑
+            </Text>
+          </TouchableOpacity>
         </View>
         <View
           className={`h-1 w-full ${theme === "dark" ? "bg-zinc-600" : "bg-zinc-100"}`}

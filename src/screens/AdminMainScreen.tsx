@@ -231,86 +231,50 @@ const AdminMainScreen = ({ navigation, route }: props) => {
         <Text className="text-lg font-bold text-black mb-3">Ações Rápidas</Text>
         <View className="flex-row flex-wrap gap-3 mb-6">
           <ActionButton
-            icon="medkit-outline"
-            label="Cadastrar Médico"
-            onPress={() => navigation.navigate("AcceptDoctor")}
+            icon="plus-circle-outline"
+            label="Reactivar Usuário"
+            onPress={() =>
+              navigation.navigate("ActivateUserScreen", { title: "" })
+            }
           />
-
-          {/* 2. Gerar Relatório */}
-          <ActionButton
-            icon="document-text-outline"
-            label="Gerar Relatório"
-            onPress={() => navigation.navigate("GenerateReport")}
-          />
-
-          {/* 3. Enviar Alerta */}
-          <ActionButton
-            icon="alert-circle-outline"
-            label="Enviar Alerta"
-            onPress={() => navigation.navigate("SendAlertScreen")}
-          />
-
-          {/* 4. Banir Usuário */}
           <ActionButton
             icon="remove-circle-outline"
             label="Banir Usuário"
             onPress={() => navigation.navigate("BanUserScreen", { title: "" })}
           />
+          {/* 
+          <ActionButton
+            icon="document-text-outline"
+            label="Gerar Relatório"
+            onPress={() =>
+              navigation.navigate("GenerateReportScreen", { title: "" })
+            }
+          />
+
+          <ActionButton
+            icon="alert-circle-outline"
+            label="Enviar Alerta"
+            onPress={() =>
+              navigation.navigate("SendAlertScreen", { title: "" })
+            }
+          /> */}
 
           {/* 5. Atualizar Estoque */}
           <ActionButton
             icon="cube-outline"
-            label="Atualizar Estoque"
-            onPress={() => navigation.navigate("Adicionar Categoria de Dicas")}
-          />
-
-          {/* 6. Enviar Comunicado */}
-          <ActionButton
-            icon="megaphone-outline"
-            label="Enviar Comunicado"
-            onPress={() => navigation.navigate("BroadcastMessage")}
+            label="Criar categoria de dicas"
+            onPress={() =>
+              navigation.navigate("AddTipsCategoryScreen", { title: "" })
+            }
           />
 
           {/* 7. Criar Grupo */}
           <ActionButton
             icon="people-circle-outline"
-            label="Criar Grupo"
-            onPress={() => navigation.navigate("CreateGroup")}
-          />
-
-          {/* 8. Agendar Manutenção */}
-          <ActionButton
-            icon="construct-outline"
-            label="Agendar Manutenção"
-            onPress={() => navigation.navigate("ScheduleMaintenance")}
-          />
-
-          {/* 9. Reatribuir Consulta */}
-          <ActionButton
-            icon="calendar-number-outline"
-            label="Reatribuir Consulta"
-            onPress={() => navigation.navigate("ReassignAppointment")}
-          />
-
-          {/* 10. Exportar Dados */}
-          <ActionButton
-            icon="download-outline"
-            label="Exportar Dados"
-            onPress={() => navigation.navigate("ExportData")}
-          />
-
-          {/* 11. Modo Emergência (extra) */}
-          <ActionButton
-            icon="shield-alert-outline"
-            label="Modo Emergência"
-            onPress={() => navigation.navigate("EmergencyMode")}
-          />
-
-          {/* 12. Fixar Aviso (extra) */}
-          <ActionButton
-            icon="pin-outline"
-            label="Fixar Aviso"
-            onPress={() => navigation.navigate("PinAnnouncement")}
+            label="Atribuir Paciente"
+            onPress={() =>
+              navigation.navigate("CreateGroupScreen", { title: "" })
+            }
           />
         </View>
 

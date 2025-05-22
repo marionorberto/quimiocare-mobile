@@ -481,20 +481,18 @@ import React from "react";
 import Constants from "expo-constants";
 import Icon from "react-native-vector-icons/Ionicons";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { BottomTabParamList } from "../constants/types";
 import { useTheme } from "../helpers/theme-context";
 import ScreenNames from "../constants/ScreenName";
 import { RootStackParamsList } from "../navigations/RootStackParamsList";
 
 type props = NativeStackScreenProps<
   RootStackParamsList,
-  ScreenNames.MyPostsScreen
+  ScreenNames.MyDoctorScreen
 >;
 
 const MyDoctorScreen = ({ navigation }: props) => {
   const { theme } = useTheme();
 
-  // Dados mockados do médico (substitua pelos dados reais da API)
   const doctorData = {
     name: "Dr. Carlos Silva",
     specialty: "Oncologista",
@@ -663,7 +661,7 @@ const MyDoctorScreen = ({ navigation }: props) => {
               theme === "dark" ? "text-white" : "text-black"
             }`}
           >
-            Horário disponível para
+            Horário disponível para conversas!
           </Text>
           <View className="space-y-2">
             {[

@@ -29,7 +29,10 @@ import { API_URL } from "../constants/data";
 import { countries } from "../constants/data";
 import api from "../services/api";
 
-type props = NativeStackScreenProps<RootStackParamsList, ScreenNames>;
+type props = NativeStackScreenProps<
+  RootStackParamsList,
+  ScreenNames.GatherDoctorProfileFirstScreen
+>;
 const GatherDoctorProfileFirstScreen = ({ route, navigation }: props) => {
   const FormData = global.FormData;
   const [sex, setSex] = useState<string>("");

@@ -503,7 +503,7 @@ const MainScreen = ({ navigation, route }: props) => {
               </Text>
             </TouchableOpacity>
           )}
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() => {
               // compareDate(lastdailyCreated.createdAt);
               navigation.navigate("ActivityRegisterScreen", { title: "hello" });
@@ -512,6 +512,19 @@ const MainScreen = ({ navigation, route }: props) => {
           >
             <Text className="text-blue-500 text-center font-semibold text-lg">
               Registar Actividades
+            </Text>
+          </TouchableOpacity> */}
+
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate(ScreenNames.MyDoctorScreen, {
+                title: "",
+              });
+            }}
+            className="bg-black shadow-slate-400 mt-10 border-2 border-blue-500 rounded-full py-1  flex-row items-center justify-center w-56 h-14"
+          >
+            <Text className="text-blue-500 text-center font-semibold text-lg">
+              Meu Médico 👨‍⚕️
             </Text>
           </TouchableOpacity>
         </View>

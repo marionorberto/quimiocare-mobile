@@ -93,6 +93,7 @@ const CommunityScreen = ({ route, navigation }: props) => {
       question: "",
       createdAt: "",
       updatedAt: "",
+      phone: "",
       user: {
         username: "",
         typeUser: "",
@@ -305,7 +306,7 @@ const CommunityScreen = ({ route, navigation }: props) => {
           <Text
             className={`text-lg font-semibold  mt-4 mb-2 ${theme === "dark" ? "text-white" : "text-black"}`}
           >
-            Perguntas e Respostas({questionCount.count || 0})
+            Perguntas({questionCount.count || 0})
           </Text>
           {questions &&
             questions.map((item) => (
@@ -317,11 +318,13 @@ const CommunityScreen = ({ route, navigation }: props) => {
                     question: item.question,
                     createdAt: item.createdAt,
                     updatedAt: item.updatedAt,
+
                     user: {
                       username: item.user.username,
                       typeUser: item.user.typeUser,
                     },
                     imgUrl: item.imgUrl,
+                    phone: item.phone,
                   });
                 }}
                 className="bg-zinc-200 p-4 rounded-lg mb-3"
@@ -352,7 +355,7 @@ const CommunityScreen = ({ route, navigation }: props) => {
                 <Text className="text-zinc-800 font-medium text-lg">
                   {item.question}
                 </Text>
-                <Text className="text-zinc-500 text-sm mt-2">0 respostas</Text>
+                {/* <Text className="text-zinc-500 text-sm mt-2">0 respostas</Text> */}
               </TouchableOpacity>
             ))}
         </View>

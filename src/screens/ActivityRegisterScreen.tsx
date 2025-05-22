@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -16,20 +16,70 @@ import { Picker } from "@react-native-picker/picker";
 import { RootStackParamsList } from "../navigations/RootStackParamsList";
 import ScreenNames from "../constants/ScreenName";
 import { useTheme } from "../helpers/theme-context";
+import api from "../services/api";
 
-type props = NativeStackScreenProps<RootStackParamsList, ScreenNames>;
+type props = NativeStackScreenProps<
+  RootStackParamsList,
+  ScreenNames.ActivityRegisterScreen
+>;
 
 const ActivityRegisterScreen = ({ navigation }: props) => {
   const [selectedMedicine, setSelectedMedicine] = useState("");
   const [wentToConsultation, setWentToConsultation] = useState(false);
   const [consultationType, setConsultationType] = useState("");
   const [symptomsPersist, setSymptomsPersist] = useState(false);
+  const [appointments, setAppointments] = useState(null);
+  const [medications, setMedications] = useState(null);
+  const [symptoms, setSymptoms] = useState(null);
+
+  setSymptoms;
   const [notes, setNotes] = useState("");
 
   const { theme } = useTheme();
 
+  const fetchAppointment = () => {
+    api
+      .get("/appointments/all")
+      .then(({ data: res }) => {
+        setAppointments(res.data[1]);
+        console.log("consultas", res.data[1]);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const fetchMedications = () => {
+    api
+      .get("/medications/all")
+      .then(({ data: res }) => {
+        setMedications(res.data[1]);
+        console.log("medicações", res.data[1]);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const fetchSymptom = () => {
+    api
+      .get("/symptoms/all")
+      .then(({ data: res }) => {
+        setSymptoms(res.data[1]);
+        console.log("sintomas", res.data[1]);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  useEffect(() => {
+    fetchAppointment();
+    fetchMedications();
+    fetchSymptom();
+  }, []);
+
   const onSaveActivity = () => {
-    // Aqui você pode salvar os dados conforme necessidade
     alert(
       `Salvo:\nRemédio: ${selectedMedicine || "Nenhum"}\nConsulta: ${
         wentToConsultation ? consultationType : "Não foi"
@@ -78,7 +128,6 @@ const ActivityRegisterScreen = ({ navigation }: props) => {
           theme === "dark" ? "bg-neutral-900" : "bg-[#f1f1f1]"
         }`}
       >
-        {/* Picker para o remédio tomado */}
         <Text
           className={`text-zinc-900 font-bold mb-1 ${
             theme === "dark" ? "text-white" : ""
@@ -92,15 +141,13 @@ const ActivityRegisterScreen = ({ navigation }: props) => {
           selectedValue={selectedMedicine}
           onValueChange={(itemValue) => setSelectedMedicine(itemValue)}
         >
-          <Picker.Item label="Nenhum" value="" />
-          <Picker.Item label="Paracetamol" value="paracetamol" />
-          <Picker.Item label="Ibuprofeno" value="ibuprofeno" />
-          <Picker.Item label="Amoxicilina" value="amoxicilina" />
-          <Picker.Item label="Dipirona" value="dipirona" />
-          <Picker.Item label="Outros" value="outros" />
+          <Picker.Item label="Selecionar sintoma" value="" />
+          {symptoms &&
+            symptoms.map((item) => {
+              <Picker.Item label={item.description} value={item.description} />;
+            })}
         </Picker>
 
-        {/* Switch para consulta e picker para escolher especialidade */}
         <View
           className={`flex-row items-center justify-between mb-4 bg-white border border-zinc-300 rounded-lg px-4 py-3 ${
             theme === "dark" ? "border-zinc-700" : ""

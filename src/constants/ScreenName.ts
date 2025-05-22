@@ -59,9 +59,13 @@ enum ScreenNames {
   AllDoctorsScreen = 'AllDoctorsScreen',
   AllPatientsScreen = 'AllPatientsScreen',
   SendAlertScreen = 'SendAlertScreen',
-  GenerateReport = 'GenerateReport',
+  GenerateReportScreen = 'GenerateReportScreen',
   PinAnnouncement = 'PinAnnouncement',
-  AddTipCategory = 'AddTipCategory'
+  AddTipCategory = 'AddTipCategory',
+  ActivateUserScreen = 'ActivateUserScreen',
+  AddTipsCategoryScreen = 'AddTipsCategoryScreen',
+  CreateGroupScreen = 'CreateGroupScreen',
+  MyPatientsScreen =  'MyPatientsScreen'
 }
 
 export default ScreenNames;

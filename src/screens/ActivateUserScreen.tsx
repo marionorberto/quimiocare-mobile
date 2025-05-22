@@ -17,10 +17,10 @@ import { useFocusEffect } from "@react-navigation/native";
 
 type props = NativeStackScreenProps<
   RootStackParamsList,
-  ScreenNames.BanUserScreen
+  ScreenNames.ActivateUserScreen
 >;
 
-const BanUserScreen = ({ navigation }: props) => {
+const ActiveUserScreen = ({ navigation }: props) => {
   const { theme } = useTheme();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedUser, setSelectedUser] = useState<null | {
@@ -73,12 +73,11 @@ const BanUserScreen = ({ navigation }: props) => {
       user.email.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const banUser = async (id: string | null) => {
-    alert("okkkk");
+  const activeUser = async (id: string) => {
     await api
-      .put(`/users/ban/${id}`)
+      .put(`/users/active/${id}`)
       .then(({ data: res }) => {
-        alert("Usuário Banido!");
+        alert("Activado com sucesso!");
         navigation.goBack();
       })
       .catch((err) => {
@@ -102,12 +101,13 @@ const BanUserScreen = ({ navigation }: props) => {
     fetchUsers();
   }, []);
 
-  const handleBanUser = async () => {
+  const handleActiveUser = async () => {
     // Aqui você faria a chamada API para banir o usuário
     console.log(`Usuário ${selectedUser?.id} banido. Motivo: ${banReason}`);
     setBanReason(banReason);
 
-    await banUser(selectedUser.id);
+    await activeUser(selectedUser.id);
+
     setShowModal(false);
     setSelectedUser(null);
   };
@@ -135,7 +135,7 @@ const BanUserScreen = ({ navigation }: props) => {
         <Text
           className={`text-xl font-bold ml-4 ${theme === "dark" ? "text-white" : "text-black"}`}
         >
-          Banir Usuário
+          Reactivar Usuário
         </Text>
       </View>
 
@@ -159,100 +159,105 @@ const BanUserScreen = ({ navigation }: props) => {
 
       {/* Lista de Usuários */}
       <ScrollView className="flex-1 p-4">
-        {filteredPatients.map((user) => (
-          <TouchableOpacity
-            key={user.id}
-            className={`p-4 mb-3 rounded-lg ${theme === "dark" ? "bg-neutral-800" : "bg-gray-50"} ${!user.active ? "opacity-60" : ""}`}
-            onPress={() => {
-              if (user.active) {
-                setSelectedUser(user);
-                setShowModal(true);
-              }
-            }}
-            disabled={!user.active}
-          >
-            <View className="flex-row justify-between items-center">
-              <View>
-                <Text
-                  className={`font-bold ${theme === "dark" ? "text-white" : "text-black"}`}
-                >
-                  {user.username}
-                </Text>
-                <Text
-                  className={`${theme === "dark" ? "text-neutral-400" : "text-gray-600"}`}
-                >
-                  {user.email}
-                </Text>
-              </View>
+        {filteredPatients.map(
+          (user) =>
+            !user.active && (
+              <TouchableOpacity
+                key={user.id}
+                className={`p-4 mb-3 rounded-lg ${theme === "dark" ? "bg-neutral-800" : "bg-gray-50"} ${!user.active ? "opacity-60" : ""}`}
+                onPress={() => {
+                  if (!user.active) {
+                    setSelectedUser(user);
+                    setShowModal(true);
+                  }
+                }}
+                disabled={user.active}
+              >
+                <View className="flex-row justify-between items-center">
+                  <View>
+                    <Text
+                      className={`font-bold ${theme === "dark" ? "text-white" : "text-black"}`}
+                    >
+                      {user.username}
+                    </Text>
+                    <Text
+                      className={`${theme === "dark" ? "text-neutral-400" : "text-gray-600"}`}
+                    >
+                      {user.email}
+                    </Text>
+                  </View>
 
-              <View className="flex-row items-center">
-                <Text
-                  className={`mr-3 ${theme === "dark" ? "text-neutral-400" : "text-gray-600"}`}
-                >
-                  {user.typeUser}
-                </Text>
-                <View
-                  className={`px-2 py-1 rounded-full ${!user.active ? "bg-red-100" : "bg-green-100"}`}
-                >
-                  <Text
-                    className={`text-xs ${!user.active ? "text-red-800" : "text-green-800"}`}
-                  >
-                    {user.active ? "activo" : "banido"}
-                  </Text>
+                  <View className="flex-row items-center">
+                    <Text
+                      className={`mr-3 ${theme === "dark" ? "text-neutral-400" : "text-gray-600"}`}
+                    >
+                      {user.typeUser}
+                    </Text>
+                    <View
+                      className={`px-2 py-1 rounded-full ${!user.active ? "bg-red-100" : "bg-green-100"}`}
+                    >
+                      <Text
+                        className={`text-xs ${!user.active ? "text-red-800" : "text-green-800"}`}
+                      >
+                        {user.active ? "activo" : "banido"}
+                      </Text>
+                    </View>
+                  </View>
                 </View>
-              </View>
-            </View>
-          </TouchableOpacity>
-        ))}
+              </TouchableOpacity>
+            )
+        )}
 
-        {filteredDoctors.map((user) => (
-          <TouchableOpacity
-            key={user.id}
-            className={`p-4 mb-3 rounded-lg ${theme === "dark" ? "bg-neutral-800" : "bg-gray-50"} ${!user.active ? "opacity-60" : ""}`}
-            onPress={() => {
-              if (user.active) {
-                setSelectedUser(user);
-                setShowModal(true);
-              }
-            }}
-            disabled={!user.active}
-          >
-            <View className="flex-row justify-between items-center">
-              <View>
-                <Text
-                  className={`font-bold ${theme === "dark" ? "text-white" : "text-black"}`}
-                >
-                  {user.username}
-                </Text>
-                <Text
-                  className={`${theme === "dark" ? "text-neutral-400" : "text-gray-600"}`}
-                >
-                  {user.email}
-                </Text>
-              </View>
+        {filteredDoctors.map(
+          (user) =>
+            !user.active && (
+              <TouchableOpacity
+                key={user.id}
+                className={`p-4 mb-3 rounded-lg ${theme === "dark" ? "bg-neutral-800" : "bg-gray-50"} ${!user.active ? "opacity-60" : ""}`}
+                onPress={() => {
+                  if (user.active == false) {
+                    setSelectedUser(user);
+                    setShowModal(true);
+                  }
+                }}
+                disabled={user.active}
+              >
+                <View className="flex-row justify-between items-center">
+                  <View>
+                    <Text
+                      className={`font-bold ${theme === "dark" ? "text-white" : "text-black"}`}
+                    >
+                      {user.username}
+                    </Text>
+                    <Text
+                      className={`${theme === "dark" ? "text-neutral-400" : "text-gray-600"}`}
+                    >
+                      {user.email}
+                    </Text>
+                  </View>
 
-              <View className="flex-row items-center">
-                <Text
-                  className={`mr-3 ${theme === "dark" ? "text-neutral-400" : "text-gray-600"}`}
-                >
-                  {user.typeUser}
-                </Text>
-                <View
-                  className={`px-2 py-1 rounded-full ${!user.active ? "bg-red-100" : "bg-green-100"}`}
-                >
-                  <Text
-                    className={`text-xs ${!user.active ? "text-red-800" : "text-green-800"}`}
-                  >
-                    {user.active ? "activo" : "banido"}
-                  </Text>
+                  <View className="flex-row items-center">
+                    <Text
+                      className={`mr-3 ${theme === "dark" ? "text-neutral-400" : "text-gray-600"}`}
+                    >
+                      {user.typeUser}
+                    </Text>
+                    <View
+                      className={`px-2 py-1 rounded-full ${!user.active ? "bg-red-100" : "bg-green-100"}`}
+                    >
+                      <Text
+                        className={`text-xs ${!user.active ? "text-red-800" : "text-green-800"}`}
+                      >
+                        {user.active ? "activo" : "banido"}
+                      </Text>
+                    </View>
+                  </View>
                 </View>
-              </View>
-            </View>
-          </TouchableOpacity>
-        ))}
+              </TouchableOpacity>
+            )
+        )}
       </ScrollView>
 
-      {/* Modal de Confirmação */}
       <Modal visible={showModal} transparent={true} animationType="slide">
         <View className="flex-1 justify-center items-center bg-black/50">
           <View
@@ -261,7 +266,7 @@ const BanUserScreen = ({ navigation }: props) => {
             <Text
               className={`text-lg font-bold mb-4 ${theme === "dark" ? "text-white" : "text-black"}`}
             >
-              Confirmar Banimento(PRECISA COLOCAR O MOTIVO!!!)
+              Confirmar
             </Text>
 
             <Text
@@ -274,21 +279,6 @@ const BanUserScreen = ({ navigation }: props) => {
             >
               Email: {selectedUser?.email}
             </Text>
-
-            <Text
-              className={`mb-2 ${theme === "dark" ? "text-neutral-300" : "text-gray-700"}`}
-            >
-              Motivo do banimento:
-            </Text>
-            <TextInput
-              className={`p-3 mb-4 rounded-lg ${theme === "dark" ? "bg-neutral-700 text-white" : "bg-gray-100 text-black"}`}
-              placeholder="Descreva o motivo..."
-              placeholderTextColor={theme === "dark" ? "#aaa" : "#999"}
-              multiline
-              numberOfLines={3}
-              value={banReason}
-              onChangeText={setBanReason}
-            />
 
             <View className="flex-row justify-between">
               <TouchableOpacity
@@ -303,14 +293,13 @@ const BanUserScreen = ({ navigation }: props) => {
               </TouchableOpacity>
 
               <TouchableOpacity
-                className="px-4 py-3 rounded-lg bg-red-500 ml-4"
+                className="px-4 py-3 rounded-lg bg-green-500 ml-4"
                 onPress={() => {
-                  handleBanUser();
+                  handleActiveUser();
                 }}
-                disabled={!banReason}
               >
                 <Text className="text-white font-bold">
-                  Confirmar Banimento
+                  Confirmar Reativação
                 </Text>
               </TouchableOpacity>
             </View>
@@ -321,4 +310,4 @@ const BanUserScreen = ({ navigation }: props) => {
   );
 };
 
-export default BanUserScreen;
+export default ActiveUserScreen;

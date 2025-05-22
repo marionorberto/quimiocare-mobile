@@ -14,7 +14,10 @@ import { RootStackParamsList } from "../navigations/RootStackParamsList";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { createSuggest } from "../services/suggest";
 
-type props = NativeStackScreenProps<RootStackParamsList, ScreenNames>;
+type props = NativeStackScreenProps<
+  RootStackParamsList,
+  ScreenNames.SuggestVideoScreen
+>;
 
 const SugestaoDeVideo = ({ route, navigation }: props) => {
   const [mostrarCampo, setMostrarCampo] = useState(false);

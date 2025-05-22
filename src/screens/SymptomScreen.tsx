@@ -14,7 +14,7 @@ import ScreenNames from "../constants/ScreenName";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import api from "../services/api";
 
-type props = NativeStackScreenProps<RootStackParamsList, ScreenNames>;
+type props = NativeStackScreenProps<RootStackParamsList, ScreenNames.Symptom>;
 
 const SymptomsScreen = ({ route, navigation }: props) => {
   const [symptoms, setSymptoms] = useState([

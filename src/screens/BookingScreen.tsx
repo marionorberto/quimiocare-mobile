@@ -21,7 +21,7 @@ type appointmentType = {
   time: string;
 };
 
-type props = NativeStackScreenProps<RootStackParamsList, ScreenNames>;
+type props = NativeStackScreenProps<RootStackParamsList, ScreenNames.Booking>;
 
 const BookingScreen = ({ route, navigation }: props) => {
   const [appointmentCounter, setAppontmentCounter] = useState({ count: 0 });

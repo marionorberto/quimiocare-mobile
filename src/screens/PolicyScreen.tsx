@@ -14,7 +14,7 @@ import ScreenNames from "../constants/ScreenName";
 import { RootStackParamsList } from "../navigations/RootStackParamsList";
 import CheckBox from "expo-checkbox";
 
-type props = NativeStackScreenProps<RootStackParamsList, ScreenNames>;
+type props = NativeStackScreenProps<RootStackParamsList, ScreenNames.Policy>;
 
 const PrivacyPolicyScreen = ({ route, navigation }: props) => {
   const [agreed, setAgreed] = useState(true);

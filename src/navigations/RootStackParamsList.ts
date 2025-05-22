@@ -183,6 +183,7 @@ type QuestionScreen = {
   question: string,
   createdAt: string,
   updatedAt: string,
+  phone: string,
   user: {
     username: string,
     typeUser: string,
@@ -241,6 +242,11 @@ type MyDoctorScreen = {
   title: string;
 }
 
+
+type MyPatientsScreen = {
+  title: string;
+}
+
 type BanUserScreen = {
   title: string;
 }
@@ -267,9 +273,20 @@ type PinAnnouncementScreen = {
 }
 
 
-type AddTipCategoryScreen = {
+type AddTipsCategoryScreen = {
   title: string;
 }
+
+
+type ActivateUserScreen = {
+  title: string;
+}
+
+
+type CreateGroupScreen = {
+  title: string;
+}
+
 
 
 export type RootStackParamsList = {
@@ -328,12 +345,14 @@ export type RootStackParamsList = {
   CreateQuestionScreen: CreateQuestionScreen;
   MyQuestionScreen: MyQuestionScreen;
   MyDoctorScreen: MyDoctorScreen;
+  MyPatientsScreen: MyPatientsScreen;
   BanUserScreen: BanUserScreen;
   AllDoctorsScreen: AllDoctorsScreen;
   AllPatientsScreen: AllPatientsScreen;
-  
   SendAlertScreen: SendAlertScreen;
   GenerateReportScreen: GenerateReportScreen;
   PinAnnouncementScreen: PinAnnouncementScreen;
-  AddTipCategoryScreen: AddTipCategoryScreen
+  AddTipsCategoryScreen: AddTipsCategoryScreen;
+  ActivateUserScreen: ActivateUserScreen;
+  CreateGroupScreen: CreateGroupScreen;
 }

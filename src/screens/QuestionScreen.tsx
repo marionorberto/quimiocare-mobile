@@ -4,7 +4,6 @@ import {
   Text,
   Pressable,
   StyleSheet,
-  ScrollView,
   Linking,
   TextInput,
   TouchableOpacity,
@@ -12,10 +11,7 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import Icon from "react-native-vector-icons/Ionicons";
-import {
-  NativeStackNavigatorProps,
-  NativeStackScreenProps,
-} from "@react-navigation/native-stack";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamsList } from "../navigations/RootStackParamsList";
 import ScreenNames from "../constants/ScreenName";
 import Constants from "expo-constants";
@@ -29,7 +25,25 @@ type props = NativeStackScreenProps<
 
 const QuestionScreen = ({ route, navigation }: props) => {
   const [showInputReply, setShowInputReply] = useState(false);
-  const { id, question, imgUrl, createdAt, updatedAt, user } = route.params;
+
+  const openWhatsApp = (phoneNumber: string, message: string) => {
+    // Formata o número (remove caracteres não numéricos)
+    const formattedNumber = phoneNumber.replace(/[^\d]/g, "");
+
+    message = "Gostaria de saber mais sobre essa pergunta: " + message;
+    // Codifica a mensagem para URL
+    const encodedMessage = encodeURIComponent(message);
+
+    // Monta a URL
+    const url = `https://wa.me/${formattedNumber}?text=${encodedMessage}`;
+
+    // Abre o link
+    Linking.openURL(url).catch(() => {
+      alert("Não foi possível abrir o WhatsApp");
+    });
+  };
+  const { id, question, phone, imgUrl, createdAt, updatedAt, user } =
+    route.params;
   return (
     <View
       style={{ marginTop: Constants.statusBarHeight }}
@@ -46,7 +60,7 @@ const QuestionScreen = ({ route, navigation }: props) => {
           </Pressable>
         </View>
         <Text className="text-xl self-center text-center text-black font-bold">
-          Perguntas & Respostas
+          A Pergunta
         </Text>
       </View>
 
@@ -77,14 +91,13 @@ const QuestionScreen = ({ route, navigation }: props) => {
         </View>
         <TouchableOpacity className="bg-zinc-200 p-4 rounded-lg my-4 w-full">
           <Text className="text-zinc-800 font-medium ">{question}</Text>
-          <Text className="text-zinc-500 text-sm mt-1">0 respostas</Text>
         </TouchableOpacity>
         <Pressable
-          onPress={() => setShowInputReply(!showInputReply)}
+          onPress={() => openWhatsApp(phone, question)}
           className="bg-blue-600 rounded-lg py-2 px-4 mb-6"
         >
           <Text className="text-white text-center font-semibold">
-            Responder
+            Conversar com o doctor sobre a pergunta
           </Text>
         </Pressable>
 
@@ -113,7 +126,6 @@ const QuestionScreen = ({ route, navigation }: props) => {
             </TouchableHighlight>
           </View>
         )}
-        <Text className="my-4">Respostas(0):</Text>
         <View className=" rounded-lg p-3 mb-5 border-b-2 border-zinc-200 w-full">
           {/* <View className="mb-3 ">
             <View className="flex-row">

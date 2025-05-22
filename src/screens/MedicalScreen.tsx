@@ -344,6 +344,7 @@ const MedicalScreen = ({ route, navigation }: props) => {
             <Text className="text-lg font-bold text-black ">
               Consultas/Remédios/Sintomas
             </Text>
+
             <View className=" rounded-lg p-4 pb-0 items-center justify-center ">
               <View className=" pt-0">
                 {/* <LineChart
