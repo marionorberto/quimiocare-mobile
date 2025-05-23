@@ -13,8 +13,7 @@ export const handleLogin = async (email: string, password: string): Promise<any>
     return response.data;
 
   } catch(error: any) {
-    if (error.response.message) throw error.response.message;
-    throw error.response.data || 'Erro tentando fazer login!';
+    throw error;
   } 
 };
 

@@ -16,7 +16,7 @@ import { Image } from "expo-image";
 import { handleLogin } from "../services/authService";
 import { useTheme } from "../helpers/theme-context";
 
-type props = NativeStackScreenProps<RootStackParamsList, ScreenNames>;
+type props = NativeStackScreenProps<RootStackParamsList, ScreenNames.Login>;
 
 const LoginScreen = ({ route, navigation }: props) => {
   const [email, setEmail] = useState("");
@@ -24,30 +24,45 @@ const LoginScreen = ({ route, navigation }: props) => {
   const [isVisiblePassword, setIsVisiblePassword] = useState(true);
 
   const Login = async () => {
-    if (!email || !password) return alert("Email e a Senha são obrigatórias!");
+    if (!email || !password)
+      return Alert.alert(
+        "⚠️ Erro Tentando fazer login",
+        "🚫Email e a Senha são obrigatórias, tente novamente!"
+      );
 
     try {
-      let { typeUser } = await handleLogin(email, password);
+      let { typeUser, idUser, username } = await handleLogin(email, password);
 
-      console.log(typeUser);
-
+      console.log({ typeUser, idUser, username });
       typeUser = typeUser.toLowerCase();
 
       if (typeUser == "paciente") {
-        navigation.navigate("Main", { title: "Main" });
+        navigation.navigate("Main", {
+          idUser: idUser,
+          username: username,
+          typeUser: typeUser,
+        });
       } else if (typeUser == "doctor") {
-        navigation.navigate("MainMedicoScreen", { title: "Main" });
+        navigation.navigate("MainMedicoScreen", {
+          idUser: idUser,
+          username: username,
+          typeUser: typeUser,
+        });
       } else if (typeUser == "admin") {
-        navigation.navigate("AdminMainScreen", { title: "Admin" });
+        navigation.navigate("AdminMainScreen", {
+          idUser: idUser,
+          username: username,
+          typeUser: typeUser,
+        });
       } else {
         alert("usuário inválido");
         navigation.navigate("Login", { title: "sc" });
       }
     } catch (error: any) {
-      if (error.data) {
-        alert(`${error.message.map((error: string) => error)}`);
-      }
-      alert(`${error.message}`);
+      Alert.alert(
+        "⚠️Tentando fazer login",
+        `🚫 ${error.response.data.message}`
+      );
     }
   };
 

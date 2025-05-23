@@ -33,7 +33,7 @@ import MedicalScreen from "../screens/MedicalScreen";
 import DailyScreen from "../screens/DailScreen";
 import MainScreen from "../screens/MainScreen";
 import AdminMainScreen from "../screens/AdminMainScreen";
-import AnalisesScreen from "../screens/AnalisesScreen";
+import AcceptTipsScreen from "../screens/AcceptTipsScreen";
 import OptionsAdmincreen from "../screens/OptionsAdminScreen";
 import MainMedicoScreen from "../screens/MainMedicoScreen";
 import MyPostsScreen from "../screens/MyPostsScreen";
@@ -195,8 +195,8 @@ const StackRoutes = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name={ScreenNames.AnalisesScreen}
-        component={AnalisesScreen}
+        name={ScreenNames.AcceptTipsScreen}
+        component={AcceptTipsScreen}
         options={{ headerShown: false }}
       />
       <Stack.Screen

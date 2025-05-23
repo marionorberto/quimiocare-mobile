@@ -175,15 +175,6 @@ const CommunityScreen = ({ route, navigation }: props) => {
           Comunidade
         </Text>
       </View>
-      {/* <View className="relative w-64 ms-4 mt-5">
-        <TextInput
-          placeholder="Pesquisar ..."
-          className="bg-white p-3 rounded-lg mb-4 ps-10"
-        />
-        <View className="absolute left-3 top-2">
-          <Icon name="search-outline" color={"#545454"} size={21}></Icon>
-        </View>
-      </View> */}
       <View className="mb-4 mt-5 px-4">
         <Text
           className={`text-lg   mb-2 font-bold ${theme === "dark" ? "text-white" : "text-black"}`}
@@ -249,66 +240,72 @@ const CommunityScreen = ({ route, navigation }: props) => {
               showsHorizontalScrollIndicator={false}
               className="py-4"
             >
-              {post.map((item) => (
-                <View
-                  key={item.id}
-                  className="shadow-zinc-400 border-2 border-zinc-200 flex-col justify-center items-start bg-white mt-3 p-5 rounded-lg h-[16rem] relative me-3"
-                >
-                  <View className="w-full py-3 pt-1">
-                    <View className="flex-row justify-start items-center gap-3 mb-1">
-                      <Image
-                        source={{
-                          uri: `http://${API_URL_UPLOAD}:3000/${item.imgUrl}`,
-                        }}
-                        style={{
-                          width: 40,
-                          height: 40,
-                          borderRadius: 50,
-                          borderWidth: 2,
-                          borderColor: "#fff",
-                          backgroundColor: "#ccc",
-                        }}
-                      />
-                      <Text className="font-semibold text-sm text-black">
-                        {item.user.username}
+              {post.length > 0 ? (
+                post.map((item) => (
+                  <View
+                    key={item.id}
+                    className="shadow-zinc-400 border-2 border-zinc-200 flex-col justify-center items-start bg-white mt-3 p-5 rounded-lg h-[16rem] relative me-3"
+                  >
+                    <View className="w-full py-3 pt-1">
+                      <View className="flex-row justify-start items-center gap-3 mb-1">
+                        <Image
+                          source={{
+                            uri: `http://${API_URL_UPLOAD}:3000/${item.imgUrl}`,
+                          }}
+                          style={{
+                            width: 40,
+                            height: 40,
+                            borderRadius: 50,
+                            borderWidth: 2,
+                            borderColor: "#fff",
+                            backgroundColor: "#ccc",
+                          }}
+                        />
+                        <Text className="font-semibold text-sm text-black">
+                          {item.user.username}
+                        </Text>
+                      </View>
+                      <View className="flex-row justify-between items-center gap-3">
+                        <Text className="font-semibold text-sm text-black flex-row justify-start items-center">
+                          <View className="h-1 w-1 bg-blue-400 rounded-full mr-2" />
+                          <Text>{item.user.typeUser}</Text>
+                        </Text>
+                        <Text className="rounded-xl bg-blue-500/30 text-blue-600 font-semibold px-3 py-[3px]  text-sm">
+                          {item.tag || "------------"}
+                        </Text>
+                      </View>
+                    </View>
+                    <View className="mt-2 mb-4">
+                      <Text className="text-xl text-zinc-600 font-light text-wrap text-justify">
+                        {item.title}
+                      </Text>
+                      <Text className="text-xl text-zinc-600 font-light text-wrap text-justify">
+                        {item.subtitle}
                       </Text>
                     </View>
-                    <View className="flex-row justify-between items-center gap-3">
-                      <Text className="font-semibold text-sm text-black flex-row justify-start items-center">
-                        <View className="h-1 w-1 bg-blue-400 rounded-full mr-2" />
-                        <Text>{item.user.typeUser}</Text>
-                      </Text>
-                      <Text className="rounded-xl bg-blue-500/30 text-blue-600 font-semibold px-3 py-[3px]  text-sm">
-                        {item.tag}
+                    <View>
+                      <Text className="text-zinc-400">
+                        Postado Em <Text></Text>
+                        {item.createdAt.split("T")[0]}
                       </Text>
                     </View>
                   </View>
-                  <View className="mt-2 mb-4">
-                    <Text className="text-xl text-zinc-600 font-light text-wrap text-justify">
-                      {item.title}
-                    </Text>
-                    <Text className="text-xl text-zinc-600 font-light text-wrap text-justify">
-                      {item.subtitle}
-                    </Text>
-                  </View>
-                  <View>
-                    <Text className="text-zinc-400">
-                      Postado Em <Text></Text>
-                      {item.createdAt.split("T")[0]}
-                    </Text>
-                  </View>
-                </View>
-              ))}
+                ))
+              ) : (
+                <TouchableOpacity className="p-4 bg-zinc-50 shadow-lg rounded-lg flex-row  justify-center items-center mb-3 ">
+                  <Text className="text-blue-600  text-base text-center">
+                    Sem postagens recentes!
+                  </Text>
+                </TouchableOpacity>
+              )}
             </ScrollView>
           </View>
-          {/* Botão para mostrar campo */}
-
           <Text
             className={`text-lg font-semibold  mt-4 mb-2 ${theme === "dark" ? "text-white" : "text-black"}`}
           >
             Perguntas({questionCount.count || 0})
           </Text>
-          {questions &&
+          {questions.length > 0 ? (
             questions.map((item) => (
               <TouchableOpacity
                 key={item.id}
@@ -355,9 +352,15 @@ const CommunityScreen = ({ route, navigation }: props) => {
                 <Text className="text-zinc-800 font-medium text-lg">
                   {item.question}
                 </Text>
-                {/* <Text className="text-zinc-500 text-sm mt-2">0 respostas</Text> */}
               </TouchableOpacity>
-            ))}
+            ))
+          ) : (
+            <TouchableOpacity className="p-4 bg-zinc-50 shadow-lg rounded-lg flex-row  justify-center items-center mb-3 ">
+              <Text className="text-blue-500  text-base text-center">
+                Sem nova questão cadastrada!
+              </Text>
+            </TouchableOpacity>
+          )}
         </View>
       </ScrollView>
     </View>

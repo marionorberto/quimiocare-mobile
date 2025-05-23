@@ -15,14 +15,7 @@ import { RootStackParamsList } from "../navigations/RootStackParamsList";
 import api from "../services/api";
 import { useFocusEffect } from "@react-navigation/native";
 import { handleLogout } from "../services/authService";
-import {
-  LineChart,
-  BarChart,
-  PieChart,
-  ProgressChart,
-  ContributionGraph,
-  StackedBarChart,
-} from "react-native-chart-kit";
+import { BarChart } from "react-native-chart-kit";
 
 type props = NativeStackScreenProps<
   RootStackParamsList,
@@ -30,20 +23,6 @@ type props = NativeStackScreenProps<
 >;
 
 const AdminMainScreen = ({ navigation, route }: props) => {
-  const adminData = {
-    totalDoctors: 24,
-    totalPatients: 156,
-    activeAppointments: 18,
-    newRegistrations: 12,
-    // recentDoctors: [
-    //   { id: 1, name: "Dr. Ana Sousa", specialty: "Oncologista" },
-    //   { id: 2, name: "Dr. Pedro Martins", specialty: "Radioterapia" },
-    // ],
-    // recentPatients: [
-    //   { id: 1, name: "Maria Silva", lastAppointment: "15/05/2024" },
-    //   { id: 2, name: "João Ferreira", lastAppointment: "14/05/2024" },
-    // ],
-  };
   const [doctorCount, setDoctorCount] = useState(0);
   const [patientCount, setPatientCount] = useState(0);
   const [appointmentCount, setAppointmentCount] = useState([
@@ -250,14 +229,14 @@ const AdminMainScreen = ({ navigation, route }: props) => {
               navigation.navigate("GenerateReportScreen", { title: "" })
             }
           />
-
+*/}
           <ActionButton
             icon="alert-circle-outline"
-            label="Enviar Alerta"
+            label="Aceitar Dicas"
             onPress={() =>
               navigation.navigate("SendAlertScreen", { title: "" })
             }
-          /> */}
+          />
 
           {/* 5. Atualizar Estoque */}
           <ActionButton

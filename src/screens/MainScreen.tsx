@@ -17,18 +17,14 @@ import ScreenNames from "../constants/ScreenName";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import api from "../services/api";
 import { RootStackParamsList } from "../navigations/RootStackParamsList";
-import {
-  handleSaveMedication,
-  handleSaveSymptom,
-} from "../services/mainService";
 import { useTheme } from "../helpers/theme-context";
 import { API_URL, API_URL_UPLOAD } from "../constants/data";
 import { allPrescriptions } from "../services/receitas";
 import { lastdaily } from "../services/daily/create-daily";
-import { parse, format, isSameDay } from "date-fns";
 import { useFocusEffect } from "@react-navigation/native";
+import { BottomTabParamList } from "../constants/types";
 
-type props = NativeStackScreenProps<RootStackParamsList, ScreenNames.Main>;
+type props = NativeStackScreenProps<BottomTabParamList, "Main">;
 
 const MainScreen = ({ navigation, route }: props) => {
   const [userImg, setUserImg] = useState("");
@@ -503,7 +499,7 @@ const MainScreen = ({ navigation, route }: props) => {
               </Text>
             </TouchableOpacity>
           )}
-          {/* <TouchableOpacity
+          <TouchableOpacity
             onPress={() => {
               // compareDate(lastdailyCreated.createdAt);
               navigation.navigate("ActivityRegisterScreen", { title: "hello" });
@@ -513,7 +509,7 @@ const MainScreen = ({ navigation, route }: props) => {
             <Text className="text-blue-500 text-center font-semibold text-lg">
               Registar Actividades
             </Text>
-          </TouchableOpacity> */}
+          </TouchableOpacity>
 
           <TouchableOpacity
             onPress={() => {

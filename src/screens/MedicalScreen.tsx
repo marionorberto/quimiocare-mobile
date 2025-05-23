@@ -422,7 +422,7 @@ const MedicalScreen = ({ route, navigation }: props) => {
           <View>
             {lastMedicationdata ? (
               <View className="border-b-2 border-zinc-300/35 py-3 flex-row justify-between items-center pb-5 mb-1 w-full">
-                <View className="text-black text-base opacity-60 bg-zinc-400/50 rounded-md p-3 flex-row justify-between items-center w-full">
+                <View className="text-black text-base opacity-60 bg-zinc-400/50 rounded-md p-3 flex-col justify-between items-center w-full">
                   <Text className="flex-row justify-start items-center">
                     <Icon
                       className="font-bold"
@@ -440,41 +440,24 @@ const MedicalScreen = ({ route, navigation }: props) => {
                       </Text>
                     </Text>
                   </Text>
-
                   <View className="flex-row justify-end items-center gap-2 bg-blue-300/40 rounded-lg py-[3px] px-3">
                     <Text className="text-blue-600 text-lg  text-end font-semibold">
-                      {lastMedicationdata.timeReminder}
+                      {"💊 " + lastMedicationdata.timeReminder}
                     </Text>
                   </View>
                 </View>
               </View>
             ) : (
-              <View className="border-b-2 border-zinc-300/35 py-3 flex-row justify-between items-center pb-5 mb-1 w-full">
-                <View className="text-black text-base opacity-60 bg-zinc-400/50 rounded-md p-3 flex-row justify-between items-center w-full">
-                  <Text className="flex-row justify-start items-center">
-                    <Icon
-                      className="font-bold"
-                      name="alarm-outline"
-                      size={20}
-                      color={"#505050"}
-                    />
-                    <Text>
-                      Seu próximo <Text className="font-bold">Remédio</Text>
-                    </Text>
-                  </Text>
-
-                  <View className="flex-row justify-end items-center gap-2 bg-blue-300/40 rounded-lg py-[3px] px-3">
-                    <Text className="text-blue-600 text-lg  text-end font-semibold">
-                      08:30
-                    </Text>
-                  </View>
-                </View>
-              </View>
+              <TouchableOpacity className="p-4 bg-zinc-50 shadow-lg rounded-lg flex-row  justify-center items-center mb-3 ">
+                <Text className="text-yellow-600  text-base text-center">
+                  Sem Remédio guardado!
+                </Text>
+              </TouchableOpacity>
             )}
 
             {lastAppointmentdata ? (
               <View className="border-b-2 border-zinc-300/35 py-3 flex-row justify-between items-center pb-5 mb-1 w-full">
-                <View className="text-black text-base opacity-60 bg-zinc-400/50 rounded-md p-3 flex-row justify-between items-center w-full">
+                <View className="text-black text-base opacity-60 bg-zinc-400/50 rounded-md p-3 flex-col justify-between items-center w-full mt-2">
                   <Text>
                     <Icon name="alarm-outline" size={20} color={"#505050"} />
                     Sua última{" "}
@@ -483,23 +466,23 @@ const MedicalScreen = ({ route, navigation }: props) => {
                       Consulta agendada!({lastAppointmentdata.description})
                     </Text>
                   </Text>
-
-                  <View className="flex-row justify-end items-center gap-2 bg-green-300/40 rounded-lg py-[3px] px-3">
-                    <Text className="text-green-600  text-lg text-end font-semibold">
-                      {lastAppointmentdata.dateAppointment}
+                  <View className="flex-row justify-end items-center gap-2 bg-blue-300/40 rounded-lg py-[3px] px-3 mt-2">
+                    <Text className="text-blue-600  text-lg text-end font-semibold">
+                      {"🩺 " +
+                        lastAppointmentdata.dateAppointment.replace(
+                          /^(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2})\.\d{3}Z$/,
+                          "$1 $2" + " 🩺 "
+                        )}
                     </Text>
                   </View>
                 </View>
               </View>
             ) : (
-              <View className="border-b-2 border-zinc-300/35 py-3 flex-row justify-between items-center pb-5 mb-1 w-full">
-                <View className="text-black text-base opacity-60 bg-zinc-400/50 rounded-md p-3 flex-row justify-between items-center w-full">
-                  <Text>
-                    <Icon name="alarm-outline" size={20} color={"#505050"} />
-                    <Text className="font-bold"> sem Consulta agendada</Text>
-                  </Text>
-                </View>
-              </View>
+              <TouchableOpacity className="p-4 bg-zinc-50 shadow-lg rounded-lg flex-row  justify-center items-center mb-3 ">
+                <Text className="text-blue-600  text-base text-center">
+                  Sem consulta agendada!
+                </Text>
+              </TouchableOpacity>
             )}
           </View>
           <Pressable
@@ -512,8 +495,9 @@ const MedicalScreen = ({ route, navigation }: props) => {
             <View className="border-b-2 border-zinc-300/35 py-3 flex-row justify-between items-center pb-5 mb-1 w-full">
               <View className="text-black text-base opacity-60 bg-zinc-400/50 rounded-md p-3 flex-row justify-between items-center w-full">
                 <Text>
-                  <Icon name="medical-outline" size={20} color={"#505050"} />
-                  <Text className="font-bold"> Meu doctor</Text>
+                  {/* <Icon name="medical-outline" size={20} color={"#505050"} /> */}
+                  <Text>👨🏽‍⚕️</Text>
+                  <Text className="font-bold text-lg"> Meu Médico</Text>
                 </Text>
                 <Text className="rounded-lg ps-4">
                   <Icon

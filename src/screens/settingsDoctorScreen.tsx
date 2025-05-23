@@ -21,7 +21,7 @@ import { useTheme } from "../helpers/theme-context";
 
 type props = NativeStackScreenProps<BottomTabParamList>;
 
-const SettingsScreen = ({ route, navigation }: props) => {
+const settingsDoctorScreen = ({ route, navigation }: props) => {
   const [isEnabledConsultAlert, setIsEnabledConsultAlert] = useState(true);
   const [isEnabledReminderMedication, setIsEnabledReminderMedication] =
     useState(true);
@@ -62,131 +62,6 @@ const SettingsScreen = ({ route, navigation }: props) => {
         </Text>
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View className="w-[92%] rounded-lg p-4 mt-6 mx-auto">
-          <Text
-            className={`text-xl font-bold  ${theme === "dark" ? "text-white" : "text-black"}`}
-          >
-            Dados de Saúde
-          </Text>
-
-          <Pressable
-            onPress={() => {
-              navigation.navigate("Report");
-            }}
-          >
-            <View
-              className={`flex-row justify-between items-center  mt-2 p-4 rounded-lg ${theme === "dark" ? "bg-neutral-700/60" : "bg-white"} `}
-            >
-              <View className="flex-row justify-between items-center gap-4">
-                <Icon
-                  name="document-text-outline"
-                  color={theme === "dark" ? "#fff" : "#000"}
-                  size={24}
-                ></Icon>
-                <Text
-                  className={`text-lg font-semibold  ${theme === "dark" ? "text-white" : "text-black"}`}
-                >
-                  Histórico De Receitas
-                </Text>
-              </View>
-              <Icon
-                style={{ alignSelf: "flex-end" }}
-                name="chevron-forward-outline"
-                color={"#999"}
-                size={30}
-              ></Icon>
-            </View>
-          </Pressable>
-          <Pressable onPress={() => navigation.navigate("ExportarRelatorio")}>
-            <View
-              className={`flex-row justify-between items-center  mt-2 p-4 rounded-lg ${theme === "dark" ? "bg-neutral-700/60" : "bg-white"}`}
-            >
-              <View className="flex-row justify-between items-center gap-4">
-                <Icon
-                  name="analytics-outline"
-                  color={theme === "dark" ? "#fff" : "#000"}
-                  size={24}
-                ></Icon>
-                <Text
-                  className={`text-lg font-semibold  ${theme === "dark" ? "text-white" : "text-black"} `}
-                >
-                  Exportar Relatórios
-                </Text>
-              </View>
-              <Icon
-                style={{ alignSelf: "flex-end" }}
-                name="chevron-forward-outline"
-                color={"#999"}
-                size={30}
-              ></Icon>
-            </View>
-          </Pressable>
-        </View>
-        <View className="w-[92%] rounded-lg p-4 mt-3 mx-auto">
-          <Text
-            className={`text-xl font-bold  ${theme === "dark" ? "text-white" : "text-black"} `}
-          >
-            Notificações
-          </Text>
-          <View
-            className={`flex-row justify-between items-center  mt-2 p-4 rounded-lg ${theme === "dark" ? "bg-neutral-700/60" : "bg-white"} `}
-          >
-            <View className="flex-row justify-between items-center gap-4">
-              <Icon
-                name="alarm-outline"
-                color={theme === "dark" ? "#fff" : "#000"}
-                size={24}
-              ></Icon>
-              <Text
-                className={`text-lg font-semibold  ${theme === "dark" ? " text-white" : "text-black"}`}
-              >
-                Lembretes de Medicações
-              </Text>
-            </View>
-            <View>
-              <SafeAreaProvider>
-                <SafeAreaView>
-                  <Switch
-                    trackColor={{ false: "#52525b", true: "#2563eb" }}
-                    thumbColor={isEnabledReminderMedication ? "#000" : "#fff"}
-                    ios_backgroundColor="#fff"
-                    onValueChange={toggleReminderMedication}
-                    value={isEnabledReminderMedication}
-                  />
-                </SafeAreaView>
-              </SafeAreaProvider>
-            </View>
-          </View>
-          <View
-            className={`flex-row justify-between items-center  mt-2 p-4 rounded-lg  ${theme === "dark" ? "bg-neutral-700/60" : "bg-white"} `}
-          >
-            <View className="flex-row justify-between items-center gap-4">
-              <Icon
-                name="calendar-outline"
-                color={theme === "dark" ? "#fff" : "#000"}
-                size={24}
-              ></Icon>
-              <Text
-                className={`text-lg font-semibold  ${theme === "dark" ? " text-white" : "text-black"} `}
-              >
-                Alertas de Consultas
-              </Text>
-            </View>
-            <View>
-              <SafeAreaProvider>
-                <SafeAreaView>
-                  <Switch
-                    trackColor={{ false: "#52525b", true: "#2563eb" }}
-                    thumbColor={isEnabledConsultAlert ? "#000" : "#fff"}
-                    ios_backgroundColor="#fff"
-                    onValueChange={toggleConsultAlert}
-                    value={isEnabledConsultAlert}
-                  />
-                </SafeAreaView>
-              </SafeAreaProvider>
-            </View>
-          </View>
-        </View>
         <View className="w-[92%] rounded-lg p-4 mt-3 mx-auto">
           <Text
             className={`text-xl font-bold  ${theme === "dark" ? "text-white" : "text-black"}`}
@@ -259,7 +134,7 @@ const SettingsScreen = ({ route, navigation }: props) => {
           </Text>
           <Pressable
             onPress={() => {
-              navigation.navigate("Profile");
+              navigation.navigate("ProfileMedicoScreen");
             }}
           >
             <View
@@ -389,21 +264,6 @@ const SettingsScreen = ({ route, navigation }: props) => {
               </SafeAreaProvider>
             </View>
           </View>
-
-          {/* <View className="flex-row justify-between items-center bg-white mt-2 p-4 rounded-lg">
-            <View className="flex-row justify-between items-center gap-4">
-              <Icon name="key-outline" color={"black"} size={24}></Icon>
-              <Text className="text-lg font-semibold text-black">
-                Permissões de Acesso
-              </Text>
-            </View>
-            <Icon
-              style={{ alignSelf: "flex-end" }}
-              name="chevron-forward-outline"
-              color={"#999"}
-              size={30}
-            ></Icon>
-          </View> */}
         </View>
         <View className=" w-[92%] rounded-lg p-4 mt-3 mx-auto">
           <Text
@@ -663,4 +523,4 @@ const SettingsScreen = ({ route, navigation }: props) => {
   );
 };
 
-export default SettingsScreen;
+export default settingsDoctorScreen;

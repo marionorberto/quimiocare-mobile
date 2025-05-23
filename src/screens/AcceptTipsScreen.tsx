@@ -12,9 +12,24 @@ import Constants from "expo-constants";
 import { RootStackParamsList } from "../navigations/RootStackParamsList";
 import ScreenNames from "../constants/ScreenName";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import api from "../services/api";
 import { useTheme } from "../helpers/theme-context";
-
+// const [tipsData, setTipsData] = useState([
+//   {
+//     id: "",
+//     description: "",
+//     category: {
+//       id: "",
+//       description: "",
+//       createdAt: "",
+//       updateAt: "",
+//     },
+//     userDoctor: {
+//       username: "",
+//     },
+//     createdAt: "",
+//     updatedAt: "",
+//   },
+// ]);
 const lista = [
   { id: 1, tipo: "Paciente", nome: "Maria João", ativo: true },
   { id: 2, tipo: "Médico", nome: "Dr. Paulo Silva", ativo: false },
@@ -28,9 +43,12 @@ type appointmentType = {
   time: string;
 };
 
-type props = NativeStackScreenProps<RootStackParamsList, ScreenNames>;
+type props = NativeStackScreenProps<
+  RootStackParamsList,
+  ScreenNames.AcceptTipsScreen
+>;
 
-export default function AnalisesScreen({ route, navigation }: props) {
+export default function AcceptTipsScreen({ route, navigation }: props) {
   const dados = [
     {
       id: 1,
@@ -82,27 +100,39 @@ export default function AnalisesScreen({ route, navigation }: props) {
         style={{ backgroundColor: theme === "dark" ? undefined : "#f1f1f1" }}
       >
         <Text className="text-xl font-bold mb-4 text-zinc-900 dark:text-white">
-          Análises
+          Aceitar Dicas
         </Text>
         {dados.map((item) => (
           <TouchableOpacity
             key={item.id}
             className="p-4 bg-white rounded-lg flex-row items-center mb-3 relative"
           >
-            <Text>
-              <Icon name="fitness-outline" size={24} color="#2563EB" />
-            </Text>
-            <View className="overflow-hidden text-wrap ps-3">
-              <Text className="text-zinc-900 font-medium">{item.name}</Text>
-              <Text className="text-zinc-900 font-medium flex-row justify-start items-center mt-1">
-                <Text className="text-zinc-500 pe-4">
-                  severidade - {item.severity}/5
+            <View
+              className={`mt-5 border-y-2  p-4 ${theme === "dark" ? "border-zinc-700" : "border-zinc-300"}`}
+            >
+              {/* <View>
+                <View className="flex-row justify-between items-center">
+                  <View className="flex-row justify-start">
+                    <Text>💡</Text>
+                    <Text
+                      className={`font-bold   text-lg ps-2 ${theme === "dark" ? "text-white" : "text-black"}`}
+                    >
+                      Dica Do Dia
+                    </Text>
+                  </View>
+                  <Text className="rounded-xl bg-blue-500/30 text-blue-600 font-semibold px-[11px] py-[7px]">
+                    {tipsData.category.description ?? ""}
+                  </Text>
+                </View>
+                <Text className="rounded-xl  text-zinc-500 font-semibold ">
+                  {tipsData.userDoctor.username && tipsData.userDoctor.username}
                 </Text>
-                <Icon name="analytics-outline" size={14} color="#2563EB" />
-              </Text>
-              <Text className="text-zinc-600 text-sm mt-2">
-                {item.description}
-              </Text>
+                <Text
+                  className={`p-3 text-base ${theme === "dark" ? "text-white" : "text-black"}`}
+                >
+                  {tipsData.description ?? ""}
+                </Text>
+              </View> */}
             </View>
           </TouchableOpacity>
         ))}

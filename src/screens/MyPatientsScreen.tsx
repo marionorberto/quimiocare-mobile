@@ -8,10 +8,11 @@ import {
   StyleSheet,
   Linking,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useTheme } from "../helpers/theme-context";
-import { API_URL } from "../constants/data";
+import { API_URL, API_URL_UPLOAD } from "../constants/data";
 import api from "../services/api";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamsList } from "../navigations/RootStackParamsList";
@@ -29,19 +30,17 @@ const MyPatientsScreen = ({ navigation }: props) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchPatients();
+    findAllPatientsFromDoctor();
   }, []);
 
-  const fetchPatients = async () => {
+  const findAllPatientsFromDoctor = async () => {
     await api
-      .get("/users/all")
+      .get("/my-patients/doctor/patients")
       .then(({ data: res }) => {
-        setPatients(res.data[2].patients);
-
-        console.log("oo", res.data[2].patients);
+        setPatients(res.data);
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((err: any) => {
+        Alert.alert("🚫Erro Carregando pacientes", err.response.data.message);
       })
       .finally(() => {
         setLoading(false);
@@ -97,8 +96,17 @@ const MyPatientsScreen = ({ navigation }: props) => {
               style={[styles.patientCard, theme === "dark" && styles.darkCard]}
             >
               <Image
-                source={{ uri: `${API_URL}/${patient.urlImg}` }}
-                style={styles.patientPhoto}
+                source={{
+                  uri: `http://${API_URL_UPLOAD}:3000/${patient.imgUrl}`,
+                }}
+                style={{
+                  width: 60,
+                  height: 60,
+                  borderRadius: 50,
+                  borderWidth: 2,
+                  borderColor: "#fff",
+                  backgroundColor: "#ccc",
+                }}
               />
 
               <View style={styles.patientInfo}>
@@ -125,7 +133,7 @@ const MyPatientsScreen = ({ navigation }: props) => {
                   </Text>
                 </View>
 
-                <View style={styles.infoRow}>
+                {/* <View style={styles.infoRow}>
                   <Text>
                     <Icon name="location-outline" size={16} color="#6B7280" />
                   </Text>
@@ -137,7 +145,7 @@ const MyPatientsScreen = ({ navigation }: props) => {
                   >
                     {patient.address || "Endereço não informado"}
                   </Text>
-                </View>
+                </View> */}
 
                 <View style={styles.infoRow}>
                   <Icon name="medical-outline" size={16} color="#6B7280" />
@@ -232,7 +240,7 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   patientCard: {
-    backgroundColor: "white",
+    backgroundColor: "#ccc",
     borderRadius: 12,
     padding: 16,
     marginBottom: 16,

@@ -100,17 +100,12 @@ const SymptomsScreen = ({ route, navigation }: props) => {
               </TouchableOpacity>
             ))
           ) : (
-            <View className="bg-yellow-400/35 w-full p-4 rounded-lg">
-              <Text className="text-yellow-600 font-semibold text-sm text-center">
-                <Icon
-                  name="alert-circle-outline"
-                  color={"#ca8a04;"}
-                  size={24}
-                />
-                Adicione um <Text className="font-bold">sintomas</Text> para
-                poder vê-los!
+            <TouchableOpacity className="p-4 bg-zinc-50 shadow-lg rounded-lg flex-row  justify-center items-center mb-3 ">
+              <Text className="text-yellow-600  text-base text-center">
+                Adicione um <Text className="font-bold">sintoma</Text> para
+                poder vê-lo!
               </Text>
-            </View>
+            </TouchableOpacity>
           )}
         </View>
       </ScrollView>

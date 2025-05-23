@@ -17,6 +17,7 @@ import { RootStackParamsList } from "../navigations/RootStackParamsList";
 import ScreenNames from "../constants/ScreenName";
 import { useTheme } from "../helpers/theme-context";
 import api from "../services/api";
+import { Image } from "expo-image";
 
 type props = NativeStackScreenProps<
   RootStackParamsList,
@@ -128,6 +129,27 @@ const ActivityRegisterScreen = ({ navigation }: props) => {
           theme === "dark" ? "bg-neutral-900" : "bg-[#f1f1f1]"
         }`}
       >
+        <View className="flex-row justify-center">
+          <TouchableOpacity
+            className={`bg-zinc-200 p-4 rounded-lg mb-2 w-80 bg-zinc-200 border-2 border-zinc-300`}
+            onPress={() => {}}
+          >
+            <Image
+              source={require("../../assets/splash-icon.png")}
+              style={{
+                borderRadius: 50,
+                borderWidth: 4,
+                borderColor: "#fff",
+                width: 110,
+                height: 110,
+              }}
+            ></Image>
+            <Text className="text-zinc-500 text-sm mt-1 text-center">
+              O QUIMIOCARE precisa se basear como está indo o seu tratamento Por
+              Favor confirma os dados que pendente para ontem!
+            </Text>
+          </TouchableOpacity>
+        </View>
         <Text
           className={`text-zinc-900 font-bold mb-1 ${
             theme === "dark" ? "text-white" : ""

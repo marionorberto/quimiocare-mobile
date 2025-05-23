@@ -8,7 +8,10 @@ import Icon from "react-native-vector-icons/Ionicons";
 import Constants from "expo-constants";
 import { EnumTypeUser } from "../constants/enums";
 
-type props = NativeStackScreenProps<RootStackParamsList, ScreenNames>;
+type props = NativeStackScreenProps<
+  RootStackParamsList,
+  ScreenNames.ChooseUserScreen
+>;
 
 const ChooseUserScreen = ({ route, navigation }: props) => {
   const [userType, setUserType] = useState(EnumTypeUser.paciente);

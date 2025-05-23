@@ -14,7 +14,10 @@ import ScreenNames from "../constants/ScreenName";
 import { RootStackParamsList } from "../navigations/RootStackParamsList";
 import CheckBox from "expo-checkbox";
 
-type props = NativeStackScreenProps<RootStackParamsList, ScreenNames>;
+type props = NativeStackScreenProps<
+  RootStackParamsList,
+  ScreenNames.SinglePostsScreen
+>;
 
 const SinglePostsScreen = ({ route, navigation }: props) => {
   const [agreed, setAgreed] = useState(true);

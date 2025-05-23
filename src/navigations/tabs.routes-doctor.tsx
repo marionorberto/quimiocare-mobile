@@ -4,18 +4,14 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import ScreenNames from "../constants/ScreenName";
 import { BottomTabParamList } from "../constants/types";
 import Icons from "react-native-vector-icons/Ionicons";
-import ProfileScreen from "../screens/ProfileScreen";
 import CommunityScreen from "../screens/CommunityScreen";
-import MedicalScreen from "../screens/MedicalScreen";
-import MainScreen from "../screens/MainScreen";
-import SettingsScreen from "../screens/settingsScreen";
 import { Image } from "expo-image";
-import LibraryScreen from "../screens/LibraryScreen";
 import api from "../services/api";
 import { API_URL, API_URL_UPLOAD } from "../constants/data";
 import MainMedicoScreen from "../screens/MainMedicoScreen";
 import ProfileMedicoScreen from "../screens/ProfileMedicoScreen";
 import NotificationScreen from "../screens/NotificatioScreen";
+import settingsDoctorScreen from "../screens/settingsDoctorScreen";
 
 const Tab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -152,8 +148,8 @@ const TabDoctorRoutes = () => {
       />
 
       <Tab.Screen
-        name={ScreenNames.Setting}
-        component={SettingsScreen}
+        name={ScreenNames.settingsDoctor}
+        component={settingsDoctorScreen}
         options={{
           tabBarLabel: ({ color, focused }) => {
             return focused ? (

@@ -29,7 +29,9 @@ type  ForgotScreenParams = {
 }
 
 type  MainScreenParams = {
-  title: string;
+  idUser: string,
+  username: string,
+  typeUser: string,
 }
 
 type  NotificationScreenParams = {
@@ -142,7 +144,9 @@ type DailyScreen = {
 }
 
 type AdminMainScreen = {
-  title: string;
+  idUser: string,
+  username: string,
+  typeUser: string,
 }
 
 type AnalisesScreen = {
@@ -151,7 +155,9 @@ type AnalisesScreen = {
 
 
 type MainMedicoScreen = {
-  title: string;
+  idUser: string,
+  username: string,
+  typeUser: string,
 }
 
 
@@ -239,12 +245,12 @@ type MyQuestionScreen = {
 }
 
 type MyDoctorScreen = {
-  title: string;
+  idUser: string;
 }
 
 
 type MyPatientsScreen = {
-  title: string;
+  idUser: string;
 }
 
 type BanUserScreen = {
@@ -287,7 +293,9 @@ type CreateGroupScreen = {
   title: string;
 }
 
-
+type AcceptTipsScreen = {
+  title: string;
+}
 
 export type RootStackParamsList = {
   Home: HomeScreenParams;
@@ -355,4 +363,5 @@ export type RootStackParamsList = {
   AddTipsCategoryScreen: AddTipsCategoryScreen;
   ActivateUserScreen: ActivateUserScreen;
   CreateGroupScreen: CreateGroupScreen;
+  AcceptTipsScreen: AcceptTipsScreen;
 }

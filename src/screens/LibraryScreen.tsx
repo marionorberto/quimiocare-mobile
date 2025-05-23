@@ -2,14 +2,13 @@ import React, { useState, useMemo } from "react";
 import {
   View,
   Text,
-  ScrollView,
-  Image,
   TextInput,
   Pressable,
   ActivityIndicator,
   Linking,
   StyleSheet,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import Constants from "expo-constants";
@@ -18,6 +17,7 @@ import { RootStackParamsList } from "../navigations/RootStackParamsList";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useTheme } from "../helpers/theme-context";
 import YoutubeIframe from "react-native-youtube-iframe";
+import { Image } from "expo-image";
 
 type props = NativeStackScreenProps<RootStackParamsList, ScreenNames.Library>;
 
@@ -271,7 +271,6 @@ const LibraryScreen = ({ route, navigation }: props) => {
           )}
         </View>
       </View>
-
       <ScrollView showsVerticalScrollIndicator={false}>
         <View className="px-8 mb-6">
           <Text

@@ -1,5 +1,9 @@
 export type BottomTabParamList = {
-  Main: undefined;
+  Main: {
+    idUser: string,
+    username: string,
+    typeUser: string,
+  };
   Notification: undefined;
   Community: undefined;
   Profile: undefined;
@@ -8,20 +12,21 @@ export type BottomTabParamList = {
   Setting: undefined;
   Policy: undefined;
   Terms: undefined;
-  About: undefined;
   Faq: undefined;
-  History: undefined;
-  Report: undefined;
   Library: undefined,
   Booking: undefined,
-  RedefinirPassword: undefined,
-  MainMedicoScreen: undefined,
+  MainMedicoScreen: {
+    idUser: string,
+    username: string,
+    typeUser: string,
+  },
   ProfileMedicoScreen: undefined,
   CreatePostScreen: undefined,
   ActivityRegisterScreen: undefined,
-  ExportarRelatorio: undefined,
   CreateQuestionScreen: undefined,
-  MyQuestionScreen: undefined,
+  settingsDoctorScreen: undefined,
+  settingsDoctor: undefined,
+  CommunityScreen: undefined
 };
 
 export type onSaveDateMedication = {

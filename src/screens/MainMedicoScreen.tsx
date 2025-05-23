@@ -37,30 +37,7 @@ type props = NativeStackScreenProps<
 const MainMedicoScreen = ({ navigation, route }: props) => {
   const [userImg, setUserImg] = useState("");
   const [tipsCategory, setTipsCategory] = useState([]);
-  const [myTips, setMyTips] = useState();
   const [tipsCount, setTipsCount] = useState(0);
-  const [tipsData, setTipsData] = useState([
-    { count: 0 },
-    [
-      {
-        id: "",
-        description: "",
-        category: {
-          id: "",
-          description: "",
-          createdAt: "",
-          updateAt: "",
-        },
-        createdAt: "",
-        updatedAt: "",
-      },
-    ],
-  ]);
-  const [symptomsCounter, setSymptomCounter] = useState({ count: 0 });
-  const [medicationCounter, setMedicationCounter] = useState({
-    count: 0,
-  });
-  const [appointmentCounter, setAppontmentCounter] = useState({ count: 0 });
   const [tipCategory, setTipCategory] = useState("");
   const [tipDescription, setTipDescription] = useState("");
   const [openModalAddTip, setOpenModalAddTip] = useState(false);
@@ -97,7 +74,6 @@ const MainMedicoScreen = ({ navigation, route }: props) => {
   useFocusEffect(
     useCallback(() => {
       // Essa função é chamada sempre que a tela ganha foco
-      fetchTips();
       fetchImgUser();
       fetchTipsCategory();
       fetchMyPosts();
@@ -110,7 +86,6 @@ const MainMedicoScreen = ({ navigation, route }: props) => {
   );
 
   useEffect(() => {
-    fetchTips();
     fetchImgUser();
     fetchTipsCategory();
     fetchMyPosts();
@@ -132,19 +107,6 @@ const MainMedicoScreen = ({ navigation, route }: props) => {
     }
   };
 
-  const fetchTips = async () => {
-    await api
-      .get("/tips/my-tips")
-      .then(({ data: res }) => {
-        setTipsData(res.data);
-        setTipsCount(res.data[0].count);
-        console.log(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
   const fetchTipsCategory = async () => {
     await api
       .get("/tips-category/all")
@@ -159,7 +121,10 @@ const MainMedicoScreen = ({ navigation, route }: props) => {
   const onSaveTip = async () => {
     await saveTip(tipDescription, tipCategory);
     setTipsCount(tipsCount + 1);
-    alert("Dica CriaDa com sucesso!");
+    Alert.alert(
+      "💡Criar nova dica",
+      "Dica criada com sucesso ✅, 🚫 A sua dica vai ser anisada pelo administrador antes da publicação!"
+    );
   };
 
   const fetchPosts = () => {
@@ -345,7 +310,7 @@ const MainMedicoScreen = ({ navigation, route }: props) => {
                   }}
                   className="bg-black text-white text-sm rounded-md w-32 py-3 text-center"
                 >
-                  Criar uma dica
+                  💡 Criar uma dica
                 </Text>
                 <Modal isOpen={openModalAddTip} withInput={false}>
                   <View className="p-7 bg-white rounded-2xl w-full max-w-md shadow-lg">
@@ -414,7 +379,7 @@ const MainMedicoScreen = ({ navigation, route }: props) => {
                   }}
                   className="bg-black text-white text-sm rounded-md w-32 py-3 text-center"
                 >
-                  Ver criadas
+                  👀 Ver criadas
                 </Text>
               </View>
             </View>
@@ -461,9 +426,7 @@ const MainMedicoScreen = ({ navigation, route }: props) => {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate(ScreenNames.MyPatientsScreen, {
-                title: "",
-              });
+              navigation.navigate(ScreenNames.MyPatientsScreen, { idUser: "" });
             }}
             className="bg-black shadow-slate-400 mt-10 border-2 border-blue-500 rounded-full py-1  flex-row items-center justify-center w-56 h-14"
           >
@@ -495,56 +458,64 @@ const MainMedicoScreen = ({ navigation, route }: props) => {
             <Text className="font-semibold mb-1">
               Veja todas as tuas postagens abaixo:
             </Text>
-            {post.map((item) => (
-              <View
-                key={item.id}
-                className="shadow-zinc-400 border-2 border-zinc-200 flex-col justify-center items-start bg-white mt-3 p-5 rounded-lg h-[16rem] w-full relative"
-              >
-                <View className="w-full py-3 pt-1">
-                  <View className="flex-row justify-start items-center gap-3 mb-1">
-                    <Image
-                      source={{
-                        uri: `http://${API_URL_UPLOAD}:3000/${item.imgUrl}`,
-                      }}
-                      style={{
-                        width: 40,
-                        height: 40,
-                        borderRadius: 50,
-                        borderWidth: 2,
-                        borderColor: "#fff",
-                        backgroundColor: "#ccc",
-                      }}
-                    />
-                    <Text className="font-semibold text-sm text-black">
-                      {item.user.username}
+            {post.length > 0 ? (
+              post.map((item) => (
+                <View
+                  key={item.id}
+                  className="shadow-zinc-400 border-2 border-zinc-200 flex-col justify-center items-start bg-white mt-3 p-5 rounded-lg h-[16rem] w-full relative"
+                >
+                  <View className="w-full py-3 pt-1">
+                    <View className="flex-row justify-start items-center gap-3 mb-1">
+                      <Image
+                        source={{
+                          uri: `http://${API_URL_UPLOAD}:3000/${item.imgUrl}`,
+                        }}
+                        style={{
+                          width: 40,
+                          height: 40,
+                          borderRadius: 50,
+                          borderWidth: 2,
+                          borderColor: "#fff",
+                          backgroundColor: "#ccc",
+                        }}
+                      />
+                      <Text className="font-semibold text-sm text-black">
+                        {item.user.username}
+                      </Text>
+                    </View>
+                    <View className="flex-row justify-between items-center gap-3">
+                      <Text className="font-semibold text-sm text-black flex-row justify-start items-center">
+                        <View className="h-1 w-1 bg-blue-400 rounded-full mr-2" />
+                        <Text>{item.user.typeUser}</Text>
+                      </Text>
+                      <Text className="rounded-xl bg-blue-500/30 text-blue-600 font-semibold px-3 py-[3px]  text-sm">
+                        {item.tag || "-----------"}
+                      </Text>
+                    </View>
+                  </View>
+                  <View className="mt-2 mb-4">
+                    <Text className="text-xl text-zinc-600 font-light text-wrap text-justify">
+                      {item.title}
+                    </Text>
+                    <Text className="text-xl text-zinc-600 font-light text-wrap text-justify">
+                      {item.subtitle}
                     </Text>
                   </View>
-                  <View className="flex-row justify-between items-center gap-3">
-                    <Text className="font-semibold text-sm text-black flex-row justify-start items-center">
-                      <View className="h-1 w-1 bg-blue-400 rounded-full mr-2" />
-                      <Text>{item.user.typeUser}</Text>
-                    </Text>
-                    <Text className="rounded-xl bg-blue-500/30 text-blue-600 font-semibold px-3 py-[3px]  text-sm">
-                      {item.tag}
+                  <View>
+                    <Text className="text-zinc-400">
+                      Postado Em <Text></Text>
+                      {item.createdAt.split("T")[0]}
                     </Text>
                   </View>
                 </View>
-                <View className="mt-2 mb-4">
-                  <Text className="text-xl text-zinc-600 font-light text-wrap text-justify">
-                    {item.title}
-                  </Text>
-                  <Text className="text-xl text-zinc-600 font-light text-wrap text-justify">
-                    {item.subtitle}
-                  </Text>
-                </View>
-                <View>
-                  <Text className="text-zinc-400">
-                    Postado Em <Text></Text>
-                    {item.createdAt.split("T")[0]}
-                  </Text>
-                </View>
-              </View>
-            ))}
+              ))
+            ) : (
+              <TouchableOpacity className="p-4 bg-zinc-50 shadow-lg rounded-lg flex-row  justify-center items-center mb-3 ">
+                <Text className="text-blue-600  text-base text-center">
+                  Sem postagens recentes!
+                </Text>
+              </TouchableOpacity>
+            )}
           </ScrollView>
         </View>
       </ScrollView>
