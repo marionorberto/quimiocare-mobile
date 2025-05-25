@@ -194,10 +194,10 @@ const MedicalScreen = ({ route, navigation }: props) => {
         setReminderTime(date);
       }
     } else {
-      Alert.alert(
-        "Horário inválido",
-        "Selecione um horário entre 08:00 e 16:00"
-      );
+      // Alert.alert(
+      //   "Horário inválido",
+      //   "Selecione um horário entre 08:00 e 16:00"
+      // );
     }
 
     if (date) {
