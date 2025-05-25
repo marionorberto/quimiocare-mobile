@@ -13,6 +13,7 @@ import { RootStackParamsList } from "../navigations/RootStackParamsList";
 import ScreenNames from "../constants/ScreenName";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import api from "../services/api";
+import { EnumEmojis } from "../constants/enums";
 
 type appointmentType = {
   id: number;
@@ -47,7 +48,6 @@ const BookingScreen = ({ route, navigation }: props) => {
       .get("/appointments/all")
       .then(({ data: res }) => {
         setAppointments(res.data[1]);
-        console.log(res.data[1]);
         setAppontmentCounter(res.data[0]);
         console.log(res.data[0]);
       })
@@ -122,8 +122,8 @@ const BookingScreen = ({ route, navigation }: props) => {
           ) : (
             <TouchableOpacity className="p-4 bg-zinc-50 shadow-lg rounded-lg flex-row  justify-center items-center mb-3 ">
               <Text className="text-yellow-600  text-base text-center">
-                Adicione uma <Text className="font-bold">consulta</Text> para
-                poder vê-la!
+                {EnumEmojis.CATION} Adicione uma{" "}
+                <Text className="font-bold">consulta</Text> para poder vê-la!
               </Text>
             </TouchableOpacity>
           )}

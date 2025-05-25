@@ -33,7 +33,7 @@ const LoginScreen = ({ route, navigation }: props) => {
     try {
       let { typeUser, idUser, username } = await handleLogin(email, password);
 
-      console.log({ typeUser, idUser, username });
+      // console.log({ typeUser, idUser, username });
       typeUser = typeUser.toLowerCase();
 
       if (typeUser == "paciente") {
@@ -132,6 +132,9 @@ const LoginScreen = ({ route, navigation }: props) => {
             />
           </View>
         </View>
+
+        {/* 
+
         <View>
           <Pressable
             className="flex-row justify-end items-center my-3"
@@ -142,6 +145,7 @@ const LoginScreen = ({ route, navigation }: props) => {
             <Text className="text-blue-400 ps-2">Esqueceu a Password</Text>
           </Pressable>
         </View>
+        */}
         <TouchableOpacity
           onPress={() => {
             Login();

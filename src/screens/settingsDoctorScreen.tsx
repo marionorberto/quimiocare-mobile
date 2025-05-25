@@ -21,7 +21,7 @@ import { useTheme } from "../helpers/theme-context";
 
 type props = NativeStackScreenProps<BottomTabParamList>;
 
-const settingsDoctorScreen = ({ route, navigation }: props) => {
+const SettingsDoctorScreen = ({ route, navigation }: props) => {
   const [isEnabledConsultAlert, setIsEnabledConsultAlert] = useState(true);
   const [isEnabledReminderMedication, setIsEnabledReminderMedication] =
     useState(true);
@@ -523,4 +523,4 @@ const settingsDoctorScreen = ({ route, navigation }: props) => {
   );
 };
 
-export default settingsDoctorScreen;
+export default SettingsDoctorScreen;

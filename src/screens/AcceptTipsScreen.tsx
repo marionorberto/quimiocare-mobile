@@ -3,9 +3,11 @@ import {
   View,
   Text,
   ScrollView,
-  TouchableOpacity,
   Pressable,
+  TouchableOpacity,
+  Modal,
   TextInput,
+  Alert,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import Constants from "expo-constants";
@@ -13,35 +15,9 @@ import { RootStackParamsList } from "../navigations/RootStackParamsList";
 import ScreenNames from "../constants/ScreenName";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useTheme } from "../helpers/theme-context";
-// const [tipsData, setTipsData] = useState([
-//   {
-//     id: "",
-//     description: "",
-//     category: {
-//       id: "",
-//       description: "",
-//       createdAt: "",
-//       updateAt: "",
-//     },
-//     userDoctor: {
-//       username: "",
-//     },
-//     createdAt: "",
-//     updatedAt: "",
-//   },
-// ]);
-const lista = [
-  { id: 1, tipo: "Paciente", nome: "Maria João", ativo: true },
-  { id: 2, tipo: "Médico", nome: "Dr. Paulo Silva", ativo: false },
-  { id: 3, tipo: "Admin", nome: "Carlos Lopes", ativo: true },
-];
-
-type appointmentType = {
-  id: number;
-  doctor: string;
-  date: string;
-  time: string;
-};
+import api from "../services/api";
+import { Image } from "expo-image";
+import { EnumEmojis, EnumStatusTip } from "../constants/enums";
 
 type props = NativeStackScreenProps<
   RootStackParamsList,
@@ -49,29 +25,129 @@ type props = NativeStackScreenProps<
 >;
 
 export default function AcceptTipsScreen({ route, navigation }: props) {
-  const dados = [
-    {
-      id: 1,
-      name: "Adesão à Medicação",
-      severity: 4,
-      description: "80% dos pacientes estão seguindo corretamente.",
-    },
-    {
-      id: 2,
-      name: "Presença nas Consultas",
-      severity: 3,
-      description: "Algumas ausências foram registradas.",
-    },
-    {
-      id: 3,
-      name: "Participação nos Tratamentos",
-      severity: 5,
-      description: "Alta adesão e envolvimento dos pacientes.",
-    },
-  ];
-
   const { theme, toggleTheme } = useTheme();
+  const [tipsCounter, setTipsCounter] = useState({ count: 0 });
+  const [showModal, setShowModal] = useState(false);
+  const [selectedTip, setSelectedTip] = useState<null | {
+    id: "";
+    description: "";
+    active: false;
+    category: {
+      id: "";
+      description: "";
+      createdAt: "";
+      updateAt: "";
+    };
+    userDoctor: {
+      id: "";
+      username: "";
+    };
+    createdAt: "";
+    updatedAt: "";
+  }>(null);
+  const [tipsData, setTipsData] = useState([
+    {
+      id: "",
+      description: "",
+      active: false,
+      category: {
+        id: "",
+        description: "",
+        createdAt: "",
+        updateAt: "",
+      },
+      userDoctor: {
+        id: "",
+        username: "",
+      },
+      createdAt: "",
+      updatedAt: "",
+    },
+  ]);
 
+  const sendAlertToUser = async (message: string) => {
+    try {
+      await api
+        .post("/alerts/create/alert", {
+          title: "Verificação da Dica",
+          content: message,
+          status: EnumStatusTip.ACCEPTED,
+          sender: "QUIMIOCARE",
+          user: selectedTip?.userDoctor.id,
+        })
+        .then();
+    } catch (error: any) {
+      console.log(error);
+      Alert.alert(
+        EnumEmojis.CATION + "Enviando Alerta",
+        `Infelizmente não conseguimos aceitar a sua dica, tente mais tarde!`
+      );
+    }
+  };
+
+  const activeTip = async (id: string | null) => {
+    await api
+      .put(`/tips/active/${id}`)
+      .then(async ({ data: res }) => {
+        await sendAlertToUser(
+          "A sua dica foi verifica pela nossa equipa quimiocare, e foi aceite com sucesso"
+        );
+        Alert.alert(
+          EnumEmojis.OK + "Aceitando Dica",
+          `A sua dica foi aceita com sucesso, o usuário será notificado!`
+        );
+        navigation.goBack();
+      })
+      .catch((err: any) => {
+        Alert.alert("Activar Dica", err.response.data.message);
+      });
+  };
+
+  const rejectTip = async (id: string | null) => {
+    await api
+      .put(`/tips/reject/${id}`)
+      .then(async ({ data: res }) => {
+        await sendAlertToUser(
+          "Infelizmente a sua  dica foi rejeitadafoi rejeitada pela nossa equipa!"
+        );
+        Alert.alert(
+          EnumEmojis.OK + "Rejeitando Dica",
+          `A sua dica foi rejeitda com sucesso, o usuário será notificado!`
+        );
+        navigation.goBack();
+      })
+      .catch((err: any) => {
+        Alert.alert("Rejeitar Dica", err.response.data.message);
+      });
+  };
+
+  const handleActiveTip = async () => {
+    await activeTip(selectedTip.id);
+    setShowModal(false);
+    setSelectedTip(null);
+  };
+
+  const handleReject = async () => {
+    await rejectTip(selectedTip.id);
+    setShowModal(false);
+    setSelectedTip(null);
+  };
+
+  const fetchAllTips = () => {
+    api
+      .get("/tips/all")
+      .then(({ data: res }) => {
+        setTipsData(res.data[1]);
+        setTipsCounter(res.data[0]);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  useEffect(() => {
+    fetchAllTips();
+  }, []);
   return (
     <View
       style={{ marginTop: Constants.statusBarHeight }}
@@ -92,51 +168,100 @@ export default function AcceptTipsScreen({ route, navigation }: props) {
         <Text
           className={`text-xl self-center text-center  font-bold ${theme === "dark" ? "text-white" : "text-black"}`}
         >
-          Análises
+          Aceitar Dicas dos Médicos
         </Text>
       </View>
-      <ScrollView
-        className={`flex-1 px-4 pt-10 ${theme === "dark" ? "bg-neutral-900" : ""}`}
-        style={{ backgroundColor: theme === "dark" ? undefined : "#f1f1f1" }}
-      >
-        <Text className="text-xl font-bold mb-4 text-zinc-900 dark:text-white">
-          Aceitar Dicas
-        </Text>
-        {dados.map((item) => (
-          <TouchableOpacity
-            key={item.id}
-            className="p-4 bg-white rounded-lg flex-row items-center mb-3 relative"
-          >
-            <View
-              className={`mt-5 border-y-2  p-4 ${theme === "dark" ? "border-zinc-700" : "border-zinc-300"}`}
+      <ScrollView className="px-8 mt-10">
+        <Text>Dicas Para Aceitar({tipsCounter.count})</Text>
+        {tipsCounter.count <= 0 ? (
+          <View className="mt-4">
+            <TouchableOpacity className="p-4 bg-zinc-50 shadow-lg rounded-lg flex-row  justify-center items-center mb-3 ">
+              <Text className="text-blue-400  text-base text-center">
+                Sem dicas disponível!
+              </Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          tipsData.map((item) => (
+            <TouchableOpacity
+              key={item.id}
+              onPress={() => {
+                setSelectedTip(item);
+                setShowModal(true);
+              }}
             >
-              {/* <View>
-                <View className="flex-row justify-between items-center">
-                  <View className="flex-row justify-start">
-                    <Text>💡</Text>
-                    <Text
-                      className={`font-bold   text-lg ps-2 ${theme === "dark" ? "text-white" : "text-black"}`}
-                    >
-                      Dica Do Dia
-                    </Text>
-                  </View>
-                  <Text className="rounded-xl bg-blue-500/30 text-blue-600 font-semibold px-[11px] py-[7px]">
-                    {tipsData.category.description ?? ""}
-                  </Text>
-                </View>
-                <Text className="rounded-xl  text-zinc-500 font-semibold ">
-                  {tipsData.userDoctor.username && tipsData.userDoctor.username}
+              <View key={item.id} className="bg-zinc-300 rounded-lg mt-4 p-4">
+                <Text className="text-xl">Dica</Text>
+                <Text className="text-xl font-bold mb-4 text-zinc-800 mt-4">
+                  {item.description}
                 </Text>
-                <Text
-                  className={`p-3 text-base ${theme === "dark" ? "text-white" : "text-black"}`}
-                >
-                  {tipsData.description ?? ""}
+                <Text className="text-xl mb-4 text-blue-600 bg-blue-400/30 p-2 rounded-md w-44 font-semibold text-center">
+                  {"Autor: " + item.userDoctor.username}
                 </Text>
-              </View> */}
-            </View>
-          </TouchableOpacity>
-        ))}
+                <Text className="text-red-500">
+                  {item.active ? "Aceite" : "Não Aceite"}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          ))
+        )}
       </ScrollView>
+
+      <Modal visible={showModal} transparent={true} animationType="slide">
+        <View className="flex-1 justify-center items-center bg-black/50">
+          <View
+            className={`w-11/12 p-6 rounded-xl ${theme === "dark" ? "bg-neutral-800" : "bg-white"}`}
+          >
+            <Text
+              className={`text-lg font-bold mb-4 ${theme === "dark" ? "text-white" : "text-black"}`}
+            >
+              Activar Dica
+            </Text>
+
+            <Text
+              className={`mb-2 ${theme === "dark" ? "text-neutral-300" : "text-gray-700"}`}
+            >
+              {/* Usuário: {selectedUser?.username} */}
+            </Text>
+
+            <View className="flex-row justify-between">
+              <TouchableOpacity
+                className={`px-4 py-3 rounded-lg ${theme === "dark" ? "bg-neutral-700" : "bg-gray-200"} w-1/6`}
+                onPress={() => setShowModal(false)}
+              >
+                <Text
+                  className={theme === "dark" ? "text-white" : "text-black"}
+                >
+                  X
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                className={`px-4 py-3 rounded-lg ${theme === "dark" ? "bg-neutral-700" : "bg-red-400"} w-1/4`}
+                onPress={() => {
+                  handleReject();
+                  setShowModal(false);
+                }}
+              >
+                <Text
+                  className={theme === "dark" ? "text-white" : "text-black"}
+                >
+                  Rejeitar
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                className="px-4 py-3 rounded-lg bg-green-500 ml-4 w-1/2"
+                onPress={() => {
+                  handleActiveTip();
+                }}
+                disabled={false}
+              >
+                <Text className="text-white font-bold">Confirmar</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }

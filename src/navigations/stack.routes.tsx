@@ -33,7 +33,7 @@ import MedicalScreen from "../screens/MedicalScreen";
 import DailyScreen from "../screens/DailScreen";
 import MainScreen from "../screens/MainScreen";
 import AdminMainScreen from "../screens/AdminMainScreen";
-import AcceptTipsScreen from "../screens/AcceptTipsScreen";
+// import AcceptTipsScreen from "../screens/AcceptTipsScreen";
 import OptionsAdmincreen from "../screens/OptionsAdminScreen";
 import MainMedicoScreen from "../screens/MainMedicoScreen";
 import MyPostsScreen from "../screens/MyPostsScreen";
@@ -59,6 +59,7 @@ import SendAlertScreen from "../screens/SendAlertScreen";
 import AddTipsCategoryScreen from "../screens/AddTipsCategoryScreen";
 import CreateGroupScreen from "../screens/CreateGroupScreen";
 import MyPatientsScreen from "../screens/MyPatientsScreen";
+import AcceptTipsScreen from "../screens/AcceptTipsScreen";
 
 const StackRoutes = () => {
   const Stack = createNativeStackNavigator<RootStackParamsList>();

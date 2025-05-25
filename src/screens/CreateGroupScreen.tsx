@@ -15,6 +15,7 @@ import ScreenNames from "../constants/ScreenName";
 import { Picker } from "@react-native-picker/picker";
 import api from "../services/api";
 import { API_URL } from "../constants/data";
+import { EnumEmojis, EnumStatusTip } from "../constants/enums";
 
 type props = NativeStackScreenProps<
   RootStackParamsList,
@@ -53,6 +54,33 @@ const CreateGroupScreen = ({ route, navigation }: props) => {
       });
   };
 
+  const sendAlertToUser = async (idDoctor: string, idPacient: string) => {
+    try {
+      await api.post("/alerts/create/alert", {
+        title: "Atribuição de médico",
+        content: "Tens o seu doctor atribuído!, pesquise pelo meu doctor",
+        status: EnumStatusTip.ACCEPTED,
+        sender: "QUIMIOCARE",
+        user: idPacient,
+      });
+
+      await api.post("/alerts/create/alert", {
+        title: "Atribuição de paciente",
+        content:
+          "Tens um novo paciente atribuído, já foi atribuído com sucesso!, pesquise pelo meus pacientes",
+        status: EnumStatusTip.ACCEPTED,
+        sender: "QUIMIOCARE",
+        user: idDoctor,
+      });
+    } catch (error: any) {
+      console.log(error);
+      Alert.alert(
+        EnumEmojis.CATION + "Enviando Alerta",
+        `Infelizmente não conseguimos aceitar a sua dica, tente mais tarde!`
+      );
+    }
+  };
+
   useEffect(() => {
     fetchUsers();
   }, []);
@@ -67,12 +95,13 @@ const CreateGroupScreen = ({ route, navigation }: props) => {
         }
       );
 
-      Alert.alert("Atribuição de Paciente", "Atribuição feita com sucesso ✅!");
+      Alert.alert("✅Atribuição de Paciente", "Atribuição feita com sucesso !");
+      sendAlertToUser(doctor, patient);
     } catch (error: any) {
       console.log(error);
       Alert.alert(
-        "Erro ao atribuir novo paciente",
-        error.response.data.message + " 🚫"
+        "🚫Erro ao atribuir novo paciente",
+        error.response.data.message
       );
     }
   };

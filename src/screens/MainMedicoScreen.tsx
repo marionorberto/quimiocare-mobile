@@ -41,6 +41,39 @@ const MainMedicoScreen = ({ navigation, route }: props) => {
   const [tipCategory, setTipCategory] = useState("");
   const [tipDescription, setTipDescription] = useState("");
   const [openModalAddTip, setOpenModalAddTip] = useState(false);
+  const [tips, setTips] = useState([
+    { count: 0 },
+    [
+      {
+        id: "",
+        description: "",
+        category: {
+          id: "",
+          description: "",
+          createdAt: "",
+          updateAt: "",
+        },
+        userDoctor: {
+          username: "",
+          email: "",
+        },
+        createdAt: "",
+        updatedAt: "",
+      },
+    ],
+  ]);
+
+  const fetchTips = async () => {
+    await api
+      .get("/tips/my-tips")
+      .then(({ data: res }) => {
+        setTips(res.data);
+        // console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   const [post, setPost] = useState([
     {
       id: "",
@@ -64,7 +97,6 @@ const MainMedicoScreen = ({ navigation, route }: props) => {
       .get("/posts/all")
       .then(({ data: res }) => {
         setMyPostCount(res.data[0]);
-        console.log("ok", res.data[0]);
       })
       .catch((error) => {
         console.log(error);
@@ -78,7 +110,7 @@ const MainMedicoScreen = ({ navigation, route }: props) => {
       fetchTipsCategory();
       fetchMyPosts();
       fetchPosts();
-
+      fetchTips();
       return () => {
         // Opcional: código quando sai da tela
       };
@@ -122,8 +154,8 @@ const MainMedicoScreen = ({ navigation, route }: props) => {
     await saveTip(tipDescription, tipCategory);
     setTipsCount(tipsCount + 1);
     Alert.alert(
-      "💡Criar nova dica",
-      "Dica criada com sucesso ✅, 🚫 A sua dica vai ser anisada pelo administrador antes da publicação!"
+      "✅Criar nova dica",
+      "Dica criada com sucesso , 🚫 A sua dica vai ser anisada pelo administrador antes da publicação!"
     );
   };
 
@@ -132,7 +164,6 @@ const MainMedicoScreen = ({ navigation, route }: props) => {
       .get("/posts/todas")
       .then(({ data: res }) => {
         setPost(res.data[1]);
-        console.log("ateçao", res.data[1][0].content);
       })
       .catch((error) => {
         console.log(error);
@@ -282,7 +313,7 @@ const MainMedicoScreen = ({ navigation, route }: props) => {
                 </View>
                 <View className="flex-row justify-start items-center gap-1">
                   <Text className="text-white text-3xl font-bold">
-                    {tipsCount}
+                    {tips[0].count || 0}
                   </Text>
                   <Text className="text-white"></Text>
                 </View>

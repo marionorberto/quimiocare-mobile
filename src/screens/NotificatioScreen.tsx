@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -14,66 +14,89 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { BottomTabParamList } from "../constants/types";
 import Constants from "expo-constants";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import api from "../services/api";
+import { useFocusEffect } from "@react-navigation/native";
+import { EnumEmojis } from "../constants/enums";
 
 type props = NativeStackScreenProps<BottomTabParamList>;
 
 const NotificationScreen = ({ navigation, route }: props) => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedNotification, setSelectedNotification] = useState<null | {
+    id: string;
+    title: string;
+    content: string;
+    dismis: string;
+    active: boolean;
+  }>(null);
+
   const [filter, setFilter] = useState("todas");
+  const [notifications, setNotification] = useState(null);
+  const [alerts, setAlerts] = useState<
+    | null
+    | {
+        id: string;
+        title: string;
+        content: string;
+        status: string;
+        sender: string;
+        dismiss: boolean;
+        user: {
+          id: string;
+          username: string;
+          email: string;
+          typeUser: string;
+          active: boolean;
+        };
+        createdAt: Date;
+        updatedAt: Date;
+      }[]
+  >(null);
 
-  // Notificações separadas por categoria
-  // const notifications = {
-  //   lembretes: [
-  //     {
-  //       id: 1,
-  //       title: "Tomar medicamento",
-  //       message: "Lembre-se de tomar sua medicação às 08h00.",
-  //       icon: "medkit-outline",
-  //     },
-  //     {
-  //       id: 2,
-  //       title: "Exame agendado",
-  //       message: "Você tem um exame marcado para sexta-feira às 10h00.",
-  //       icon: "flask-outline",
-  //     },
-  //   ],
+  const fectchAlerts = async () => {
+    try {
+      const { data: response } = await api.get("/alerts/myAlerts");
+      setAlerts(response.data[1]);
 
-  //   alertas: [
-  //     {
-  //       id: 4,
-  //       title: "Consulta marcada!",
-  //       message: "Sua consulta com Dr. João está agendada para amanhã às 14h.",
-  //       icon: "calendar-outline",
-  //     },
-  //   ],
-  //   emails: [
-  //     {
-  //       id: 5,
-  //       title: "Novo email recebido",
-  //       message: "O hospital enviou um novo relatório sobre seu tratamento.",
-  //       icon: "mail-outline",
-  //     },
-  //   ],
-  // };
+      console.log("Meus alertas", response.data[1]);
+    } catch (error) {
+      console.log("failed to get alert");
+    }
+  };
 
   const [isEnabledReadNotification, setIsEnabledReadNotification] =
     useState(false);
   const toggleReadNotification = () =>
     setIsEnabledReadNotification((previousState) => !previousState);
 
-  // Função para remover notificação ao deslizar
-  const handleDismiss = (id: number, category: string) => {
-    Alert.alert(
-      "Remover Notificação",
-      "Tem certeza que deseja remover esta notificação?",
-      [
-        { text: "Cancelar", style: "cancel" },
-        {
-          text: "Remover",
-          onPress: () => console.log(`Notificação ${id} removida`),
-        },
-      ]
-    );
+  const handleDismiss = async (id: string) => {
+    await api
+      .get("/alerts/dismiss/" + id)
+      .then((res) => {
+        navigation.goBack();
+        Alert.alert(
+          EnumEmojis.OK + "Notificação",
+          "Sua notificação foi removida com sucesso!"
+        );
+      })
+      .catch((error) => {
+        Alert.alert(
+          EnumEmojis.CATION + "Remover Notificação",
+          "Tem certeza que deseja remover esta notificação?"
+        );
+      });
   };
+
+  useFocusEffect(
+    useCallback(() => {
+      fectchAlerts();
+      return () => {};
+    }, [])
+  );
+
+  useEffect(() => {
+    fectchAlerts();
+  }, []);
 
   return (
     <View
@@ -95,16 +118,15 @@ const NotificationScreen = ({ navigation, route }: props) => {
         </Text>
       </View>
 
-      {/* Lista de Notificações */}
       <ScrollView showsVerticalScrollIndicator={false}>
         <View className="mb-6 px-4">
           <View className="mt-3 flex-row justify-between items-center my-4">
             <Text className="text-lg font-semibold text-zinc-900 mb-2">
-              Notificações
+              Notificações ({alerts ? alerts.length : "0"})
             </Text>
             <View className="flex-row justify-end items-center">
-              <Text className="text-neutral-500">Mostrar não lidas </Text>
-              <View>
+              {/* <Text className="text-neutral-500">Mostrar não lidas </Text> */}
+              {/* <View>
                 <SafeAreaProvider>
                   <SafeAreaView>
                     <Switch
@@ -116,65 +138,70 @@ const NotificationScreen = ({ navigation, route }: props) => {
                     />
                   </SafeAreaView>
                 </SafeAreaProvider>
-              </View>
+              </View> */}
             </View>
           </View>
 
-          <TouchableOpacity className="p-4 bg-zinc-50 shadow-lg rounded-lg flex-row  justify-center items-center mb-3 ">
-            <Text className="text-yellow-600  text-base text-center">
-              Sem nova notificações disponível!
-            </Text>
-          </TouchableOpacity>
-          {/* <TouchableOpacity className="p-4 bg-white rounded-lg flex-row items-center mb-3 relative">
-            <Text>
-              <Icon
-                name={"balloon-outline"}
-                size={24}
-                color="#2563EB"
-                className="mr-4"
-              />
-            </Text>
-            <View className="overflow-hidden text-wrap ps-3">
-              <Text className="text-zinc-900 font-medium">
-                Atualização de conta
-              </Text>
-              <Text className="text-zinc-600 overflow-x-hidden text-wrap text-sm">
-                troque sempre a sua senha se verificar alguma actividade
-                suspeita
-              </Text>
-            </View>
+          {alerts?.length > 0 ? (
+            alerts?.map((item) => (
+              <TouchableOpacity
+                key={item.id}
+                className="p-4 bg-white rounded-lg flex-row items-center mb-3 relative"
+              >
+                <Text>
+                  <Icon
+                    name={"balloon-outline"}
+                    size={24}
+                    color="#2563EB"
+                    className="mr-4"
+                  />
+                </Text>
+                <View className="overflow-hidden text-nowrap ps-3 ">
+                  <Text className="text-zinc-900 font-medium">
+                    {item.title}
+                  </Text>
+                  <Text className="text-zinc-600 overflow-x-hidden text-wrap text-sm">
+                    {item.content}
+                  </Text>
+                </View>
+                <View className="overflow-hidden text-nowrap ps-3 ">
+                  <Text className="text-zinc-900 font-medium">
+                    {item.title}
+                  </Text>
+                  <Text className="text-blue-500   text-sm">{item.sender}</Text>
+                </View>
 
-            <View className="absolute top-3 right-1 shadow-sm shadow-zinc-300 rounded-full h-7 w-6">
-              <Text>
-                <Icon name={"trash-outline"} size={14} color="#2563EB" />
-              </Text>
+                <Pressable
+                  onPress={() => {
+                    Alert.alert(
+                      EnumEmojis.CATION + "Remover Notificação",
+                      "Tem certeza que deseja remover esta notificação?",
+                      [
+                        { text: "Cancelar", style: "cancel" },
+                        {
+                          text: "Remover",
+                          onPress: () => handleDismiss(item.id),
+                        },
+                      ]
+                    );
+                  }}
+                  className="absolute top-3 right-5 shadow-sm shadow-zinc-300 rounded-full h-7 w-6"
+                >
+                  <Text>
+                    <Icon name={"trash-outline"} size={27} color="#2563EB" />
+                  </Text>
+                </Pressable>
+              </TouchableOpacity>
+            ))
+          ) : (
+            <View>
+              <TouchableOpacity className="p-4 bg-zinc-50 shadow-lg rounded-lg flex-row  justify-center items-center mb-3 ">
+                <Text className="text-blue-400  text-base text-center">
+                  Sem nova notificações disponível!
+                </Text>
+              </TouchableOpacity>
             </View>
-          </TouchableOpacity> */}
-          {/* <TouchableOpacity className="p-4 bg-white rounded-lg flex-row items-center mb-3 relative">
-            <Text>
-              <Icon
-                name={"balloon-outline"}
-                size={24}
-                color="#2563EB"
-                className="mr-4"
-              />
-            </Text>
-            <View className="overflow-hidden text-wrap ps-3">
-              <Text className="text-zinc-900 font-medium">
-                Atualização de conta
-              </Text>
-              <Text className="text-zinc-600 overflow-x-hidden text-wrap text-sm">
-                troque sempre a sua senha se verificar alguma actividade
-                suspeita
-              </Text>
-            </View>
-
-            <View className="absolute top-3 right-1 shadow-sm shadow-zinc-300 rounded-full h-7 w-6">
-              <Text>
-                <Icon name={"trash-outline"} size={14} color="#2563EB" />
-              </Text>
-            </View>
-          </TouchableOpacity> */}
+          )}
         </View>
       </ScrollView>
     </View>

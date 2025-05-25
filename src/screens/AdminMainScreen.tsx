@@ -80,8 +80,6 @@ const AdminMainScreen = ({ navigation, route }: props) => {
       .get("/appointments/count")
       .then(({ data: res }) => {
         setAppointmentCount(res.data);
-
-        console.log(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -94,8 +92,6 @@ const AdminMainScreen = ({ navigation, route }: props) => {
       .then(({ data: res }) => {
         setRecentDoctors(res.data.lastTwoDoctors);
         setRecentPatients(res.data.lastTwoPatients);
-        console.log("last users", res.data.lastTwoDoctors);
-        console.log("last patients", res.data.lastTwoPatients);
       })
       .catch((err) => {
         console.log(err);
@@ -147,9 +143,8 @@ const AdminMainScreen = ({ navigation, route }: props) => {
             <Text className="text-lg font-bold text-white/50">
               Conta Restrita
             </Text>
-            <Text className="text-base font-semibold text-white/70">admin</Text>
             <Text className="text-base font-bold text-white/70">
-              admin@gmail.com
+              Administrador Quimiocare
             </Text>
 
             <TouchableOpacity
@@ -221,24 +216,15 @@ const AdminMainScreen = ({ navigation, route }: props) => {
             label="Banir Usuário"
             onPress={() => navigation.navigate("BanUserScreen", { title: "" })}
           />
-          {/* 
-          <ActionButton
-            icon="document-text-outline"
-            label="Gerar Relatório"
-            onPress={() =>
-              navigation.navigate("GenerateReportScreen", { title: "" })
-            }
-          />
-*/}
+
           <ActionButton
             icon="alert-circle-outline"
             label="Aceitar Dicas"
             onPress={() =>
-              navigation.navigate("SendAlertScreen", { title: "" })
+              navigation.navigate("AcceptTipsScreen", { title: "" })
             }
           />
 
-          {/* 5. Atualizar Estoque */}
           <ActionButton
             icon="cube-outline"
             label="Criar categoria de dicas"
@@ -247,7 +233,6 @@ const AdminMainScreen = ({ navigation, route }: props) => {
             }
           />
 
-          {/* 7. Criar Grupo */}
           <ActionButton
             icon="people-circle-outline"
             label="Atribuir Paciente"
@@ -255,6 +240,14 @@ const AdminMainScreen = ({ navigation, route }: props) => {
               navigation.navigate("CreateGroupScreen", { title: "" })
             }
           />
+
+          {/* <ActionButton
+            icon="alert-circle-outline"
+            label="Enviar Alerta"
+            onPress={() =>
+              navigation.navigate("SendAlertScreen", { title: "" })
+            }
+          /> */}
         </View>
 
         <View className=" rounded-xl p-4 mb-6">

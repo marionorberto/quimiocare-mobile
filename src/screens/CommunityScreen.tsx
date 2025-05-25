@@ -111,7 +111,6 @@ const CommunityScreen = ({ route, navigation }: props) => {
       .get("/posts/todas")
       .then(({ data: res }) => {
         setPost(res.data[1]);
-        console.log("ateçao", res.data[1][0].content);
       })
       .catch((error) => {
         console.log(error);
@@ -123,7 +122,6 @@ const CommunityScreen = ({ route, navigation }: props) => {
       const { data } = await todasQuestions();
 
       setQuestions(data[1]);
-      console.log(data[1]);
       setQuestionsCounter(data[0]);
       // console.log(data[0]);
     } catch (error: any) {

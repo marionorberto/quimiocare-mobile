@@ -55,7 +55,6 @@ const AllDoctorsScreen = ({ route, navigation }: props) => {
         setPatientCount(res.data[2].patients.length);
         setDoctorCount(res.data[3].doctors.length);
         setPatients(res.data[2].patients);
-        console.log(res.data[2].patients);
         setDoctors(res.data[3].doctors);
       })
       .catch((err) => {

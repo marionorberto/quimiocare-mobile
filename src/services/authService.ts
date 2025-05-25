@@ -5,7 +5,6 @@ import { API_URL } from '../constants/data';
 export const handleLogin = async (email: string, password: string): Promise<any> => {
   try {
     const response = (await axios.post(`${API_URL}/auth/login`, { email, password }));
-    console.log('heollo ', response.data.typeUser);
     if (response.data.acess_token) {
       await AsyncStorage.setItem('token', response.data.acess_token);
     }

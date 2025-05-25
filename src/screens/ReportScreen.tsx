@@ -142,12 +142,12 @@ const ReportsScreen = ({ route, navigation }: props) => {
       }
 
       const file = result.assets[0];
-      console.log("Arquivo selecionado:", file);
+      // console.log("Arquivo selecionado:", file);
 
       const uploadResult = await uploadFile(file.uri);
       setNameForShow(uploadResult.filename);
       if (uploadResult.fileUploaded) {
-        console.log("Arquivo enviado com sucesso:", uploadResult.filename);
+        // console.log("Arquivo enviado com sucesso:", uploadResult.filename);
       }
     } catch (error) {
       console.error("Erro ao escolher arquivo:", error);

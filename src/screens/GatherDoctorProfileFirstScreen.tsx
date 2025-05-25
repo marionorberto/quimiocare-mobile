@@ -84,7 +84,7 @@ const GatherDoctorProfileFirstScreen = ({ route, navigation }: props) => {
         urlImg.length
       );
       const extension = filename.split(".")[1];
-      console.log("peguei da phone e troquei o filename", filename, extension);
+      // console.log("peguei da phone e troquei o filename", filename, extension);
       formData.append(
         "file",
         JSON.parse(

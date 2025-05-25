@@ -24,8 +24,7 @@ export type BottomTabParamList = {
   CreatePostScreen: undefined,
   ActivityRegisterScreen: undefined,
   CreateQuestionScreen: undefined,
-  settingsDoctorScreen: undefined,
-  settingsDoctor: undefined,
+  SettingsDoctorScreen: undefined,
   CommunityScreen: undefined
 };
 
@@ -39,3 +38,5 @@ export type onSaveDateMedication = {
 export type ProfileTagType = {
   description: string
 }
+
+

@@ -8,7 +8,7 @@ import {
   Alert,
   Dimensions,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Contants from "expo-constants";
 import Icon from "react-native-vector-icons/Ionicons";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
@@ -36,6 +36,7 @@ import api from "../services/api";
 import { Image } from "expo-image";
 import { lastAppointment, lastMedication } from "../services/last";
 import { BarChart, LineChart, ProgressChart } from "react-native-chart-kit";
+import { useFocusEffect } from "@react-navigation/native";
 
 type props = NativeStackScreenProps<RootStackParamsList, ScreenNames.Medical>;
 
@@ -242,8 +243,11 @@ const MedicalScreen = ({ route, navigation }: props) => {
         type,
         noteAppointment
       );
-      setOpenModalAddAppointment(true);
-      alert("Consulta cadastrado com sucesso!");
+      setOpenModalAddAppointment(false);
+      Alert.alert(
+        "Marcação de Consulta",
+        "A sua consulta foi marcada com sucesso!"
+      );
     } catch (error: any) {
       if (error.data) {
         alert(`${error.message.map((error: string) => error)}`);
@@ -257,7 +261,7 @@ const MedicalScreen = ({ route, navigation }: props) => {
 
       setLastMedication(res.data[0]);
 
-      console.log("ok1", res.data[0]);
+      // console.log("ok1", res.data[0]);
 
       // console.log(prescriptions.data);
     } catch (error: any) {
@@ -274,7 +278,7 @@ const MedicalScreen = ({ route, navigation }: props) => {
 
       setLastAppointment(res.data[0]);
 
-      console.log("ok2", res.data[0]);
+      // console.log("ok2", res.data[0]);
     } catch (error: any) {
       if (error.data) {
         alert(`${error.message.map((error: string) => error)}`);
@@ -308,6 +312,18 @@ const MedicalScreen = ({ route, navigation }: props) => {
     } = event;
   };
   const { theme, toggleTheme } = useTheme();
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchUserData();
+      registerForPushNotificationAsync();
+      fetchLastAppointment();
+      fetchLastMedication();
+      return () => {
+        // Opcional: código quando sai da tela
+      };
+    }, [])
+  );
 
   useEffect(() => {
     fetchUserData();
@@ -405,19 +421,6 @@ const MedicalScreen = ({ route, navigation }: props) => {
               </View>
             </View>
           </View>
-
-          {/* <Image
-            style={{
-              width: 320,
-              height: 160,
-              borderRadius: 10,
-              alignContent: "center",
-              borderWidth: 2,
-              borderColor: "#fff",
-              backgroundColor: "#ccc",
-            }}
-            source={require("../../assets/cm.webp")}
-          /> */}
 
           <View>
             {lastMedicationdata ? (

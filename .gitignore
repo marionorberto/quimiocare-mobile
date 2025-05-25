@@ -9,12 +9,12 @@ dist/
 web-build/
 expo-env.d.ts
 
-/src/constants/data.ts
+# /src/constants/data.ts
 
-./src/constants/data.ts
+# ./src/constants/data.ts
 
 
-src/constants/data.ts
+# src/constants/data.ts
 
 
 # Native

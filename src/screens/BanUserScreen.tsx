@@ -53,11 +53,8 @@ const BanUserScreen = ({ navigation }: props) => {
 
   useFocusEffect(
     useCallback(() => {
-      // Essa função é chamada sempre que a tela ganha foco
       fetchUsers();
-      return () => {
-        // Opcional: código quando sai da tela
-      };
+      return () => {};
     }, [])
   );
 
@@ -74,7 +71,6 @@ const BanUserScreen = ({ navigation }: props) => {
   );
 
   const banUser = async (id: string | null) => {
-    alert("okkkk");
     await api
       .put(`/users/ban/${id}`)
       .then(({ data: res }) => {
@@ -104,7 +100,6 @@ const BanUserScreen = ({ navigation }: props) => {
 
   const handleBanUser = async () => {
     // Aqui você faria a chamada API para banir o usuário
-    console.log(`Usuário ${selectedUser?.id} banido. Motivo: ${banReason}`);
     setBanReason(banReason);
 
     await banUser(selectedUser.id);
@@ -139,7 +134,6 @@ const BanUserScreen = ({ navigation }: props) => {
         </Text>
       </View>
 
-      {/* Barra de Pesquisa */}
       <View
         className={`p-4 ${theme === "dark" ? "bg-neutral-800" : "bg-gray-100"}`}
       >
@@ -157,7 +151,6 @@ const BanUserScreen = ({ navigation }: props) => {
         </View>
       </View>
 
-      {/* Lista de Usuários */}
       <ScrollView className="flex-1 p-4">
         {filteredPatients.map((user) => (
           <TouchableOpacity
@@ -208,7 +201,8 @@ const BanUserScreen = ({ navigation }: props) => {
         {filteredDoctors.map((user) => (
           <TouchableOpacity
             key={user.id}
-            className={`p-4 mb-3 rounded-lg ${theme === "dark" ? "bg-neutral-800" : "bg-gray-50"} ${!user.active ? "opacity-60" : ""}`}
+            className={`p-4 mb-3 rounded-lg $
+              {theme === "dark" ? "bg-neutral-800" : "bg-gray-50"} ${!user.active ? "opacity-60" : ""}`}
             onPress={() => {
               if (user.active) {
                 setSelectedUser(user);

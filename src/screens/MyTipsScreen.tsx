@@ -11,16 +11,16 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { BottomTabParamList } from "../constants/types";
 import Constants from "expo-constants";
-import { SafeAreaProvider } from "react-native-safe-area-context";
 import { RootStackParamsList } from "../navigations/RootStackParamsList";
 import ScreenNames from "../constants/ScreenName";
 import api from "../services/api";
-import { useTheme } from "../helpers/theme-context";
-import CheckBox from "expo-checkbox";
+import { EnumEmojis } from "../constants/enums";
 
-type props = NativeStackScreenProps<RootStackParamsList, ScreenNames>;
+type props = NativeStackScreenProps<
+  RootStackParamsList,
+  ScreenNames.MyTipsScreen
+>;
 
 const MyTipsScreen = ({ route, navigation }: props) => {
   const [tips, setTips] = useState([
@@ -117,23 +117,10 @@ const MyTipsScreen = ({ route, navigation }: props) => {
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false}>
-        {/* <View className="rounded-lg border-2 bg-white border-zinc-100 p-3 py-2 mx-4 w-72 mt-5">
-          <View className="flex-row justify-between items-center">
-            <View className="flex-row justify-start items-center gap-2">
-              <Text className="text-black font-semibold">
-                Adicionar nova dica
-              </Text>
-            </View>
-            <TouchableOpacity onPress={() => setOpenModalAddTip(true)}>
-              <Icon name="add-circle-outline" color={"black"} size={23} />
-            </TouchableOpacity>
-          </View>
-        </View> */}
-
         <View className="mx-4 mt-4 p-3">
           <View className="flex-row justify-start items-center mb-3">
             <Text className="text-zinc-500 text-base">
-              Total de Dicas ({tips[0].count})
+              Total de Dicas ({tips[0].count || 0})
             </Text>
           </View>
 
@@ -155,23 +142,14 @@ const MyTipsScreen = ({ route, navigation }: props) => {
                     {tip.category.description}
                   </Text>
                 </View>
-
-                {/* <View className="absolute top-3 right-6 rounded-full h-7 w-6 flex-row gap-2">
-                  <TouchableOpacity onPress={() => handleEditTip(tip.id)}>
-                    <Icon name="create-outline" size={14} color="#2563EB" />
-                  </TouchableOpacity>
-                  <TouchableOpacity onPress={() => handleDeleteTip(tip.id)}>
-                    <Icon name="trash-outline" size={14} color="#2563EB" />
-                  </TouchableOpacity>
-                </View> */}
               </TouchableOpacity>
             ))
           ) : (
-            <View className="bg-yellow-400/35 w-full p-4 rounded-lg">
-              <Text className="text-yellow-600 font-semibold text-sm text-center">
+            <View className="bg-white w-full p-4 rounded-lg">
+              <Text className="text-blue-600 font-semibold text-sm text-center">
                 <Icon name="alert-circle-outline" color={"#ca8a04"} size={24} />
-                Adicione uma <Text className="font-bold">dica</Text> para poder
-                vê-las!
+                {EnumEmojis.CATION} Adicione uma{" "}
+                <Text className="font-bold">dica</Text> para poder vê-las!
               </Text>
             </View>
           )}

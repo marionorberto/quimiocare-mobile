@@ -151,8 +151,6 @@ const MainScreen = ({ navigation, route }: props) => {
       .get("/posts/todas")
       .then(({ data: res }) => {
         setPost(res.data[1]);
-        // console.log("ateçao", res.data[1][0].content);
-        // console.log("image from post", res.data[1]);
       })
       .catch((error) => {
         console.log(error);
@@ -165,7 +163,6 @@ const MainScreen = ({ navigation, route }: props) => {
         .get(`${API_URL}/profiles/single`)
         .then(({ data: response }) => {
           setUserImg(`http://${API_URL_UPLOAD}:3000/${response.data.urlImg}`);
-          // console.log("image from profile", response.data.urlImg);
         })
         .catch((error) => {
           console.log(error);
@@ -186,7 +183,7 @@ const MainScreen = ({ navigation, route }: props) => {
       if (error.data) {
         alert(`${error.message.map((error: string) => error)}`);
       }
-      alert(`${error.message}`);
+      console.log(`${error.message}`);
     }
   };
 
@@ -439,29 +436,35 @@ const MainScreen = ({ navigation, route }: props) => {
         <View
           className={`mt-5 border-y-2  p-4 ${theme === "dark" ? "border-zinc-700" : "border-zinc-300"}`}
         >
-          <View>
-            <View className="flex-row justify-between items-center">
-              <View className="flex-row justify-start">
-                <Text>💡</Text>
-                <Text
-                  className={`font-bold   text-lg ps-2 ${theme === "dark" ? "text-white" : "text-black"}`}
-                >
-                  Dica Do Dia
+          {tipsData ? (
+            <View>
+              <View className="flex-row justify-between items-center">
+                <View className="flex-row justify-start">
+                  <Text>💡</Text>
+                  <Text
+                    className={`font-bold   text-lg ps-2 ${theme === "dark" ? "text-white" : "text-black"}`}
+                  >
+                    Dica Do Dia
+                  </Text>
+                </View>
+                <Text className="rounded-xl bg-blue-500/30 text-blue-600 font-semibold px-[11px] py-[7px]">
+                  {tipsData.category.description ?? ""}
                 </Text>
               </View>
-              <Text className="rounded-xl bg-blue-500/30 text-blue-600 font-semibold px-[11px] py-[7px]">
-                {tipsData.category.description ?? ""}
+              <Text className="rounded-xl  text-zinc-500 font-semibold ">
+                {tipsData.userDoctor.username && tipsData.userDoctor.username}
+              </Text>
+              <Text
+                className={`p-3 text-base ${theme === "dark" ? "text-white" : "text-black"}`}
+              >
+                {tipsData.description ?? ""}
               </Text>
             </View>
-            <Text className="rounded-xl  text-zinc-500 font-semibold ">
-              {tipsData.userDoctor.username && tipsData.userDoctor.username}
+          ) : (
+            <Text className="rounded-xl bg-blue-500/30 text-blue-600 font-semibold px-[11px] py-[7px] text-center">
+              Sem Dica do dia Disponível
             </Text>
-            <Text
-              className={`p-3 text-base ${theme === "dark" ? "text-white" : "text-black"}`}
-            >
-              {tipsData.description ?? ""}
-            </Text>
-          </View>
+          )}
         </View>
         <View className="flex-col justify-center items-center pt-14 pb-16">
           <Icon

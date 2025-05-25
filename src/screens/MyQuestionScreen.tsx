@@ -44,7 +44,7 @@ const MyQuestionScreen = ({ route, navigation }: props) => {
       setQuestions(data[1]);
       console.log(data[1]);
       setQuestionsCounter(data[0]);
-      console.log(data[0]);
+      // console.log(data[0]);
     } catch (error: any) {
       if (error.data) {
         alert(`${error.message.map((error: string) => error)}`);

@@ -51,7 +51,11 @@ const AddTipsCategoryScreen = ({ route, navigation }: props) => {
 
       alert("categoria criada com sucesso!");
 
-      navigation.navigate("AdminMainScreen", { title: "" });
+      navigation.navigate("AdminMainScreen", {
+        idUser: "",
+        typeUser: "",
+        username: "",
+      });
     } catch (error: any) {
       alert(error.respose.message);
     }

@@ -7,6 +7,7 @@ import {
   Pressable,
   TextInput,
   Switch,
+  Alert,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import Constants from "expo-constants";
@@ -18,6 +19,7 @@ import ScreenNames from "../constants/ScreenName";
 import { useTheme } from "../helpers/theme-context";
 import api from "../services/api";
 import { Image } from "expo-image";
+import { EnumEmojis } from "../constants/enums";
 
 type props = NativeStackScreenProps<
   RootStackParamsList,
@@ -25,49 +27,50 @@ type props = NativeStackScreenProps<
 >;
 
 const ActivityRegisterScreen = ({ navigation }: props) => {
-  const [selectedMedicine, setSelectedMedicine] = useState("");
-  const [wentToConsultation, setWentToConsultation] = useState(false);
-  const [consultationType, setConsultationType] = useState("");
-  const [symptomsPersist, setSymptomsPersist] = useState(false);
-  const [appointments, setAppointments] = useState(null);
-  const [medications, setMedications] = useState(null);
-  const [symptoms, setSymptoms] = useState(null);
-
-  setSymptoms;
-  const [notes, setNotes] = useState("");
-
+  const [allActivities, setActivities] = useState({
+    symptoms: [
+      {
+        id: "",
+        name: "",
+        description: "",
+        severity: 0,
+        createdAt: "",
+        updatedAt: "",
+      },
+    ],
+    appointments: [
+      {
+        id: "",
+        name: "",
+        description: "",
+        dateAppointment: "",
+        type: "",
+        statusAppointment: "",
+        note: "",
+        createdAt: "",
+        updatedAt: "",
+      },
+    ],
+    medications: [
+      {
+        id: "",
+        name: "",
+        dosage: "",
+        note: "",
+        timeReminder: "",
+        createdAt: "",
+        updatedAt: "",
+      },
+    ],
+  });
   const { theme } = useTheme();
 
-  const fetchAppointment = () => {
+  const fetchLastActivities = () => {
     api
-      .get("/appointments/all")
+      .get("ativities/lastActivities")
       .then(({ data: res }) => {
-        setAppointments(res.data[1]);
-        console.log("consultas", res.data[1]);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
-  const fetchMedications = () => {
-    api
-      .get("/medications/all")
-      .then(({ data: res }) => {
-        setMedications(res.data[1]);
-        console.log("medicações", res.data[1]);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
-  const fetchSymptom = () => {
-    api
-      .get("/symptoms/all")
-      .then(({ data: res }) => {
-        setSymptoms(res.data[1]);
-        console.log("sintomas", res.data[1]);
+        setActivities(res.data);
+        res.data;
       })
       .catch((error) => {
         console.log(error);
@@ -75,16 +78,14 @@ const ActivityRegisterScreen = ({ navigation }: props) => {
   };
 
   useEffect(() => {
-    fetchAppointment();
-    fetchMedications();
-    fetchSymptom();
+    fetchLastActivities();
   }, []);
 
   const onSaveActivity = () => {
-    alert(
-      `Salvo:\nRemédio: ${selectedMedicine || "Nenhum"}\nConsulta: ${
-        wentToConsultation ? consultationType : "Não foi"
-      }\nSintomas persistentes: ${symptomsPersist ? "Sim" : "Não"}\nNotas: ${notes}`
+    // api.post()
+    Alert.alert(
+      EnumEmojis.OK + "Registar Actividade",
+      "A tua actividade foi registrada com sucesso!"
     );
     navigation.goBack();
   };
@@ -131,138 +132,155 @@ const ActivityRegisterScreen = ({ navigation }: props) => {
       >
         <View className="flex-row justify-center">
           <TouchableOpacity
-            className={`bg-zinc-200 p-4 rounded-lg mb-2 w-80 bg-zinc-200 border-2 border-zinc-300`}
+            className={` p-4 rounded-lg mb-2 w-80 bg-zinc-200 border-2 border-zinc-300 flex-col items-center`}
             onPress={() => {}}
           >
-            <Image
-              source={require("../../assets/splash-icon.png")}
-              style={{
-                borderRadius: 50,
-                borderWidth: 4,
-                borderColor: "#fff",
-                width: 110,
-                height: 110,
-              }}
-            ></Image>
-            <Text className="text-zinc-500 text-sm mt-1 text-center">
-              O QUIMIOCARE precisa se basear como está indo o seu tratamento Por
-              Favor confirma os dados que pendente para ontem!
+            <Text className="text-4xl">⚠️</Text>
+            <Text className="text-zinc-500 text-lg mt-1 text-center">
+              <Text className="text-black font-bold">QUIMIOCARE</Text> precisa
+              saber como está indo o seu tratamento. Por Favor confirma os dados
+              referentes ao dia de ontem relativamente aos seus tratamentos
+              registrados!
             </Text>
           </TouchableOpacity>
         </View>
         <Text
-          className={`text-zinc-900 font-bold mb-1 ${
+          className={`text-zinc-900 font-bold mb-1 mt-5 ${
             theme === "dark" ? "text-white" : ""
           }`}
         >
-          Qual remédio tomou hoje? 💊
+          Remédios que deverias tomar ontem 💊
         </Text>
-        <Picker
-          className="border border-zinc-300 rounded-lg bg-white px-4 py-3 mb-6"
-          style={{ color: "#27272a", backgroundColor: "white" }}
-          selectedValue={selectedMedicine}
-          onValueChange={(itemValue) => setSelectedMedicine(itemValue)}
-        >
-          <Picker.Item label="Selecionar sintoma" value="" />
-          {symptoms &&
-            symptoms.map((item) => {
-              <Picker.Item label={item.description} value={item.description} />;
-            })}
-        </Picker>
-
-        <View
-          className={`flex-row items-center justify-between mb-4 bg-white border border-zinc-300 rounded-lg px-4 py-3 ${
-            theme === "dark" ? "border-zinc-700" : ""
-          }`}
-        >
-          <Text
-            className={`text-zinc-900 font-bold ${
-              theme === "dark" ? "text-white" : ""
-            }`}
-          >
-            Foi à consulta médica? 🩺
-          </Text>
-          <Switch
-            value={wentToConsultation}
-            onValueChange={setWentToConsultation}
-          />
-        </View>
-
-        {wentToConsultation && (
-          <>
-            <Text
-              className={`text-zinc-900 font-bold mb-1 ${
-                theme === "dark" ? "text-white" : ""
+        {allActivities.medications.length > 0 ? (
+          allActivities.medications.map((item) => (
+            <View
+              key={item.id}
+              className={`flex-row items-center justify-between mb-4 bg-white border border-zinc-300 rounded-lg px-4 py-3 ${
+                theme === "dark" ? "border-zinc-700" : ""
               }`}
             >
-              Qual consulta foi?
-            </Text>
-            <Picker
-              className="border border-zinc-300 rounded-lg bg-white px-4 py-3 mb-6"
-              style={{ color: "#27272a", backgroundColor: "white" }}
-              selectedValue={consultationType}
-              onValueChange={(itemValue) => setConsultationType(itemValue)}
-            >
-              <Picker.Item label="Selecione a especialidade" value="" />
-              <Picker.Item label="Cardiologia" value="cardiologia" />
-              <Picker.Item label="Dermatologia" value="dermatologia" />
-              <Picker.Item label="Neurologia" value="neurologia" />
-              <Picker.Item label="Ortopedia" value="ortopedia" />
-              <Picker.Item label="Ginecologia" value="ginecologia" />
-              <Picker.Item label="Pediatria" value="pediatria" />
-              <Picker.Item label="Outros" value="outros" />
-            </Picker>
-          </>
-        )}
-
-        {/* Switch para sintomas */}
-        <View
-          className={`flex-row items-center justify-between mb-4 bg-white border border-zinc-300 rounded-lg px-4 py-3 ${
-            theme === "dark" ? "border-zinc-700" : ""
-          }`}
-        >
-          <Text
-            className={`text-zinc-900 font-bold ${
-              theme === "dark" ? "text-white" : ""
+              <Text
+                className={`text-zinc-900 font-bold ${
+                  theme === "dark" ? "text-white" : ""
+                }`}
+              >
+                {item.name} 💊
+              </Text>
+              <Switch
+              // value={wentToConsultation}
+              // onValueChange={setWentToConsultation}
+              />
+            </View>
+          ))
+        ) : (
+          <View
+            className={`flex-row items-center justify-center mb-4 bg-white border border-zinc-300 rounded-lg px-4 py-3 ${
+              theme === "dark" ? "border-zinc-700" : ""
             }`}
           >
-            Os sintomas de ontem permanecem?
-          </Text>
-          <Switch value={symptomsPersist} onValueChange={setSymptomsPersist} />
-        </View>
+            <Text className="text-center text-yellow-500">
+              Sem remédios cadastrados de ontem
+            </Text>
+          </View>
+        )}
 
-        {/* Observações */}
         <Text
-          className={`text-zinc-900 font-bold mb-1 mt-2 ${
+          className={`text-zinc-900 font-bold mb-1 mt-5 ${
             theme === "dark" ? "text-white" : ""
           }`}
         >
-          Observações
+          Consultas que deverias ter ido ontem 🩺
         </Text>
-        <TextInput
-          className={`bg-white text-zinc-900 font-bold px-4 py-5 h-24 rounded-lg text-base mb-6 ${
-            theme === "dark" ? "bg-zinc-800 text-white" : ""
-          }`}
-          multiline
-          textAlignVertical="top"
-          value={notes}
-          onChangeText={setNotes}
-          placeholder="Escreva algo importante aqui..."
-          placeholderTextColor={theme === "dark" ? "#9ca3af" : "#6b7280"}
-        />
+        {allActivities.appointments.length > 0 ? (
+          allActivities.appointments.map((item) => (
+            <View
+              key={item.id}
+              className={`flex-row items-center justify-between mb-4 bg-white border border-zinc-300 rounded-lg px-4 py-3 ${
+                theme === "dark" ? "border-zinc-700" : ""
+              }`}
+            >
+              <Text
+                className={`text-zinc-900 font-bold ${
+                  theme === "dark" ? "text-white" : ""
+                }`}
+              >
+                {item.description} 🩺
+              </Text>
+              <Switch
+              // value={wentToConsultation}
+              // onValueChange={setWentToConsultation}
+              />
+            </View>
+          ))
+        ) : (
+          <View
+            className={`flex-row items-center justify-center mb-4 bg-white border border-zinc-300 rounded-lg px-4 py-3 ${
+              theme === "dark" ? "border-zinc-700" : ""
+            }`}
+          >
+            <Text className="text-center text-yellow-500">
+              Sem consultas cadastradas de ontem
+            </Text>
+          </View>
+        )}
 
-        {/* Botões */}
-        <TouchableOpacity
-          onPress={onSaveActivity}
-          className="bg-blue-600 py-4 rounded-xl items-center mb-4"
+        <Text
+          className={`text-zinc-900 font-bold mb-1 mt-5 ${
+            theme === "dark" ? "text-white" : ""
+          }`}
         >
-          <Text className="text-white text-lg font-semibold">Registrar</Text>
-        </TouchableOpacity>
+          Quais Sintomas registados ontem prevalecem 🤒
+        </Text>
+        {allActivities.symptoms.length > 0 ? (
+          allActivities.symptoms.map((item) => (
+            <View
+              key={item.id}
+              className={`flex-row items-center justify-between mb-4 bg-white border border-zinc-300 rounded-lg px-4 py-3 ${
+                theme === "dark" ? "border-zinc-700" : ""
+              }`}
+            >
+              <Text
+                className={`text-zinc-900 font-bold ${
+                  theme === "dark" ? "text-white" : ""
+                }`}
+              >
+                {item.description} 🤒
+              </Text>
+              <Switch
+              // value={wentToConsultation}
+              // onValueChange={setWentToConsultation}
+              />
+            </View>
+          ))
+        ) : (
+          <View
+            className={`flex-row items-center justify-center mb-4 bg-white border border-zinc-300 rounded-lg px-4 py-3 ${
+              theme === "dark" ? "border-zinc-700" : ""
+            }`}
+          >
+            <Text className="text-center text-yellow-500">
+              Sem consultas sintomas de ontem
+            </Text>
+          </View>
+        )}
+        {allActivities.medications.length ||
+        allActivities.appointments.length ||
+        allActivities.symptoms.length ? (
+          <TouchableOpacity
+            onPress={onSaveActivity}
+            className="bg-blue-600 py-4 rounded-xl items-center mb-4"
+          >
+            <Text className="text-white text-lg font-semibold">Registrar</Text>
+          </TouchableOpacity>
+        ) : (
+          ""
+        )}
+
         <TouchableOpacity
-          className="bg-white py-4 rounded-xl items-center mb-20"
+          className="bg-white py-4 rounded-xl items-center mb-20 mt-5"
           onPress={() => navigation.goBack()}
         >
-          <Text className="text-blue-500 text-lg font-semibold">Cancelar</Text>
+          <Text className="text-blue-500 text-lg font-semibold">Voltar</Text>
         </TouchableOpacity>
       </ScrollView>
     </View>

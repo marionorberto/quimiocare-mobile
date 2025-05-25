@@ -30,6 +30,7 @@ type props = NativeStackScreenProps<
 const MyPostsScreen = ({ route, navigation }: props) => {
   const [post, setPost] = useState([
     {
+      id: "",
       content: "",
       description: "",
       title: "",
@@ -84,7 +85,7 @@ const MyPostsScreen = ({ route, navigation }: props) => {
         {post.length > 0 ? (
           post.map((item) => (
             <View
-              key={item.subtitle}
+              key={item.id}
               className="shadow-zinc-400 border-2 border-zinc-200 flex-col justify-center items-start bg-white mt-3 p-5 rounded-lg h-[16rem] w-full relative"
             >
               <View className="w-full py-3 pt-1">

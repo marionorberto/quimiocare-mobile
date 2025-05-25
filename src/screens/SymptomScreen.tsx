@@ -30,9 +30,9 @@ const SymptomsScreen = ({ route, navigation }: props) => {
       .get("/symptoms/all")
       .then(({ data: res }) => {
         setSymptoms(res.data[1]);
-        console.log(res.data[1]);
+        // console.log(res.data[1]);
         setSymptomCounter(res.data[0]);
-        console.log(res.data[0]);
+        // console.log(res.data[0]);
       })
       .catch((error) => {
         console.log(error);
